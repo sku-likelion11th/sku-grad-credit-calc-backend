@@ -33,7 +33,7 @@ def upload_file(request):
 							ex_dict['채플'] = 1
 					else:
 						if sheet[str('S'+str(j))].value != '-':
-							ex_dict[sheet[str('I'+str(j))].value] = int(sheet[str('S'+str(j))].value)
+							ex_dict[sheet[str('I'+str(j))].value] = [int(sheet[str('S'+str(j))].value), sheet[str('U'+str(j))].value]
 					j += 1	# excel 다음 행으로
 				if ex_dict: # if문 사용해서 key값 올바르게 들어감
 					area_dict[sheet[str('G'+str(j-1))].value] = ex_dict 
