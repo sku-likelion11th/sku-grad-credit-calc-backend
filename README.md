@@ -6,6 +6,8 @@
 * localhost:8000/reader/upload에서 엑셀 파일을 업로드 하면 됨
 
 ### 테스트 방법 2
+* pipenv --python 3.9 명령어로 파이썬 3.9버전으로 가상환경 설치
+  * (3.10부터 openpyxl 2.05 버전 라이브러리와 충돌!!)
 * pipenv shell 로 가상환경 설치
 * 가상환경 내부에서 pip install -r requirements.txt 로 필요한 package 설치
 * from ~ import ~ 구문에 빨간 줄 떠있으면 오른쪽 아래 인터프리터를 해당 가상환경으로 변경
