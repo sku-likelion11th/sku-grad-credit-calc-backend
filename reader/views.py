@@ -106,12 +106,12 @@ def upload_file(request):
 		else:
 			j += 1
 
-	print(f'score_need \n{score_need}')
-	print(f'score_did \n{score_did}')	
-	print(f'subject_did \n{subject_did}')
-	print(f'student \n{student}')
-	print(f'semester_grade \n{semester_grade}')
-	print(f'semester_subject \n{semester_subject}')
+	print(f'score_need \n{score_need}\n')
+	print(f'score_did \n{score_did}\n')	
+	print(f'subject_did \n{subject_did}\n')
+	print(f'student \n{student}\n')
+	print(f'semester_grade \n{semester_grade}\n')
+	print(f'semester_subject \n{semester_subject}\n')
 
 	for i in range(1, 6):
 		for j in range(1, 3):
