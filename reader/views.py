@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from collections import defaultdict
 import openpyxl
 
 def upload_file(request):
@@ -23,14 +24,11 @@ def upload_file(request):
 		while j < 100: # just for the example
 			if sheet[str('A'+str(j))].value in area: # ex) 교필영역이 area집합에 있으면
 				j += 2
-				ex_dict = dict()
+				ex_dict = defaultdict()
 				while sheet[str('G'+str(j))].value in short_area:	# ex) 해당 영역(교필영역)에 수강한 과목이 있으면
 					# 일반채플, 제자반 포함해서 {'채플':'int'}로 들은 횟수만큼 int에 저장됨
 					if sheet[str('I'+str(j))].value == '채플' or sheet[str('I'+str(j))].value == '채플(제자반)':
-						try:
-							ex_dict['채플'] += 1
-						except:
-							ex_dict['채플'] = 1
+						ex_dict['채플'] += 1
 					else:
 						if sheet[str('S'+str(j))].value != '-':
 							ex_dict[sheet[str('I'+str(j))].value] = [int(sheet[str('S'+str(j))].value), sheet[str('U'+str(j))].value]
