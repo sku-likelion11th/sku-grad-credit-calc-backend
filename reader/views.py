@@ -60,7 +60,10 @@ def upload_file(request):
 			if sheet[str('Z'+str(j))].value in semester:
 				ex.add((str(sheet[str('X'+str(j))].value), str(sheet[str('Z'+str(j))].value)[0]))	# ex) (2019,1)
 			elif sheet[str('Z'+str(j))].value in season_semester:
-				ex.add((str(sheet[str('X'+str(j))].value), str(sheet[str('Z'+str(j))].value)))
+				season_ex.add((str(sheet[str('X'+str(j))].value), str(sheet[str('Z'+str(j))].value)))
+		if sheet[str('A'+str(j))].value and sheet[str('A'+str(j))].value[:-3] in score_need_list: 
+			score_need[str(sheet[str('A'+str(j))].value[:-3])] = int(str(sheet[str('N'+str(j))].value))
+			score_need[str(sheet[str('P'+str(j))].value[:-3])] = int(str(sheet[str('W'+str(j))].value))
 		j += 1
 
 #   if sheet[str('Z'+str(j))].value in semester:
@@ -90,9 +93,9 @@ def upload_file(request):
 		semester_dict[(year[i], season_semester[j%2])] = ((year[i], season_semester[j%2])) # ex) [('2019', '여름학기')] = (2019, '여름학기')
 		j += 1
 
-	semester_season_dict = dict()
-	for i in range(len(student_season_semester)):
-		semester_season_dict[student_season_semester[i]] = ((i//2)+1, student_season_semester[i][-1]) # ex) [('2019', '여름학기')] = (2019, '여름학기')
+	# semester_season_dict = dict()
+	# for i in range(len(student_season_semester)):
+	# 	semester_season_dict[student_season_semester[i]] = ((i//2)+1, student_season_semester[i][-1]) # ex) [('2019', '여름학기')] = (2019, '여름학기')
 
 	j = 1
 	while j < sheet.max_row + 1: # just for the example
@@ -129,10 +132,10 @@ def upload_file(request):
 				area_did[sheet[str('G'+str(j))].value].append([sheet[str('I'+str(j))].value, sheet[str('S'+str(j))].value, sheet[str('U'+str(j))].value, sheet[str('X'+str(j))].value, sheet[str('Z'+str(j))].value])
 
 				j += 1	# excel 다음 행으로
-				if sheet[str('A'+str(j+2))].value and sheet[str('A'+str(j+2))].value[:-3] in score_need_list: 
-					score_need[str(sheet[str('A'+str(j+2))].value[:-3])] = int(str(sheet[str('N'+str(j+2))].value))
-					score_need[str(sheet[str('P'+str(j+2))].value[:-3])] = int(str(sheet[str('W'+str(j+2))].value))
-					break	# 요구학점 나오면 해당 영역 종료
+				# if sheet[str('A'+str(j+2))].value and sheet[str('A'+str(j+2))].value[:-3] in score_need_list: 
+				# 	score_need[str(sheet[str('A'+str(j+2))].value[:-3])] = int(str(sheet[str('N'+str(j+2))].value))
+				# 	score_need[str(sheet[str('P'+str(j+2))].value[:-3])] = int(str(sheet[str('W'+str(j+2))].value))
+				# 	break	# 요구학점 나오면 해당 영역 종료
 
 		else:
 			j += 1
@@ -152,6 +155,8 @@ def upload_file(request):
 				semester_grade[(i, j)]['S'] += semester_grade[(i, j)]['P']  # 계산할때는 패논패 계산 없이 함
 	print(f'semester_grade \n{semester_grade}\n')
 	print(f'area_did \n{area_did}\n')
+	total_avg = sheet[str('H'+str(sheet.max_row - 1))].value # 총 평점 평균
+	church = sheet[str('L'+str(sheet.max_row - 1))].value # 채플
  
 	return render(request, 'reader/upload.html', {'message': 'File uploaded successfully.'})
 
