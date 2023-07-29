@@ -150,7 +150,7 @@ def upload_file(request):
 	for i in range(1, 6):
 		for j in range(1, 3):
 			if semester_grade[(i, j)]['S']:
-				semester_grade[(i, j)]['G'] /= semester_grade[(i, j)]['S']
+				semester_grade[(i, j)]['G'] = round(semester_grade[(i, j)]['G'] / semester_grade[(i, j)]['S'], 2)
 				semester_grade[(i, j)]['S'] += semester_grade[(i, j)]['P']  # 계산할때는 패논패 계산 없이 함
     
 	print(f'semester_grade \n{semester_grade}\n')
@@ -159,9 +159,9 @@ def upload_file(request):
 	total_avg = sheet[str('H'+str(sheet.max_row - 1))].value # 총 평점 평균
 	church = sheet[str('L'+str(sheet.max_row - 1))].value # 채플
 	ratio = dict()
-	ratio['전필'] = round(score_need['전필이수학점'] / score_need['전필요구학점'], 2)*100
-	ratio['전선'] = round(score_need['전선이수학점'] / score_need['전선요구학점'], 2)*100
-	ratio['교양'] = round(score_need['교양이수학점'] / score_need['교양요구학점'], 2)*100
+	ratio['전필'] = min(100.0, round(score_need['전필이수학점'] / score_need['전필요구학점'], 2)*100)
+	ratio['전선'] = min(100.0, round(score_need['전선이수학점'] / score_need['전선요구학점'], 2)*100)
+	ratio['교양'] = min(100.0, round(score_need['교양이수학점'] / score_need['교양요구학점'], 2)*100)
 	# 교필은 아직임
 	print(ratio)
  
