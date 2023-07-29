@@ -39,12 +39,12 @@ def upload_file(request):
 	semester_grade = defaultdict(dict) # 학년별, 학기별 평점(grade), 이수 학점(score)
 	for i in range(1, 6):	# 학년별
 		for j in range(1, 3):	# 학기별
-			semester_grade[(i, j)] = defaultdict(float)
+			semester_grade[str(i)+'_'+str(j)] = defaultdict(float)
 
 	semester_subject = defaultdict(dict) # 학년별, 학기별 수강 과목
 	for i in range(1, 6):	# 학년별
 		for j in range(1, 3):	# 학기별
-			semester_subject[(i, j)] = list()
+			semester_subject[str(i)+'_'+str(j)] = list()
 
 	student = dict()
 	for i in range(7):
@@ -82,13 +82,13 @@ def upload_file(request):
 	j = 0
 	for i in range(len(student_semester)):
 		j += 1
-		semester_dict[student_semester[i]] = ((i//2)+1, j) # ex) [('2019', '1')] = (1, 1) 
+		semester_dict[student_semester[i]] = str((i//2)+1)+'_'+str(j) # ex) [('2019', '1')] = (1, 1) 
 		j %= 2
 	j = 0
 	for i in range(len(year)):
-		semester_grade[(year[i], season_semester[j%2])] = defaultdict(float)
-		semester_subject[(year[i], season_semester[j%2])] = list()
-		semester_dict[(year[i], season_semester[j%2])] = ((year[i], season_semester[j%2])) # ex) [('2019', '여름학기')] = (2019, '여름학기')
+		semester_grade[year[i]+'_'+season_semester[j%2]] = defaultdict(float)
+		semester_subject[year[i]+'_'+season_semester[j%2]] = list()
+		semester_dict[(year[i], season_semester[j%2])] = year[i]+'_'+season_semester[j%2] # ex) [('2019', '여름학기')] = (2019, '여름학기')
 		j += 1
 
 	# semester_season_dict = dict()
@@ -106,7 +106,7 @@ def upload_file(request):
 
 		if sheet[str('A'+str(j))].value in area: # ex) 교필영역이 area집합에 있으면
 			j += 2
-	# 영역  개설학부(과)  이수구분	강좌명	학점  등급	년도  학기  비고	
+	# 영역  개설학부(과)  이수구분	강좌명	학점  등급	년도  학기  비고
 	# A		B			G		I    S	  U    X	Z	AB
 	# F면 학점은 0으로, 탭에는 나오게
 	# 재수강하지 않았으면 추천 목록에 띄우기
@@ -115,12 +115,12 @@ def upload_file(request):
 				try:
 					ex_semester = (semester_dict[(sheet[str('X'+str(j))].value, sheet[str('Z'+str(j))].value[0])])
 				except:
-					ex_semester = (sheet[str('X'+str(j))].value, sheet[str('Z'+str(j))].value)
+					ex_semester = (str(sheet[str('X'+str(j))].value)+'_'+sheet[str('Z'+str(j))].value)
 				if sheet[str('U'+str(j))].value != 'P' and sheet[str('U'+str(j))].value != 'F': # F맞으면 학점이 하이폰(-)으로 나오나요?
 					semester_grade[ex_semester]['S'] += int(sheet[str('S'+str(j))].value) # 해당 과목 이수 학점
 					semester_grade[ex_semester]['G'] += int(sheet[str('S'+str(j))].value)*score_for_grade[sheet[str('U'+str(j))].value]
 
-				if sheet[str('U'+str(j))].value == 'P': 
+				if sheet[str('U'+str(j))].value == 'P':
 					semester_grade[ex_semester]['P'] += int(sheet[str('S'+str(j))].value)
 
 				# [영역, 학점, 등급]
@@ -147,9 +147,9 @@ def upload_file(request):
 
 	for i in range(1, 6):
 		for j in range(1, 3):
-			if semester_grade[(i, j)]['S']:
-				semester_grade[(i, j)]['G'] = round(semester_grade[(i, j)]['G'] / semester_grade[(i, j)]['S'], 2)
-				semester_grade[(i, j)]['S'] += semester_grade[(i, j)]['P']  # 계산할때는 패논패 계산 없이 함
+			if semester_grade[str(i)+'_'+str(j)]['S']:
+				semester_grade[str(i)+'_'+str(j)]['G'] = round(semester_grade[str(i)+'_'+str(j)]['G'] / semester_grade[str(i)+'_'+str(j)]['S'], 2)
+				semester_grade[str(i)+'_'+str(j)]['S'] += semester_grade[(str(i)+'_'+str(j))]['P']  # 계산할때는 패논패 계산 없이 함
     
 	# print(f'semester_grade \n{semester_grade}\n')
 	# print(f'area_did \n{area_did}\n')
@@ -161,8 +161,26 @@ def upload_file(request):
 	ratio['전선'] = min(100.0, round(score_need['전선이수학점'] / score_need['전선요구학점'], 2)*100)
 	ratio['교양'] = min(100.0, round(score_need['교양이수학점'] / score_need['교양요구학점'], 2)*100)
 	# 교필은 아직임
-	# print(ratio)
-	
+	# print(f'ratio: \n{ratio}')
+ 
+	major_grade = defaultdict(float)
+
+	for data in area_did['전필']:
+		if data[2] != 'P' and data[2] != 'F':
+			major_grade['전필'] += float(score_for_grade[data[2]])*float(data[1])
+			major_grade['전공'] += float(score_for_grade[data[2]])*float(data[1])
+    
+	major_grade['전필'] = round(major_grade['전필'] / score_did['전필'], 2)
+    
+	for data in area_did['전선']:
+		if data[2] != 'P' and data[2] != 'F':
+			major_grade['전선'] += float(score_for_grade[data[2]])*float(data[1])
+			major_grade['전공'] += float(score_for_grade[data[2]])*float(data[1])
+    
+	major_grade['전선'] = round(major_grade['전선'] / score_did['전선'], 2)
+	major_grade['전공']	= round(major_grade['전공'] / (score_did['전선']+score_did['전필']), 2)
+  
+  
 	context = {'area_did': area_did, 
             'semester_grade': semester_grade,
             'semester_subject': semester_subject,
@@ -172,7 +190,8 @@ def upload_file(request):
             'score_need': score_need,
             'total_avg': total_avg,
             'church': church,
-            'ratio': ratio}
- 
+            'ratio': ratio,
+			'major_grade': major_grade}
+
 	return render(request, 'reader/upload.html', context)
 
