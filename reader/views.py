@@ -46,8 +46,6 @@ def upload_file(request):
 		for j in range(1, 3):	# 학기별
 			semester_subject[(i, j)] = list()
 
-	# a f j m o y ab	
-
 	student = dict()
 	for i in range(7):
 		student[info_category[i]] = sheet[info_idx[i]].value
@@ -140,12 +138,12 @@ def upload_file(request):
 		else:
 			j += 1
 
-	print(f'score_need \n{score_need}\n')
-	print(f'score_did \n{score_did}\n')	
-	print(f'subject_did \n{subject_did}\n')
-	print(f'student \n{student}\n')
-	print(f'semester_subject \n{semester_subject}\n')
-	print(f'semester_dict \n{semester_dict}\n')
+	# print(f'score_need \n{score_need}\n')
+	# print(f'score_did \n{score_did}\n')	
+	# print(f'subject_did \n{subject_did}\n')
+	# print(f'student \n{student}\n')
+	# print(f'semester_subject \n{semester_subject}\n')
+	# print(f'semester_dict \n{semester_dict}\n')
 
 	for i in range(1, 6):
 		for j in range(1, 3):
@@ -153,8 +151,8 @@ def upload_file(request):
 				semester_grade[(i, j)]['G'] = round(semester_grade[(i, j)]['G'] / semester_grade[(i, j)]['S'], 2)
 				semester_grade[(i, j)]['S'] += semester_grade[(i, j)]['P']  # 계산할때는 패논패 계산 없이 함
     
-	print(f'semester_grade \n{semester_grade}\n')
-	print(f'area_did \n{area_did}\n')
+	# print(f'semester_grade \n{semester_grade}\n')
+	# print(f'area_did \n{area_did}\n')
  
 	total_avg = sheet[str('H'+str(sheet.max_row - 1))].value # 총 평점 평균
 	church = sheet[str('L'+str(sheet.max_row - 1))].value # 채플
@@ -163,7 +161,18 @@ def upload_file(request):
 	ratio['전선'] = min(100.0, round(score_need['전선이수학점'] / score_need['전선요구학점'], 2)*100)
 	ratio['교양'] = min(100.0, round(score_need['교양이수학점'] / score_need['교양요구학점'], 2)*100)
 	# 교필은 아직임
-	print(ratio)
+	# print(ratio)
+	
+	context = {'area_did': area_did, 
+            'semester_grade': semester_grade,
+            'semester_subject': semester_subject,
+            'student': student,
+            'subject_did': subject_did,
+            'score_did': score_did,
+            'score_need': score_need,
+            'total_avg': total_avg,
+            'church': church,
+            'ratio': ratio}
  
-	return render(request, 'reader/upload.html', {'message': 'File uploaded successfully.'})
+	return render(request, 'reader/upload.html', context)
 
