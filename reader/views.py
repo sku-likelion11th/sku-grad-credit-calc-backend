@@ -17,7 +17,7 @@ def upload_file(request):
 	short_area = {'교필', '교선', '전필', 
 			'전선', '복필', '복전', '부전공', 
 			'일선', '교직', '채플'}
-	score_need_list = {'전필요구학점', '전선요구학점', '복수전공필수요구학점', 
+	score_need_list = {'교양요구학점', '전필요구학점', '전선요구학점', '복수전공필수요구학점', 
                     '복수전공요구학점', '부전공요구학점'}
 	score_for_grade = {'A+': 4.5, 'A0': 4.0, 'B+': 3.5, 'B0':3.0, 
 					'C+': 2.5, 'C0': 2.0, 'D+':1.5, 'D0': 1.0}
@@ -144,7 +144,6 @@ def upload_file(request):
 	print(f'score_did \n{score_did}\n')	
 	print(f'subject_did \n{subject_did}\n')
 	print(f'student \n{student}\n')
-
 	print(f'semester_subject \n{semester_subject}\n')
 	print(f'semester_dict \n{semester_dict}\n')
 
@@ -153,10 +152,18 @@ def upload_file(request):
 			if semester_grade[(i, j)]['S']:
 				semester_grade[(i, j)]['G'] /= semester_grade[(i, j)]['S']
 				semester_grade[(i, j)]['S'] += semester_grade[(i, j)]['P']  # 계산할때는 패논패 계산 없이 함
+    
 	print(f'semester_grade \n{semester_grade}\n')
 	print(f'area_did \n{area_did}\n')
+ 
 	total_avg = sheet[str('H'+str(sheet.max_row - 1))].value # 총 평점 평균
 	church = sheet[str('L'+str(sheet.max_row - 1))].value # 채플
+	ratio = dict()
+	ratio['전필'] = round(score_need['전필이수학점'] / score_need['전필요구학점'], 2)*100
+	ratio['전선'] = round(score_need['전선이수학점'] / score_need['전선요구학점'], 2)*100
+	ratio['교양'] = round(score_need['교양이수학점'] / score_need['교양요구학점'], 2)*100
+	# 교필은 아직임
+	print(ratio)
  
 	return render(request, 'reader/upload.html', {'message': 'File uploaded successfully.'})
 
