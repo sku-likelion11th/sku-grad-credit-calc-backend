@@ -1,0 +1,151 @@
+@font-face {
+    font-family: "Pretendard-Regular";
+    src: url("https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff") format("woff");
+    font-weight: 400;
+    font-style: normal;
+}
+
+.font-Pretendard-R {
+    font-family: "Pretendard-Regular";
+}
+
+ul {
+    bottom: 0;
+}
+
+li {
+    list-style: none;
+}
+
+
+/*progress bar*/
+
+.bar-container {
+    width: 200px;
+    height: 130px;
+    border-radius: 10px;
+    border: 1px solid #999ea4;
+    background: #fff;
+    padding: 20px;
+}
+
+.progress-container {
+    width: 105px;
+    height: 12px;
+    background-color: #eeeeee;
+    border-radius: 5px;
+}
+
+.progress-bar {
+    height: 100%;
+    line-height: 100%;
+    text-align: center;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 10px;
+}
+
+#progress-bar1 {
+    background-color: #f55c64;
+}
+
+#progress-bar2 {
+    background-color: #f4c331;
+}
+
+#progress-bar3 {
+    background-color: #7e74f0;
+}
+
+#progress-bar4 {
+    background-color: #58c6eb;
+}
+
+#progress-bar5 {
+    background-color: #74c574;
+}
+
+
+/* doughnut chart */
+
+.doughnut-chart-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-top: 18px;
+    margin-left: 18px;
+}
+
+.doughnut-chart-box {
+    width: 200px;
+    height: 200px;
+}
+
+.doughnut-data {
+    font-size: 12px;
+}
+
+.percentage {
+    margin-left: 30px;
+}
+
+.dot {
+    position: absolute;
+}
+
+.dot-blue {
+    background-color: #57a0e5;
+    width: 12px;
+    height: 12px;
+    border-radius: 100%;
+}
+
+.dot-red {
+    background-color: #ed6d85;
+    width: 12px;
+    height: 12px;
+    border-radius: 100%;
+}
+
+.dot-orange {
+    background-color: #f2a353;
+    width: 12px;
+    height: 12px;
+    border-radius: 100%;
+}
+
+.dot-yellow {
+    background-color: #f7cf6b;
+    width: 12px;
+    height: 12px;
+    border-radius: 100%;
+}
+
+
+/*line chart*/
+
+.line-container {
+    background: #fff;
+}
+
+.line-chart-title {
+    font-weight: 700;
+    margin-top: 18px;
+    margin-left: 18px;
+}
+
+.line-chart-mainText {
+    font-size: 15px;
+}
+
+.line-chart-subText {
+    font-size: 12px;
+}
+
+
+/*line-chart 크기조정*/
+
+.line-chart-box {
+    margin: 0 auto;
+    background: #fff;
+    width: 450px;
+}

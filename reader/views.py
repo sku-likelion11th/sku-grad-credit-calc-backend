@@ -2,11 +2,16 @@ from django.shortcuts import render
 from collections import defaultdict
 import openpyxl
 
+def index(request):
+	return render(request, 'reader/index.html')
+
+
 def upload_file(request):
 	if request.method == 'GET':
 		return render(request, 'reader/upload.html')
+	
 
-	file = request.FILES['file']
+	file = request.FILES['uploaded_file']
 	wb = openpyxl.load_workbook(file)
 	sheet = wb.active
 #----------------------------------------------------------------------------------------------
@@ -192,6 +197,7 @@ def upload_file(request):
             'church': church,
             'ratio': ratio,
 			'major_grade': major_grade}
+	print(score_did)
 
-	return render(request, 'reader/upload.html', context)
+	return render(request, 'reader/result.html', context)
 
