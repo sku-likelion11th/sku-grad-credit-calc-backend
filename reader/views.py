@@ -150,7 +150,7 @@ def upload_file(request):
 			if semester_grade[str(i)+'_'+str(j)]['S']:
 				semester_grade[str(i)+'_'+str(j)]['G'] = round(semester_grade[str(i)+'_'+str(j)]['G'] / semester_grade[str(i)+'_'+str(j)]['S'], 2)
 				semester_grade[str(i)+'_'+str(j)]['S'] += semester_grade[(str(i)+'_'+str(j))]['P']  # 계산할때는 패논패 계산 없이 함
-    
+
 	# print(f'semester_grade \n{semester_grade}\n')
 	# print(f'area_did \n{area_did}\n')
  
@@ -162,7 +162,34 @@ def upload_file(request):
 	ratio['교양'] = min(100.0, round(score_need['교양이수학점'] / score_need['교양요구학점'], 2)*100)
 	# 교필은 아직임
 	# print(f'ratio: \n{ratio}')
- 
+	ratio['등급'] = defaultdict(float)
+
+	grade_key = {'A+': 'AP', 'A0': 'A', 'B+': 'BP', 'B0': 'B', 
+					'C+': 'CP', 'C0': 'C', 'D+': 'DP', 'D0': 'D', 'F': 'F'}
+	
+	re_sub = set()
+	cnt = 0
+	for sub in subject_did:
+		if sub[-4:] == "(재수)":
+			re_sub.add(sub)
+			re_sub.add(sub[:-4])
+			if subject_did[sub][-1] != 'P':
+				print(sub)
+				ratio['등급'][grade_key[subject_did[sub][-1]]] += 1
+				cnt += 1
+
+	for sub in subject_did:
+		if sub[1:] not in re_sub and sub not in re_sub: # 별과목, 과목 인지 몰라욤
+			if subject_did[sub][-1] != 'P':
+				ratio['등급'][grade_key[subject_did[sub][-1]]] += 1
+				cnt += 1
+			
+	for key in ratio['등급'].keys():
+		if key == 'F':
+			print(ratio['등급'][key])
+		ratio['등급'][key] = round(ratio['등급'][key] / cnt * 100, 2)
+	print(ratio)
+	print(cnt)
 	major_grade = defaultdict(float)
 
 	for data in area_did['전필']:
