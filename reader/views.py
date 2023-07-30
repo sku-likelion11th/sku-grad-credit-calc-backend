@@ -47,9 +47,13 @@ def GE_recommend():
 			elif sub[0][:-4] in r_dict['other']:
 				r_dict['other'].remove(sub[0][:-4])
 				r_dict['other_cnt'][0] += 1
-			elif r_dict[sub[0]]:
-				r_dict[sub[0]][0] += 1
-	
+			else:
+				try:
+					if r_dict[sub[0]]:
+						r_dict[sub[0]][0] += 1
+				except:
+					pass
+ 
 	for key in r_dict['for_loop'].keys():
 		r_dict['for_loop'][key]	= r_dict[key][1] - r_dict[key][0] # 이수해야하는 만큼 만족하지 못하면 양수 들어감
 	
@@ -76,7 +80,7 @@ def GE_recommend():
 	recommend_GE = []
 	for sub in recommend:
 		recommend_GE.append(GE_list[sub])	
- 
+
 	return recommend_GE
 
 
