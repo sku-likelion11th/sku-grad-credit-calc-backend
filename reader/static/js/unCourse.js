@@ -39,7 +39,8 @@ document.addEventListener('DOMContentLoaded', function() {
     msBtn.addEventListener('click', handleButtonClick);
     grBtn.addEventListener('click', handleButtonClick);
 
-    fetch('js/uncompletedCourses.json')
+//    fetch('/static/js/uncompletedCourses.json')
+    fetch('/test/')
         .then(function(response) {
             if (!response.ok) {
                 throw new Error('error');
