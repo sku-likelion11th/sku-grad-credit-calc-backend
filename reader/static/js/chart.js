@@ -24,8 +24,17 @@ var width4 = 0;
 var id4;
 var elem4 = document.getElementById("progress-bar4");
 if(elem4 != null){
-    var max4 = elem4.getAttribute('score_did')/parseFloat(elem4.getAttribute('score_need'))*100;
+    max4 = elem4.getAttribute('score_did')/parseFloat(elem4.getAttribute('score_need'))*100;
     if(max4 > 100) max4 = 100
+}
+
+var i5 = 0;
+var width5 = 0;
+var id5;
+var elem5 = document.getElementById("progress-bar5");
+if(elem5 != null){
+    max5 = elem5.getAttribute('score_did')/parseFloat(elem5.getAttribute('score_need'))*100;
+    if(max5 > 100) max5 = 100
 }
 
 function frame1() {
@@ -63,7 +72,6 @@ function frame3() {
 }
 
 function frame4() {
-
     if (width4 >= max4) {
         clearInterval(id4);
         i4 = 0;
@@ -74,7 +82,19 @@ function frame4() {
     }
 }
 
+function frame5() {
+    if (width5 >= max5) {
+        clearInterval(id5);
+        i5 = 0;
+    } else {
+        width5++;
+        elem5.style.width = width5 + "%";
+        elem5.innerHTML = width5 + "%";
+    }
+}
+
 function start1() {
+    elem1.style.width= "0%";
     if (i1 == 0) {
         i1 = 1;
         id1 = setInterval(frame1, 10);
@@ -82,6 +102,7 @@ function start1() {
 }
 
 function start2() {
+    elem2.style.width= "0%";
     if (i2 == 0) {
         i2 = 1;
         id2 = setInterval(frame2, 10);
@@ -89,6 +110,7 @@ function start2() {
 }
 
 function start3() {
+    elem3.style.width= "0%";
     if (i3 == 0) {
         i3 = 1;
         id3 = setInterval(frame3, 10);
@@ -96,17 +118,26 @@ function start3() {
 }
 
 function start4() {
+    elem4.style.width= "0%";
     if (i4 == 0) {
         i4 = 1;
         id4 = setInterval(frame4, 10);
     }
 }
 
+function start5() {
+    elem5.style.width= "0%";
+    if (i5 == 0) {
+        i5 = 1;
+        id5 = setInterval(frame5, 10);
+    }
+}
 
 start1(); // 자동 실행
 start2(); // 자동 실행
 start3(); // 자동 실행
 start4();
+start5();
 
 /*doughnutChar*/
 const doughnutChart = document.querySelector("#doughnut-chart");
