@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from collections import defaultdict
 import openpyxl
 import json
+from .data import GE, GE_list
 
 def index(request):
 	return render(request, 'reader/index.html')
@@ -15,7 +16,72 @@ def delete_file(request):
 	del request.session['context']
 	return redirect('/upload')
 
+def sort_by_grade():
+	global subject_did
+	score_for_grade = {'A+': 4.5, 'A0': 4.0, 'B+': 3.5, 'B0':3.0, 
+					'C+': 2.5, 'C0': 2.0, 'D+':1.5, 'D0': 1.0, 'P': 5, 'F': 0}
+	key = subject_did.keys()
+	value = subject_did.values()
+	
+	
+
+
+def GE_recommend():
+	global student, area_did
+	s_num = int(student['student_num'][2:4]) # 학번 필요한가? 최신(이름 바뀐) 과목 추천해주면 될듯
+	r_dict = GE
+	recommend = []	
+ 
+	for sub in area_did['교필']:
+		if sub[2] != 'F':
+			if sub[0] in r_dict['English']:
+				r_dict['English'].remove(sub[0])
+				r_dict['English_cnt'][0] += 1
+			elif sub[0][:-4] in r_dict['English']:
+				r_dict['English'].remove(sub[0][:-4])
+				r_dict['English_cnt'][0] += 1
+    
+			elif sub[0] in r_dict['other']:
+				r_dict['other'].remove(sub[0])
+				r_dict['other_cnt'][0] += 1
+			elif sub[0][:-4] in r_dict['other']:
+				r_dict['other'].remove(sub[0][:-4])
+				r_dict['other_cnt'][0] += 1
+			elif r_dict[sub[0]]:
+				r_dict[sub[0]][0] += 1
+	
+	for key in r_dict['for_loop'].keys():
+		r_dict['for_loop'][key]	= r_dict[key][1] - r_dict[key][0] # 이수해야하는 만큼 만족하지 못하면 양수 들어감
+	
+	for key in r_dict['one_point']:
+		for i in range(r_dict['for_loop'][key]):
+			recommend.append(key) # 1점짜리 추천
+   
+	English = []
+	for sub in r_dict['English']:
+		English.append(sub) # set 자료형은 인덱싱 불가
+	English = English[::-1] # 거꾸로 돌림
+  
+	other = []
+	for sub in r_dict['other']:
+		other.append(sub) # 상동
+	other = other[::-1] # 상동
+  
+	for i in range(r_dict['for_loop']['English_cnt']):
+		recommend.append(English[i])
+  
+	for i in range(r_dict['for_loop']['other_cnt']):
+		recommend.append(other[i])
+	
+	recommend_GE = []
+	for sub in recommend:
+		recommend_GE.append(GE_list[sub])	
+ 
+	return recommend_GE
+
+
 def upload_file(request):
+	global student, area, short_area, short_area, score_need_list, score_for_grade, score_for_grade, info_category, info_category, year, score_need, score_did, subject_did, area_did, semester_grade, semester_subject
 	file = request.FILES['uploaded_file']
 	wb = openpyxl.load_workbook(file)
 	sheet = wb.active
@@ -216,7 +282,11 @@ def upload_file(request):
 	major_grade['전선'] = round(major_grade['전선'] / score_did['전선'], 2)
 	major_grade['전공']	= round(major_grade['전공'] / (score_did['전선']+score_did['전필']), 2)
   
+	sorted_subject = [] # 성적순으로 정렬된것 만들어야함
   
+	recommend_GE = GE_recommend()
+
+	print(f'recommend_GE: \n {recommend_GE}')
 	context = {'area_did': area_did, 
             'semester_grade': semester_grade,
             'semester_subject': semester_subject,
@@ -227,12 +297,16 @@ def upload_file(request):
             'total_avg': total_avg,
             'church': church,
             'ratio': ratio,
-			'major_grade': major_grade}
+			'major_grade': major_grade,
+   			'sorted_subject': sorted_subject,
+			'recommend_GE': recommend_GE
+
+      }
 	
 	request.session["context"] = context
-	for i in context:
-		print(i," ",context[i])
-		print()
+	# for i in context:
+	# 	print(i," ",context[i])
+	# 	print()
 
 	return redirect('/upload')
 
