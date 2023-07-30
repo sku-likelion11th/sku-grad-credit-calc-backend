@@ -15,13 +15,13 @@
       <nav class="navbar navbar-expand-lg">
         <div class="container">
           <a
-            href="/reader"
+            href="/"
             class="navbar-brand logo-sku-sku kanit-font text-decoration-none text-black"
             >SKU-SKU</a
           >
           <span class="divider kanit-font text-black px-lg-3">|</span>
           <a
-            href="/reader"
+            href="/"
             class="navbar-brand pretendard-font service-name text-decoration-none text-black"
             >성결대학교 졸업학점계산기</a
           >
@@ -40,28 +40,28 @@
             <ul class="navbar-nav ms-auto">
               <li class="nav-item">
                 <a
-                  href="/reader/#calc"
+                  href="/#calc"
                   class="nav-link menu pretendard-font text-decoration-none text-black px-2"
                   >계산기</a
                 >
               </li>
               <li class="nav-item">
                 <a
-                  href="/reader/#collabo"
+                  href="/#collabo"
                   class="nav-link menu pretendard-font text-decoration-none text-black px-2"
                   >콜라보</a
                 >
               </li>
               <li class="nav-item">
                 <a
-                  href="/reader/#maker"
+                  href="/#maker"
                   class="nav-link menu pretendard-font text-decoration-none text-black px-2"
                   >만든이들</a
                 >
               </li>
               <li class="nav-item">
                 <a
-                  href="/reader#contact"
+                  href="#contact"
                   class="nav-link menu pretendard-font text-decoration-none text-black px-2"
                   >문의하기</a
                 >
@@ -147,7 +147,7 @@
           </button>
           <div><a href="./result.html">결과창 임시링크</a></div>
         </div> -->
-        <form id="uploadForm" action="/reader/upload_file" method="post" enctype="multipart/form-data">
+        <form id="uploadForm" action="/upload_file" method="post" enctype="multipart/form-data">
           {% csrf_token %}
           <div class="uploadBtn text-center">
             <div><input id="input" type="file" name="uploaded_file" style="display: none;" /></div>

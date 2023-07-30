@@ -14,7 +14,7 @@ def upload_or_result(request):
 
 def delete_file(request):
 	del request.session['context']
-	return redirect('/reader/upload')
+	return redirect('/upload')
 
 def sort_by_grade():
 	global subject_did
@@ -308,6 +308,6 @@ def upload_file(request):
 	# 	print(i," ",context[i])
 	# 	print()
 
-	return redirect('/reader/upload')
+	return redirect('/upload')
 
 
