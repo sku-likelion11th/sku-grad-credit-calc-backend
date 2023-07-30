@@ -136,8 +136,12 @@ function start5() {
 start1(); // 자동 실행
 start2(); // 자동 실행
 start3(); // 자동 실행
-start4();
-start5();
+if(elem4 != null){
+    start4();
+}
+if(elem5 != null){
+    start5();
+}
 
 /*doughnutChar*/
 const doughnutChart = document.querySelector("#doughnut-chart");
