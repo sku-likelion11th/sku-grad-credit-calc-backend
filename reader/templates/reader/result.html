@@ -411,10 +411,10 @@
                                         <th>년도</th>
                                         <th>학기</th>
                                     </tr>
-                                    <!-- 전필 -->
+                                    <!-- 부전 -->
                                     {% for course in area_did.부전 %}
                                     <tr>
-                                        <td>전필</td>
+                                        <td>부전</td>
                                         <td>{{ course.0 }}</td>
                                         <td>{{ course.1 }}</td>
                                         <td>{{ course.2 }}</td>
@@ -442,7 +442,7 @@
                                         <th>년도</th>
                                         <th>학기</th>
                                     </tr>
-                                    <!-- 전필 -->
+                                    <!-- 복필 -->
                                     {% for course in area_did.복필 %}
                                     <tr>
                                         <td>복필</td>
@@ -473,7 +473,7 @@
                                         <th>년도</th>
                                         <th>학기</th>
                                     </tr>
-                                    <!-- 전필 -->
+                                    <!-- 복전 -->
                                     {% for course in area_did.복전 %}
                                     <tr>
                                         <td>복전</td>
