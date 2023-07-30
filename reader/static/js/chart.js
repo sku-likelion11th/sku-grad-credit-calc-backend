@@ -135,7 +135,7 @@ const lineChartData = new Chart(linetChart, {
             "4-2",
         ],
         datasets: [{
-            data: [1.3, 4.1, 3.0, 4.0, 2.4, 3.1, 4.5, 3.8],
+            data: [linetChart.getAttribute('1_1'), linetChart.getAttribute('1_2'), linetChart.getAttribute('2_1'), linetChart.getAttribute('2_2'), linetChart.getAttribute('3_1'), linetChart.getAttribute('3_2'), linetChart.getAttribute('4_1'), linetChart.getAttribute('4_2')],
         }, ],
     },
     options: {

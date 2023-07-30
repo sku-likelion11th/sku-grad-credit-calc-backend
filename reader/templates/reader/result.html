@@ -148,7 +148,7 @@
                     </div>
                     <div class="line-container">
                         <div class="line-chart-box">
-                            <canvas id="line-chart"></canvas>
+                            <canvas id="line-chart" 1_1="{{semester_grade.1_1.G}}" 1_2="{{semester_grade.1_2.G}}" 2_1="{{semester_grade.2_1.G}}" 2_2="{{semester_grade.2_2.G}}" 3_1="{{semester_grade.3_1.G}}" 3_2="{{semester_grade.3_2.G}}" 4_1="{{semester_grade.4_1.G}}"4_2="{{semester_grade.4_2.G}}"></canvas>
                         </div>
                     </div>
                 </div>
@@ -207,7 +207,7 @@
                 <div class="intro">
                     <span class="fw-bold">{{ student.name }}</span>님<br/>
                     <span class="id">{{ student.student_num }}</span>
-                    <span class="grade  text-break"> / {{ student.grade }}</span>
+                    <span class="grade  text-break"> / {{ student.grade }}학년</span>
                     <div class="my-3">
                         <span class="text-break">{{ student.major }}</span><br/> {% if minor %}
                         <span class="majorDeep">{{ student.minor }}</span> {% endif %}
@@ -391,11 +391,11 @@
     </div>
 
     <script src="{% static 'source/boot-5.3.0/bootstrap.bundle.min.js' %}"></script>
-    <script type='module' src="{% static 'js/unCourse.js' %}"></script>
-    <script type='module' src="{% static 'js/recommended.js' %}"></script>
+    <script src="{% static 'js/unCourse.js' %}"></script>
+    <script src="{% static 'js/recommended.js' %}"></script>
     <!-- <script type='module' src="./js/creditList.js"></script> -->
-    <script src="{% static 'js/chart.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{% static 'js/chart.js' %}"></script>
 </body>
 
 </html>
