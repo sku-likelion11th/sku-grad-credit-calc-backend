@@ -1,12 +1,14 @@
 /* 공통 디자인 CSS 만 여기 적용 */
 /* Font 정보 */
+
 @import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,500;1,800&display=swap');
-.kanit-font {
-    font-family: 'Kanit', sans-serif;
-}
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
 .pretendard-font {
     font-family: 'Pretendard';
+}
+.kanit-font {
+    font-family: 'Kanit', sans-serif;
 }
 
 /* Navbar 디자인 CSS */
