@@ -13,7 +13,7 @@ def upload_or_result(request):
 
 def delete_file(request):
 	del request.session['context']
-	return redirect('/reader/upload')
+	return redirect('/upload')
 
 def upload_file(request):
 	file = request.FILES['uploaded_file']
@@ -234,6 +234,6 @@ def upload_file(request):
 		print(i," ",context[i])
 		print()
 
-	return redirect('/reader/upload')
+	return redirect('/upload')
 
 
