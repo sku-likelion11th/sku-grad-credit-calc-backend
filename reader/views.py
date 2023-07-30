@@ -26,11 +26,15 @@ def sort_by_grade():
 	global subject_did
 	score_for_grade = {'A+': 4.5, 'A0': 4.0, 'B+': 3.5, 'B0':3.0, 
 					'C+': 2.5, 'C0': 2.0, 'D+':1.5, 'D0': 1.0, 'P': 5, 'F': 0}
-	key = subject_did.keys()
-	value = subject_did.values()
-	
-	
+ 
+	for key in subject_did.keys():
+		subject_did[key] = [subject_did[key][0], subject_did[key][1], score_for_grade[subject_did[key][2]], key]
 
+	value = list(subject_did.values())
+	value = sorted(value, key=lambda x: x[2])
+
+	return value
+	
 
 def GE_did_not():
     # 미이수 과목
@@ -304,7 +308,8 @@ def upload_file(request):
 	sorted_subject = [] # 성적순으로 정렬된것 만들어야함
   
 	GE_not = GE_did_not()
-
+	sorted_grade = sort_by_grade()
+	print(sorted_grade)
 	context = {'area_did': area_did, 
             'semester_grade': semester_grade,
             'semester_subject': semester_subject,
@@ -317,7 +322,8 @@ def upload_file(request):
             'ratio': ratio,
 			'major_grade': major_grade,
    			'sorted_subject': sorted_subject,
-			'GE_not': GE_not
+			'GE_not': GE_not,
+			'sorted_grade': sorted_grade # 이수한 과목 중 성적 낮은것부터 리스트로
       }
 
 	request.session["context"] = context
