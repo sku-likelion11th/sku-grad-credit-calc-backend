@@ -31,6 +31,10 @@ def GE_did_not():
 	global student, area_did
 	s_num = int(student['student_num'][2:4]) # 학번 필요한가? 최신(이름 바뀐) 과목 추천해주면 될듯
 	r_dict = GE
+	
+	if s_num >= 21:
+		r_dict['other_cnt'] = [0, 1]
+	
 	recommend = []	
  
 	for sub in area_did['교필']:
