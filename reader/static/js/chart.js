@@ -85,8 +85,8 @@ start3(); // 자동 실행
 const doughnutChart = document.querySelector("#doughnut-chart");
 
 const doughnutData = {
-    labels: ["A+ ~ A0", "B+ ~ B0", "C+ ~ C0", "F"],
-    data: [32, 35, 28, 5],
+    labels: ["A+ ~ A0", "B+ ~ B0", "C+ ~ C0", "D+ ~ D0", "F"],
+    data: [32, 35, 28, 5, 20],
 };
 
 new Chart(doughnutChart, {
