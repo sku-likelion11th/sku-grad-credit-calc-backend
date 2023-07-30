@@ -172,11 +172,14 @@ def upload_file(request):
 	ratio['교양'] = min(100.0, round(score_need['교양이수학점'] / score_need['교양요구학점'], 2)*100)
 	# 교필은 아직임
 	# print(f'ratio: \n{ratio}')
-	ratio['등급'] = defaultdict(float)
 
 	grade_key = {'A+': 'AP', 'A0': 'A', 'B+': 'BP', 'B0': 'B', 
 					'C+': 'CP', 'C0': 'C', 'D+': 'DP', 'D0': 'D', 'F': 'F'}
 	
+	ratio['등급'] = dict()
+	for key in grade_key.values():
+		ratio['등급'][key] = 0
+ 
 	re_sub = set()
 	cnt = 0
 	for sub in subject_did:
