@@ -1,64 +1,57 @@
 var i1 = 0;
 var width1 = 0;
 var id1;
+var elem1 = document.getElementById("progress-bar1");
+var max1 = elem1.getAttribute('score_did')/parseFloat(elem1.getAttribute('score_need'))*100;
+if(max1 > 100) max1 = 100
 
 var i2 = 0;
 var width2 = 0;
 var id2;
+var elem2 = document.getElementById("progress-bar2");
+var max2 = elem2.getAttribute('score_did')/parseFloat(elem2.getAttribute('score_need'))*100;
+if(max2 > 100) max2 = 100
 
 var i3 = 0;
 var width3 = 0;
 var id3;
+var elem3 = document.getElementById("progress-bar3");
+var max3 = elem3.getAttribute('score_did')/parseFloat(elem3.getAttribute('score_need'))*100;
+if(max3 > 100) max3 = 100
 
-var i4 = 0;
-var width4 = 0;
-var id4;
+
 
 function frame1() {
-    if (width1 >= 100) {
+    if (width1 >= max1) {
         clearInterval(id1);
         i1 = 0;
     } else {
         width1++;
-        var elem1 = document.getElementById("progress-bar1");
         elem1.style.width = width1 + "%";
         elem1.innerHTML = width1 + "%";
     }
 }
 
 function frame2() {
-    if (width2 >= 80) {
+    if (width2 >= max2) {
         clearInterval(id2);
         i2 = 0;
     } else {
         width2++;
-        var elem2 = document.getElementById("progress-bar2");
         elem2.style.width = width2 + "%";
         elem2.innerHTML = width2 + "%";
     }
 }
 
 function frame3() {
-    if (width3 >= 43) {
+
+    if (width3 >= max3) {
         clearInterval(id3);
         i3 = 0;
     } else {
         width3++;
-        var elem3 = document.getElementById("progress-bar3");
         elem3.style.width = width3 + "%";
         elem3.innerHTML = width3 + "%";
-    }
-}
-
-function frame4() {
-    if (width4 >= 67) {
-        clearInterval(id4);
-        i4 = 0;
-    } else {
-        width4++;
-        var elem4 = document.getElementById("progress-bar4");
-        elem4.style.width = width4 + "%";
-        elem4.innerHTML = width4 + "%";
     }
 }
 
@@ -83,17 +76,10 @@ function start3() {
     }
 }
 
-function start4() {
-    if (i4 == 0) {
-        i4 = 1;
-        id4 = setInterval(frame4, 10);
-    }
-}
 
 start1(); // 자동 실행
 start2(); // 자동 실행
 start3(); // 자동 실행
-start4(); // 자동 실행
 
 /*doughnutChar*/
 const doughnutChart = document.querySelector("#doughnut-chart");

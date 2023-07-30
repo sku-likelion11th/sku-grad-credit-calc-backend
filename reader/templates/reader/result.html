@@ -19,25 +19,25 @@
         <!-- Navbar -->
         <nav class="navbar navbar-expand-lg">
             <div class="container-fluid">
-                <a href="/" class="navbar-brand logo-sku-sku kanit-font text-decoration-none">SKU-SKU</a>
+                <a href="/reader" class="navbar-brand logo-sku-sku kanit-font text-decoration-none">SKU-SKU</a>
                 <span class="divider kanit-font px-lg-3">|</span>
-                <a href="/" class="navbar-brand pretendard-font service-name text-decoration-none">성결대학교 졸업학점계산기</a>
+                <a href="/reader" class="navbar-brand pretendard-font service-name text-decoration-none">성결대학교 졸업학점계산기</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
-                            <a href="/#calc" class="nav-link menu pretendard-font text-decoration-none px-2">계산기</a>
+                            <a href="/reader/#calc" class="nav-link menu pretendard-font text-decoration-none px-2">계산기</a>
                         </li>
                         <li class="nav-item">
-                            <a href="/#collabo" class="nav-link menu pretendard-font text-decoration-none px-2">콜라보</a>
+                            <a href="/reader#collabo" class="nav-link menu pretendard-font text-decoration-none px-2">콜라보</a>
                         </li>
                         <li class="nav-item">
-                            <a href="/#maker" class="nav-link menu pretendard-font text-decoration-none px-2">만든이들</a>
+                            <a href="/reader#maker" class="nav-link menu pretendard-font text-decoration-none px-2">만든이들</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#contact" class="nav-link menu pretendard-font text-decoration-none px-2">문의하기</a>
+                            <a href="/reader#contact" class="nav-link menu pretendard-font text-decoration-none px-2">문의하기</a>
                         </li>
                     </ul>
                 </div>
@@ -52,7 +52,7 @@
                     <div>
                         <span class="title">총 이수 학점</span>
                         <br />
-                        <span class="fs-4 fw-bold"> ??? / 123점</span>
+                        <span class="fs-4 fw-bold"> {{ score_did.교필|add:score_did.교선|add:score_did.전필|add:score_did.전선|add:score_did.일선|add:score_did.교직|add:score_did.복필|add:score_did.부전|add:score_did.복전 }} / 123점</span>
                     </div>
                     <hr />
                     <div>
@@ -66,36 +66,36 @@
                         <!-- 전공필수 -->
                         <div class="d-flex justify-content-between align-items-center credits">
                             <span class="fs-6">전공필수</span>
-                            <span class="score">{{ score_did.전필}} / {{ score_need.전필요구학점 }}점</span>
+                            <span class="score">{{ score_did.전필|floatformat:0 }} / {{ score_need.전필요구학점 }}점</span>
                             <div id="progress-container1" class="progress-container">
-                                <div id="progress-bar1" class="progress-bar"></div>
+                                <div id="progress-bar1" class="progress-bar" score_did="{{score_did.전필}}" score_need="{{score_need.전필요구학점}}"></div>
                             </div>
                         </div>
                         <!-- 전공선택 -->
                         <div class="d-flex justify-content-between align-items-center credits">
                             <span class="fs-6">전공선택</span>
-                            <span class="score">{{ score_did.전선}} / {{ score_need.전선요구학점 }}점</span>
+                            <span class="score">{{ score_did.전선|floatformat:0 }} / {{ score_need.전선요구학점 }}점</span>
                             <div id="progress-container2" class="progress-container">
-                                <div id="progress-bar2" class="progress-bar"></div>
+                                <div id="progress-bar2" class="progress-bar" score_did="{{score_did.전선}}" score_need="{{score_need.전선요구학점}}"></div>
                             </div>
                         </div>
                         <!-- 교양 -->
                         <div class="d-flex justify-content-between align-items-center credits">
                             <span class="fs-6 generaltext" style="width:55px">교양</span>
-                            <span class="score">{{ score_did.교양}} / {{ score_need.교양요구학점 }}점</span>
+                            <span class="score">{{ score_did.교필|add:score_did.교선 }} / {{ score_need.교양요구학점 }}점</span>
                             <div id="progress-container3" class="progress-container">
-                                <div id="progress-bar3" class="progress-bar"></div>
+                                <div id="progress-bar3" class="progress-bar" score_did="{{score_did.교필|add:score_did.교선}}" score_need="{{score_need.교양요구학점}}"></div>
                             </div>
                         </div>
                         <!-- 교필+교선 -->
                         <div class="d-flex justify-content-center align-items-center credits">
                             <i class="bi bi-arrow-return-right"></i>
-                            <span style="font-size: 13px"> 교필({{score_did.교필}}) + 교선({{score_did.교선}}) = {{score_did.교필}} +  {{score_did.교선}}</span>
+                            <span style="font-size: 13px"> 교필({{score_did.교필|floatformat:0}}) + 교선({{score_did.교선|floatformat:0}}) = {{ score_did.교필|add:score_did.교선 }}</span>
                         </div>
                         <!-- 일반선택 -->
                         <div class="d-flex justify-content-between align-items-center credits">
                             <span class="fs-6">일반선택</span>
-                            <span class="score">{{ score_did.일선 }}점</span>
+                            <span class="score">{{ score_did.일선|floatformat:0 }}점</span>
                             <div style="width:105px;"></div>
                         </div>
                     </div>
@@ -143,8 +143,8 @@
                 <div class="semesterGPA">
                     <div class="title">학기별 성적 평점</div>
                     <div class="totalGPA">
-                        <p class="totalscore ㄹ">전체 평점 <span>?.??</span> / 4.5</p>
-                        <p class="totalscore">전공 평점 <span>?.??</span> / 4.5</p>
+                        <p class="totalscore">전체 평점 <span>{{total_avg}}</span> / 4.5</p>
+                        <p class="totalscore">전공 평점 <span>{{major_grade.전공}}</span> / 4.5</p>
                     </div>
                     <div class="line-container">
                         <div class="line-chart-box">
@@ -394,7 +394,7 @@
     <script type='module' src="{% static 'js/unCourse.js' %}"></script>
     <script type='module' src="{% static 'js/recommended.js' %}"></script>
     <!-- <script type='module' src="./js/creditList.js"></script> -->
-    <script type='module' src="{% static 'js/chart.js' %}"></script>
+    <script src="{% static 'js/chart.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 

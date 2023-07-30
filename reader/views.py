@@ -197,7 +197,9 @@ def upload_file(request):
             'church': church,
             'ratio': ratio,
 			'major_grade': major_grade}
-	print(score_did)
+	for i in context:
+		print(i," ",context[i])
+		print()
 
 	return render(request, 'reader/result.html', context)
 
