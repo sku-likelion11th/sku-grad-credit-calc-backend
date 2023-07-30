@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from collections import defaultdict
 import openpyxl
 import json
+import copy
 from .data import GE, GE_list
 
 def test(request):
@@ -35,7 +36,8 @@ def GE_did_not():
     # 미이수 과목
 	global student, area_did
 	s_num = int(student['student_num'][2:4]) # 학번 필요한가? 최신(이름 바뀐) 과목 추천해주면 될듯
-	r_dict = GE
+	r_dict = copy.deepcopy(GE)
+	print(r_dict)
 	
 	if s_num >= 21:
 		r_dict['other_cnt'] = [0, 1]
@@ -319,9 +321,9 @@ def upload_file(request):
       }
 
 	request.session["context"] = context
-	for i in context:
-		print(i," ",context[i])
-		print()
+	# for i in context:
+	# 	print(i," ",context[i])
+	# 	print()
 
 	return redirect('/upload')
 
