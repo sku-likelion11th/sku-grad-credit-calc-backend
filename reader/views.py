@@ -1,16 +1,21 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from collections import defaultdict
 import openpyxl
+import json
 
 def index(request):
 	return render(request, 'reader/index.html')
 
+def upload_or_result(request):
+	if 'context' in request.session:
+		return render(request, 'reader/result.html', request.session['context'])
+	return render(request, 'reader/upload.html')
+
+def delete_file(request):
+	del request.session['context']
+	return redirect('/reader/upload')
 
 def upload_file(request):
-	if request.method == 'GET':
-		return render(request, 'reader/upload.html')
-	
-
 	file = request.FILES['uploaded_file']
 	wb = openpyxl.load_workbook(file)
 	sheet = wb.active
@@ -197,9 +202,13 @@ def upload_file(request):
             'church': church,
             'ratio': ratio,
 			'major_grade': major_grade}
-	for i in context:
-		print(i," ",context[i])
-		print()
+	
+	request.session["context"] = context
+	# for i in context:
+	# 	print(i," ",context[i])
+	# 	print()
+	print(request.session["context"])
 
-	return render(request, 'reader/result.html', context)
+	return redirect('/reader/upload')
+
 

@@ -147,7 +147,7 @@
           </button>
           <div><a href="./result.html">결과창 임시링크</a></div>
         </div> -->
-        <form id="uploadForm" action="" method="post" enctype="multipart/form-data">
+        <form id="uploadForm" action="/reader/upload_file" method="post" enctype="multipart/form-data">
           {% csrf_token %}
           <div class="uploadBtn text-center">
             <div><input id="input" type="file" name="uploaded_file" style="display: none;" /></div>
