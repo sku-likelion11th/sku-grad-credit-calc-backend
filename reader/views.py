@@ -32,7 +32,7 @@ def upload_file(request):
 	score_for_grade = {'A+': 4.5, 'A0': 4.0, 'B+': 3.5, 'B0':3.0, 
 					'C+': 2.5, 'C0': 2.0, 'D+':1.5, 'D0': 1.0}
 	info_category = ['major', 'minor', 'student_num', 'grade', 
-                  'name', 'score_need', 'socre_did']
+                  'name', 'score_need', 'score_did']
 	info_idx = ['A2', 'F2', 'J2', 'M2', 'O2', 'Y2', 'AB2']
 	year = ['2015', '2016', '2017', '2018', '2019', '2020', '2021', 
          '2022', '2023', '2024', '2025', '2026']
@@ -172,11 +172,14 @@ def upload_file(request):
 	ratio['교양'] = min(100.0, round(score_need['교양이수학점'] / score_need['교양요구학점'], 2)*100)
 	# 교필은 아직임
 	# print(f'ratio: \n{ratio}')
-	ratio['등급'] = defaultdict(float)
 
 	grade_key = {'A+': 'AP', 'A0': 'A', 'B+': 'BP', 'B0': 'B', 
 					'C+': 'CP', 'C0': 'C', 'D+': 'DP', 'D0': 'D', 'F': 'F'}
 	
+	ratio['등급'] = dict()
+	for key in grade_key.values():
+		ratio['등급'][key] = 0
+ 
 	re_sub = set()
 	cnt = 0
 	for sub in subject_did:
