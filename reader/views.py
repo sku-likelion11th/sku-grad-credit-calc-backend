@@ -184,7 +184,6 @@ def upload_file(request):
 			re_sub.add(sub)
 			re_sub.add(sub[:-4])
 			if subject_did[sub][-1] != 'P':
-				print(sub)
 				ratio['등급'][grade_key[subject_did[sub][-1]]] += 1
 				cnt += 1
 
@@ -195,11 +194,8 @@ def upload_file(request):
 				cnt += 1
 			
 	for key in ratio['등급'].keys():
-		if key == 'F':
-			print(ratio['등급'][key])
 		ratio['등급'][key] = round(ratio['등급'][key] / cnt * 100, 2)
-	print(ratio)
-	print(cnt)
+
 	major_grade = defaultdict(float)
 
 	for data in area_did['전필']:
