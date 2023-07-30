@@ -208,13 +208,17 @@ const lineChartData = new Chart(linetChart, {
         Responsive: false,
         maintainAspectRatio: false,
         scales: {
-            y: {
-              beginAtZero: true,
-              max:4.5, // max 값 조정
-              ticks:{ // y축 줄당 표시 값
-                stepSize: 0.5
+            yAxes: [{
+              ticks: {
+                beginAtZero: true,
+                fontSize: 14,
+                suggestedMin: 0,
+                suggestedMax: 4.5
+              },
+              afterFit: function(scaleInstance) {
+                scaleInstance.paddingTop = 40; // 위쪽 패딩, 그래프 잘림 수정
               }
-            }
-        }
+            }]
+          }
     },
 });
