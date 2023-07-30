@@ -23,9 +23,10 @@ var i4 = 0;
 var width4 = 0;
 var id4;
 var elem4 = document.getElementById("progress-bar4");
-var max4 = elem4.getAttribute('score_did')/parseFloat(elem4.getAttribute('score_need'))*100;
-if(max4 > 100) max4 = 100
-
+if(elem4 != null){
+    var max4 = elem4.getAttribute('score_did')/parseFloat(elem4.getAttribute('score_need'))*100;
+    if(max4 > 100) max4 = 100
+}
 
 function frame1() {
     if (width1 >= max1) {
