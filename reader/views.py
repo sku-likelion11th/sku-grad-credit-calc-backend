@@ -60,7 +60,7 @@ def GE_did_not():
 					pass
  
 	for key in r_dict['for_loop'].keys():
-		r_dict['for_loop'][key]	= r_dict[key][1] - r_dict[key][0] # 이수해야하는 만큼 만족하지 못하면 양수 들어감
+		r_dict['for_loop'][key]	= min(r_dict[key][1] - r_dict[key][0], 0) # 이수해야하는 만큼 만족하지 못하면 양수 들어감
 	
 	for key in r_dict['one_point']:
 		for i in range(r_dict['for_loop'][key]):
@@ -312,9 +312,9 @@ def upload_file(request):
       }
 	
 	request.session["context"] = context
-	# for i in context:
-	# 	print(i," ",context[i])
-	# 	print()
+	for i in context:
+		print(i," ",context[i])
+		print()
 
 	return redirect('/upload')
 
