@@ -1,0 +1,235 @@
+/* 메인화면 CSS */
+.main {
+    background-image: url('../source/img/main_section_background.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    height: 900px;
+}
+.main-text {
+    font-size: 70px;
+    font-weight: 700;
+    line-height: 120%;
+}
+.main-calc-btn {
+    font-size: 18px;
+    border-radius: 20px;
+    background: #059BDE;
+    border: none;
+}
+.main-maker-btn {
+    font-size: 18px;
+    border-radius: 20px;
+    background: none;
+    border: 1px solid #ffffff;
+}
+.main-content {
+    padding: 150px 0;
+}
+.section-name {
+    font-family: 'Pretendard';
+    font-size: 30px;
+    font-weight: 700;
+    color: #069BDF;
+    padding-top: 100px;
+    padding-bottom: 50px;
+}
+.section-text {
+    font-family: 'Pretendard';
+    font-weight: 700;
+    font-size: 50px;
+    line-height: 120%;
+}
+.preview-img {
+    margin-top: 200px;
+    border-radius: 30px;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px;
+}
+.collabo-section {
+    background-color: #F9FAFB;
+}
+.collabo-team {
+    width: 300px;
+    height: auto;
+}
+.profile-card {
+    /* border: 2px solid #000000; */
+    border-radius: 30px;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px;
+}
+.profile-design-1 {
+    background: linear-gradient(-45deg, #FCE38A, #F38181, #F54EA2, #FF7676);
+	background-size: 400% 400%;
+	animation: gradient 3s ease infinite;
+}
+.profile-design-2 {
+    background: linear-gradient(45deg, #17EAD9, #6078EA, #622774, #C53364);
+	background-size: 400% 400%;
+	animation: gradient 3s ease infinite;
+}
+.profile-design-3 {
+    background: linear-gradient(90deg, #7117EA, #EA6060, #42E695, #3BB2B8);
+	background-size: 400% 400%;
+	animation: gradient 3s ease infinite;
+}
+.profile-design-4 {
+    background: linear-gradient(-80deg, #F02FC2, #6094EA, #65799B, #5E2563);
+	background-size: 400% 400%;
+	animation: gradient 3s ease infinite;
+}
+.profile-design-5 {
+    background: linear-gradient(30deg, #184E68, #57CA85, #5B247A, #1BCEDF);
+	background-size: 400% 400%;
+	animation: gradient 3s ease infinite;
+}
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+.profile-card > img {
+    width: auto;
+    height: 130px;
+}
+.maker-name{
+    font-size: 22px;
+    font-weight: 600;
+}
+.maker-department {
+    font-size: 13px;
+    font-weight: 600;
+}
+.maker-position {
+    font-size: 18px;
+    font-weight: 600;
+}
+.maker-role {
+    font-size: 13px;
+    font-weight: 600;
+}
+/* 메인화면 navbar에서만 적용 */
+.navbar-toggler {
+    border: 2px solid #ffffff;
+}
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(255, 255, 255, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+.lottie-p {
+    width: 400px;
+    height: 400px;
+}
+
+/* Main 화면 모바일 반응형 CSS */
+@media (max-width: 575.98px) {
+    .main-text {
+        font-size: 45px;
+        font-weight: 700;
+        line-height: 120%;
+        text-align: center;
+    }
+    .main-sub-text{
+        font-size: 10px;
+        text-align: center;
+    }
+    .main-btn-group{
+        text-align: center;
+    }
+    .main {
+        background-image: url('../source/img/main_section_background.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: 20% bottom;
+        height: 690px;
+    }
+    .section-name {
+        font-family: 'Pretendard';
+        font-size: 25px;
+        font-weight: 700;
+        color: #069BDF;
+        padding-top: 60px;
+        padding-bottom: 30px;
+    }
+    .section-text {
+        font-family: 'Pretendard';
+        font-weight: 700;
+        font-size: 40px;
+        line-height: 120%;
+    }
+    .preview-img {
+        margin-top: 30px;
+    }
+    .collabo-team {
+        width: 150px;
+        height: auto;
+    }
+    .lottie-p{
+        width: 200px;
+        height: 200px;
+    }
+}
+@media (min-width: 576px) and (max-width: 767.98px) {
+    .main {
+        background-image: url('../source/img/main_section_background.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: 20% bottom;
+        height: 900px;
+    }
+    .collabo-team {
+        width: 180px;
+        height: auto;
+    }
+    .lottie-p{
+        width: 250px;
+        height: 250px;
+    }
+}
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .main {
+        background-image: url('../source/img/main_section_background.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: 20% bottom;
+        height: 1000px;
+    }
+    .collabo-team {
+        width: 180px;
+        height: auto;
+    }
+    .lottie-p{
+        width: 250px;
+        height: 250px;
+    }
+    .section-name {
+        font-family: 'Pretendard';
+        font-size: 20px;
+        font-weight: 700;
+        color: #069BDF;
+        padding-top: 60px;
+        padding-bottom: 30px;
+    }
+    .section-text {
+        font-family: 'Pretendard';
+        font-weight: 700;
+        font-size: 35px;
+        line-height: 120%;
+    }
+    .preview-img {
+        margin-top: 120px;
+    }
+}
+@media (min-width: 992px) and (max-width: 1199.98px) {
+    .main {
+        background-image: url('../source/img/main_section_background.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: 20% bottom;
+        height: 900px;
+    }
+}

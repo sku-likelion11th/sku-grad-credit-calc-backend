@@ -1,13 +1,240 @@
-<h1>Upload a file</h1>
-{% if message %}
-  <p>{{ message }}</p>
-{% endif %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'source/boot-5.3.0/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/upload.css' %}" />
+    <title>졸업학점계산기 파일업로드</title>
+  </head>
+  <body>
+    <div class="container">
+      <!-- navbar -->
+      <nav class="navbar navbar-expand-lg">
+        <div class="container">
+          <a
+            href="/reader"
+            class="navbar-brand logo-sku-sku kanit-font text-decoration-none text-black"
+            >SKU-SKU</a
+          >
+          <span class="divider kanit-font text-black px-lg-3">|</span>
+          <a
+            href="/reader"
+            class="navbar-brand pretendard-font service-name text-decoration-none text-black"
+            >성결대학교 졸업학점계산기</a
+          >
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                <a
+                  href="/reader/#calc"
+                  class="nav-link menu pretendard-font text-decoration-none text-black px-2"
+                  >계산기</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  href="/reader/#collabo"
+                  class="nav-link menu pretendard-font text-decoration-none text-black px-2"
+                  >콜라보</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  href="/reader/#maker"
+                  class="nav-link menu pretendard-font text-decoration-none text-black px-2"
+                  >만든이들</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  href="/reader#contact"
+                  class="nav-link menu pretendard-font text-decoration-none text-black px-2"
+                  >문의하기</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </div>
 
+    <!-- howUse -->
+    <section class="howUse pretendard-font">
+      <div class="container">
+        <div class="howuse-text">학점 계산기,<br />어떻게 사용할까요?</div>
 
-{{ major_grade }}
-<form method="post" enctype="multipart/form-data">
-  {% csrf_token %}
-  <label for="file">Select a file:</label>
-  <input type="file" name="file" id="file">
-  <input type="submit" value="Upload">
-</form>
+        <div class="row">
+          <div class="col-6 col-lg-3">
+            <div class="uploadBox text-center">
+              <div class="step">
+                <p>STEP 1.</p>
+                <div class="img_step1">
+                  <img src="{% static 'source/img/upload_img/step1.png' %}" />
+                </div>
+              </div>
+              <hr class="pb-4" />
+              <p class="step-sub-title">SKY 시스템 접속하기</p>
+            </div>
+          </div>
+
+          <div class="col-6 col-lg-3">
+            <div class="uploadBox text-center">
+              <div class="step">
+                <p>STEP 2.</p>
+                <div class="img_step2">
+                  <img src="{% static 'source/img/upload_img/step2.png' %}" />
+                </div>
+              </div>
+              <hr class="pb-3" />
+              <p class="step-sub-title">
+                성적 정보 클릭 후 <br />개인별 학기 성적조회
+              </p>
+            </div>
+          </div>
+
+          <div class="col-6 col-lg-3">
+            <div class="uploadBox text-center">
+              <div class="step">
+                <p>STEP 3.</p>
+                <div class="img_step3">
+                  <img src="{% static 'source/img/upload_img/step3.png' %}" />
+                </div>
+              </div>
+              <hr class="pb-3" />
+              <p class="step-sub-title">
+                포털비밀번호 입력 후<br />이수구분별성적조회 클릭
+              </p>
+            </div>
+          </div>
+
+          <div class="col-6 col-lg-3">
+            <div class="uploadBox text-center">
+              <div class="step">
+                <p>STEP 4.</p>
+                <div class="img_step4">
+                  <img src="{% static 'source/img/upload_img/step4.png' %}" />
+                </div>
+              </div>
+              <hr class="pb-4" />
+              <p class="step-sub-title">엑셀 파일 다운로드</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class="uploadBtn text-center">
+          <div><input id="input" type="file" /></div>
+          <button id="uploadBtn" onclick="onClickUpload();">
+            <div class="btn-text pretendard-font">
+              엑셀 파일 업로드
+              <div class="uploadIcon">
+                <img src="./source/img/upload_img/upload-arrow.png" />
+              </div>
+            </div>
+          </button>
+          <div><a href="./result.html">결과창 임시링크</a></div>
+        </div> -->
+        <form id="uploadForm" action="/reader/upload_file" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="uploadBtn text-center">
+            <div><input id="input" type="file" name="uploaded_file" style="display: none;" /></div>
+            <button id="uploadBtn" onclick="onClickUpload();">
+              <div class="btn-text pretendard-font">
+                엑셀 파일 업로드
+                <div class="uploadIcon">
+                  <img src="{% static 'source/img/upload_img/upload-arrow.png'%}" />
+                </div>
+              </div>
+            </button>
+          </div>
+        </form>
+        
+      </div>
+    </section>
+    
+  
+
+    <!-- notice -->
+    <section class="notice">
+      <div class="container pretendard-font">
+        <div class="notice-text">유의사항</div>
+        <ul class="notice-sub-text mt-2">
+          <li>성적 데이터는 서버에 저장되지 않으니 걱정없이 사용하세요.</li>
+          <li>
+            데이터 삭제를 진행하거나 분석결과 창을 닫으면 분석 내용이
+            사라집니다.
+          </li>
+          <li>
+            본 서비스는 성결대학교 재학생, 휴학생 관계없이 모두 사용이
+            가능합니다.
+          </li>
+          <li>
+            본 서비스는 현재 산업경영공학과 학생들에게만 제공 중인 서비스입니다.
+          </li>
+          <li>
+            현재 산업경영공학과 전공심화 학생들에게만 가장 정확한 정보가
+            제공되고 있습니다.
+          </li>
+          <li>
+            현재 서비스는 베타버전으로, 분석결과가 정확하지 않을 수 있으니
+            이용에 참고해주세요.
+          </li>
+        </ul>
+      </div>
+    </section>
+    <!-- 문의하기 Footer -->
+    <footer class="contact pb-5" id="contact">
+      <div class="container">
+        <div class="contact-title pretendard-font py-4 text-white">
+          문의하기
+        </div>
+        <div class="contact-sub-text text-center text-white pretendard-font">
+          성결대학교 졸업학점 계산기는 성결대 멋쟁이사자처럼 11기가
+          제작하였습니다.<br />
+          서비스 및 동아리 관련 문의는 아래 채널들을 통해 해주시길 바랍니다.
+        </div>
+        <div class="d-flex justify-content-center py-5">
+          <a href="mailto:sku@likelion.org"
+            ><img
+              class="mx-2 contact-icon img-fluid"
+              src="{% static 'source/img/email.png' %}"
+              alt="Email"
+          /></a>
+          <a href="https://pf.kakao.com/_vxixlaxj" target="_blank"
+            ><img
+              class="mx-2 contact-icon img-fluid"
+              src="{% static 'source/img/kakao.png' %}"
+              alt="kakao"
+          /></a>
+          <a href="https://www.instagram.com/likelion_sku/" target="_blank"
+            ><img
+              class="mx-2 contact-icon img-fluid"
+              src="{% static 'source/img/instagram.png' %}"
+              alt="instagram"
+          /></a>
+        </div>
+        <div class="text-white text-center pretendard-font fs-6 fw-medium">
+          sku@likelion.org
+        </div>
+        <div class="text-center pretendard-font copyright">
+          sku-sku.com © 2023
+        </div>
+      </div>
+    </footer>
+    <script src="{% static 'source/boot-5.3.0/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/upload.js' %}"></script>
+  </body>
+</html>
