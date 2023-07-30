@@ -26,7 +26,8 @@ def sort_by_grade():
 	
 
 
-def GE_recommend():
+def GE_did_not():
+    # 미이수 과목
 	global student, area_did
 	s_num = int(student['student_num'][2:4]) # 학번 필요한가? 최신(이름 바뀐) 과목 추천해주면 될듯
 	r_dict = GE
@@ -288,9 +289,8 @@ def upload_file(request):
   
 	sorted_subject = [] # 성적순으로 정렬된것 만들어야함
   
-	recommend_GE = GE_recommend()
+	GE_not = GE_did_not()
 
-	print(f'recommend_GE: \n {recommend_GE}')
 	context = {'area_did': area_did, 
             'semester_grade': semester_grade,
             'semester_subject': semester_subject,
@@ -303,7 +303,7 @@ def upload_file(request):
             'ratio': ratio,
 			'major_grade': major_grade,
    			'sorted_subject': sorted_subject,
-			'recommend_GE': recommend_GE
+			'GE_not': GE_not
 
       }
 	
