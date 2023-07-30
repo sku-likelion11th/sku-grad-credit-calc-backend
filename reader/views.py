@@ -1,8 +1,13 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from collections import defaultdict
 import openpyxl
 import json
 from .data import GE, GE_list
+
+def test(request):
+	context = request.session['context']
+	return JsonResponse(context['GE_not'], safe=False)
 
 def index(request):
 	return render(request, 'reader/index.html')
@@ -35,17 +40,18 @@ def GE_did_not():
 	if s_num >= 21:
 		r_dict['other_cnt'] = [0, 1]
 	
-	recommend = []	
+	recommend = []
  
 	for sub in area_did['교필']:
 		if sub[2] != 'F':
 			if sub[0] in r_dict['English']:
 				r_dict['English'].remove(sub[0])
 				r_dict['English_cnt'][0] += 1
+
 			elif sub[0][:-4] in r_dict['English']:
 				r_dict['English'].remove(sub[0][:-4])
 				r_dict['English_cnt'][0] += 1
-    
+
 			elif sub[0] in r_dict['other']:
 				r_dict['other'].remove(sub[0])
 				r_dict['other_cnt'][0] += 1
@@ -58,10 +64,9 @@ def GE_did_not():
 						r_dict[sub[0]][0] += 1
 				except:
 					pass
- 
 	for key in r_dict['for_loop'].keys():
-		r_dict['for_loop'][key]	= min(r_dict[key][1] - r_dict[key][0], 0) # 이수해야하는 만큼 만족하지 못하면 양수 들어감
-	
+		r_dict['for_loop'][key]	= max(r_dict[key][1] - r_dict[key][0], 0) # 이수해야하는 만큼 만족하지 못하면 양수 들어감
+
 	for key in r_dict['one_point']:
 		for i in range(r_dict['for_loop'][key]):
 			recommend.append(key) # 1점짜리 추천
@@ -72,19 +77,22 @@ def GE_did_not():
 	English = English[::-1] # 거꾸로 돌림
   
 	other = []
+	if '대학생활과진로' in r_dict['other']:
+		r_dict['for_loop']['other_cnt'] = 1
+	else:
+		r_dict['for_loop']['other_cnt'] = 0
 	for sub in r_dict['other']:
 		other.append(sub) # 상동
+
 	other = other[::-1] # 상동
-  
+
 	for i in range(r_dict['for_loop']['English_cnt']):
 		recommend.append(English[i])
-  
 	for i in range(r_dict['for_loop']['other_cnt']):
 		recommend.append(other[i])
-	
 	recommend_GE = []
 	for sub in recommend:
-		recommend_GE.append(GE_list[sub])	
+		recommend_GE.append(GE_list[sub])
 
 	return recommend_GE
 
@@ -308,9 +316,8 @@ def upload_file(request):
 			'major_grade': major_grade,
    			'sorted_subject': sorted_subject,
 			'GE_not': GE_not
-
       }
-	
+
 	request.session["context"] = context
 	for i in context:
 		print(i," ",context[i])

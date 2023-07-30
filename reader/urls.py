@@ -5,5 +5,6 @@ urlpatterns = [
 	path('upload/', views.upload_or_result),
     path('upload_file',views.upload_file),
     path('delete_file', views.delete_file),
+    path('test/', views.test),
     path('',views.index),
 ]
