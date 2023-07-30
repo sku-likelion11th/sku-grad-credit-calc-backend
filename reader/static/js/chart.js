@@ -205,5 +205,16 @@ const lineChartData = new Chart(linetChart, {
                 display: false,
             },
         },
+        Responsive: false,
+        maintainAspectRatio: false,
+        scales: {
+            y: {
+              beginAtZero: true,
+              max:4.5, // max 값 조정
+              ticks:{ // y축 줄당 표시 값
+                stepSize: 0.5
+              }
+            }
+        }
     },
 });

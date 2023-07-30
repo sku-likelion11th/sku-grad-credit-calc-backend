@@ -281,22 +281,16 @@
         /* Upload 화면 모바일 반응형 CSS */
         
         @media (max-width: 1800px) {
-            /* 차트 */
             .line-chart-box {
                 margin: 0 auto;
-                width: 530px;
-            }
-            #line-chart {
-                width: 530px;
+                width: 450px;
+                height: 200px;
             }
         }
         
-        @media (min-width: 768px) and (max-width: 1280px) {
+        @media (max-width: 1280px) {
             .line-chart-box {
                 margin: 0 auto;
-                width: 360px;
-            }
-            #line-chart {
                 width: 360px;
             }
             .credits {
@@ -349,12 +343,9 @@
             }
         }
         
-        @media (min-width: 451px) and (max-width: 767.98px) {
+        @media (max-width: 767.98px) {
             .line-chart-box {
                 margin: 0 auto;
-                width: 350px;
-            }
-            #line-chart {
                 width: 350px;
             }
             .uncompleteBtn button {
