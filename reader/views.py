@@ -109,6 +109,8 @@ def GE_did_not():
 
 	return recommend_GE
 
+
+
 def Major_sub():
 	global student, area_did
 	Major_sub_not = copy.deepcopy(subject_data.IME_list)
@@ -144,6 +146,27 @@ def Major_req(Major_sub_not):
 
 	return Major_req_not
 
+def area_change(Major_req_did, Major_sub_did):
+	global student
+	s_num = int(student['student_num'][0:4])#학번찾음
+	Major_req = copy.deepcopy(subject_data.IME_REQ[s_num])
+	need_change = []
+	sub_did = set(item[0] for item in Major_sub_did)
+	req_did = set(item[0] for item in Major_req_did)
+	
+	if(student['major']!='산업경영공학과'):
+		return need_change
+	
+	for did in Major_req:
+		if(did in sub_did):
+			need_change.append({"before":did+"(전선)", "after":did+"(전필)"})
+		if(did in req_did):
+			req_did.remove(did)
+
+	for did in req_did:
+		need_change.append({"before":did+"(전필)", "after":did+"(전선)"})
+
+	return need_change
 
 
 
@@ -362,6 +385,7 @@ def upload_file(request):
 			Major_sub_not = Major_sub()
 			Major_req_not = list(Major_req(Major_sub_not).values())
 			Major_sub_not = list(Major_sub_not.values())
+			need_change = area_change(area_did['전필'], area_did['전선'])
 
 			context = {'area_did': area_did, 
 					'semester_grade': semester_grade,
@@ -378,7 +402,8 @@ def upload_file(request):
 					'GE_not': GE_not,
 					'Major_sub_not' : Major_sub_not,
 					'Major_req_not' : Major_req_not,
-					'sorted_grade': sorted_grade # 이수한 과목 중 성적 낮은것부터 리스트로
+					'sorted_grade': sorted_grade, # 이수한 과목 중 성적 낮은것부터 리스트로
+					'need_change': need_change
 			}
 			request.session["context"] = context
 

@@ -13,7 +13,7 @@ GE = {'English': ['Lab(1)', 'Lab(2)', '영어커뮤니케이션(1)', '영어커�
 
 #최신화데이터
 GE_list = {'기초글쓰기': {'subject': '기초글쓰기', 'score': 2, 'category': '교필'},
-           '사회봉사': {'subject': '사회봉사', 'score':2, 'category':'교필'},
+           '사회봉사': {'subject': '사회봉사', 'score':1, 'category':'교필'},
            '영어커뮤니케이션(1)': {'subject': '영어커뮤니케이션(1)', 'score':2, 'category':'교필'},
            '영어커뮤니케이션(2)': {'subject': '영어커뮤니케이션(2)', 'score':2, 'category':'교필'},
            '현대인과성경': {'subject':'현대인과성경', 'score':3, 'category':'교필'},
