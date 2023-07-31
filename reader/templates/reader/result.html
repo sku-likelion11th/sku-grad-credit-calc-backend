@@ -169,6 +169,9 @@
                         {% for change in need_change %}
                         <li>{{change.before}} <i class="bi bi-caret-right-fill"></i> {{change.after}}</li>
                         {% endfor %}
+                        {% if student.major != '산업경영공학과' %}
+                            <li>* 산업경영공학과만 지원합니다.</li>
+                        {% endif%}
                     </ul>
                 </div>
             </section>
