@@ -134,8 +134,15 @@ def GE_did_not():
 	for sub in recommend:
 		recommend_GE.append(subject_data.GE_list[sub])
 
+	if(len(recommend_GE)==0):
+		recommend_GE.append({'subject': '<p class="text-danger">미수강한 교필이 없습니다.</p>', 'score': '', 'category': ''})
 	return recommend_GE
 
+def remove_jaesu(text):
+    if text.endswith("(재수)"):
+        return text[:-4]
+    else:
+        return text
 def re_list():
 	global subject_did
 	list_key = []
@@ -147,21 +154,33 @@ def re_list():
 
 def Major_sub():
 	global student, area_did
+
+	if(student['major']!='산업경영공학과'):
+		Major_sub_not = {}
+		Major_sub_not["none"] = {'subject': '<p class="text-danger">산업경영공학과만 지원합니다.</p>', 'score': '', 'category': ''}
+		return Major_sub_not
+	
 	Major_sub_not = copy.deepcopy(subject_data.IME_list)
 	notF = set()
 
 	for i in area_did['전필']:
+		tmp = remove_jaesu(i[0])
 		if i[2]!='F':
-			notF.add(copy.deepcopy(i[0]))
+			notF.add(copy.deepcopy(tmp))
 	for i in area_did['전선']:
+		tmp = remove_jaesu(i[0])
 		if i[2]!='F':
-			notF.add(copy.deepcopy(i[0]))
+			notF.add(copy.deepcopy(tmp))
 
 	for sub in notF:
 		while(sub in subject_data.IME_change):
 			sub = subject_data.IME_change[sub]
 		if(sub in Major_sub_not):
 			del Major_sub_not[sub]
+
+	if(len(Major_sub_not)==0):
+		Major_sub_not["none"] = {'subject': '<p class="text-danger">미수강한 전선이 없습니다.</p>', 'score': '', 'category': ''}
+	
 	return Major_sub_not
 
 def Major_req(Major_sub_not):
@@ -170,13 +189,19 @@ def Major_req(Major_sub_not):
 	
 	Major_req_not = {}
 	Major_req = copy.deepcopy(subject_data.IME_REQ[s_num])
-
+	if(student['major']!='산업경영공학과'):
+		Major_req_not["none"] = {'subject': '<p class="text-danger">산업경영공학과만 지원합니다.</p>', 'score': '', 'category': ''}
+		return Major_req_not
+	
 	for sub in Major_req:
 		while(sub in subject_data.IME_change):
 			sub = subject_data.IME_change[sub]
 		if(sub in Major_sub_not):
 			Major_req_not[sub] = Major_sub_not[sub]
 			del Major_sub_not[sub]
+
+	if(len(Major_req_not)==0):
+		Major_req_not["none"] = {'subject': '<p class="text-danger">미수강한 전필이 없습니다.</p>', 'score': '', 'category': ''}
 
 	return Major_req_not
 
@@ -202,6 +227,12 @@ def area_change(Major_req_did, Major_sub_did):
 
 	return need_change
 
+def grad_cond():
+	global student
+	s_num = int(student['student_num'][0:4])
+	major = student['major']
+	
+	return subject_data.IME_grad[s_num]
 
 
 
@@ -426,6 +457,7 @@ def upload_file(request):
 			sorted_subject = [] # 성적순으로 정렬된것 만들어야함
 		
 			GE_not = GE_did_not()
+			#sorted_grade = sort_by_grade()
 			Major_sub_not = Major_sub()
 			Major_req_not = list(Major_req(Major_sub_not).values())
 			Major_sub_not = list(Major_sub_not.values())
@@ -448,15 +480,17 @@ def upload_file(request):
 					'GE_not': GE_not,
 					'Major_sub_not' : Major_sub_not,
 					'Major_req_not' : Major_req_not,
+					'grad' : grad_cond(),
 					'sorted_grade': sorted_grade, # 이수한 과목 중 성적 낮은것부터 리스트로
 					'need_change': need_change,
 					'no_sub': no_sub,
 					're_list_key': re_list_key,
 			}
 			request.session["context"] = context
-	# for i in context:
-	# 	print(i," ",context[i])
-	# 	print()
+
+	for i in context:
+		print(i," ",context[i])
+		print()
 
 	return redirect('/upload')
 
