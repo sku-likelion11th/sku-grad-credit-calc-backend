@@ -44,10 +44,12 @@ def sort_by_grade():
     json_parse = dict()
     for key in value:
         # key[-1] => 과목명
+        if key[-2] > 3:
+            break
         json_parse[key[-1]] = {'subject': key[-1], 'score': int(subject_did[key[-1]][1]), 'category': subject_did[key[-1]][0]}
 
-    json_list = [json_parse]
-
+    json_list = list(json_parse.values())
+    
     return json_list
 
 def GE_did_not():
@@ -413,9 +415,9 @@ def upload_file(request):
 			}
 			request.session["context"] = context
 
-	for i in context:
-		print(i," ",context[i])
-		print()
+	# for i in context:
+	# 	print(i," ",context[i])
+	# 	print()
 
 	return redirect('/upload')
 
