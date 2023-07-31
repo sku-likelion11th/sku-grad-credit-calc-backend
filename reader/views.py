@@ -195,6 +195,12 @@ def area_change(Major_req_did, Major_sub_did):
 
 	return need_change
 
+def grad_cond():
+	global student
+	s_num = int(student['student_num'][0:4])
+	major = student['major']
+	
+	return subject_data.IME_grad[s_num]
 
 
 
@@ -430,7 +436,8 @@ def upload_file(request):
 					'Major_sub_not' : Major_sub_not,
 					'Major_req_not' : Major_req_not,
 					'sorted_grade': sorted_grade, # 이수한 과목 중 성적 낮은것부터 리스트로
-					'need_change': need_change
+					'need_change': need_change,
+					'grad' : grad_cond(),
 			}
 			request.session["context"] = context
 
