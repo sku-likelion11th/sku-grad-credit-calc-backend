@@ -216,9 +216,10 @@ def area_change(Major_req_did, Major_sub_did):
 	s_num = int(student['student_num'][0:4])#학번찾음
 	Major_req = copy.deepcopy(subject_data.IME_REQ[s_num])
 	need_change = []
-	sub_did = set(item[0] for item in Major_sub_did)
-	req_did = set(item[0] for item in Major_req_did)
+	sub_did = set(remove_jaesu(item[0]) for item in Major_sub_did)
+	req_did = set(remove_jaesu(item[0]) for item in Major_req_did)
 	
+
 	if(student['major']!='산업경영공학과'):
 		return need_change
 	
