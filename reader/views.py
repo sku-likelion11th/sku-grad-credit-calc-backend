@@ -115,12 +115,20 @@ def GE_did_not():
 	for sub in recommend:
 		recommend_GE.append(subject_data.GE_list[sub])
 
+	if(len(recommend_GE)==0):
+		recommend_GE.append({'subject': '<p class="text-danger">미수강한 교필이 없습니다.</p>', 'score': '', 'category': ''})
 	return recommend_GE
 
 
 
 def Major_sub():
 	global student, area_did
+
+	if(student['major']!='산업경영공학과'):
+		Major_sub_not = {}
+		Major_sub_not["none"] = {'subject': '<p class="text-danger">산업경영공학과만 지원합니다.</p>', 'score': '', 'category': ''}
+		return Major_sub_not
+	
 	Major_sub_not = copy.deepcopy(subject_data.IME_list)
 	notF = set()
 
@@ -136,21 +144,32 @@ def Major_sub():
 			sub = subject_data.IME_change[sub]
 		if(sub in Major_sub_not):
 			del Major_sub_not[sub]
+
+	if(len(Major_sub_not)==0):
+		Major_sub_not["none"] = {'subject': '<p class="text-danger">미수강한 전선이 없습니다.</p>', 'score': '', 'category': ''}
+	
 	return Major_sub_not
 
 def Major_req(Major_sub_not):
 	global student
+
 	s_num = int(student['student_num'][0:4])#학번찾음
 	
 	Major_req_not = {}
 	Major_req = copy.deepcopy(subject_data.IME_REQ[s_num])
-
+	if(student['major']!='산업경영공학과'):
+		Major_req_not["none"] = {'subject': '<p class="text-danger">산업경영공학과만 지원합니다.</p>', 'score': '', 'category': ''}
+		return Major_req_not
+	
 	for sub in Major_req:
 		while(sub in subject_data.IME_change):
 			sub = subject_data.IME_change[sub]
 		if(sub in Major_sub_not):
 			Major_req_not[sub] = Major_sub_not[sub]
 			del Major_sub_not[sub]
+
+	if(len(Major_req_not)==0):
+		Major_req_not["none"] = {'subject': '<p class="text-danger">미수강한 전필이 없습니다.</p>', 'score': '', 'category': ''}
 
 	return Major_req_not
 
@@ -415,9 +434,9 @@ def upload_file(request):
 			}
 			request.session["context"] = context
 
-	# for i in context:
-	# 	print(i," ",context[i])
-	# 	print()
+	for i in context:
+		print(i," ",context[i])
+		print()
 
 	return redirect('/upload')
 
