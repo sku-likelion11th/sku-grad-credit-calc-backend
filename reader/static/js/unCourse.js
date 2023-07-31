@@ -239,6 +239,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </tr>
         `).join('');
 
+
         // 페이지네이션 생성
         createPagination(dataArr.length);
     }
@@ -247,6 +248,26 @@ document.addEventListener('DOMContentLoaded', function() {
         paginationContainer.innerHTML = '';
 
         const totalPages = Math.ceil(totalItems / itemsPerPage);
+        // 현재 페이지가 4 이상일 때만 화살표로 이동할 수 있도록 변수 설정
+        const showArrows = totalPages >= 4
+
+        // 왼쪽 화살표 생성 및 이벤트 핸들러 설정
+        if (showArrows) {
+            const leftArrow = document.createElement('span');
+            leftArrow.textContent = '◀';
+            leftArrow.classList.add('page');
+            leftArrow.classList.add('arrow');
+            leftArrow.addEventListener('click', function() {
+                currentPage -= 1;
+                renderData(getCurrentDataArray(), currentPage);
+                createPagination(totalItems);
+            });
+            paginationContainer.appendChild(leftArrow);
+
+            if (currentPage == 1) {
+                leftArrow.style.display = 'none'
+            }
+        }
 
         for (let i = 1; i <= totalPages; i++) {
             const page = document.createElement('span');
@@ -263,6 +284,38 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             paginationContainer.appendChild(page);
+            console.log(totalPages)
+
+            if (showArrows) {
+                // 현재 페이지가 4 이하일 때는 항상 1, 2, 3, 4만 표시
+                if (currentPage < 4 && i <= 4) {
+                    page.style.display = 'inline';
+                } else if (showArrows && i >= currentPage - 2 && i <= currentPage + 1) {
+                    page.style.display = 'inline';
+                } else if (currentPage > totalPages - 2 && i > totalPages - 2) {
+                    page.style.display = 'inline';
+                } else {
+                    page.style.display = 'none';
+                }
+            }
+        }
+
+        // 오른쪽 화살표 생성 및 이벤트 핸들러 설정
+        if (showArrows) {
+            if (totalPages === currentPage) { // 현재 페이지가 마지막 페이지면
+                rightArrow.style.display = 'none' // 오른쪽 화살표 제거
+
+            }
+            const rightArrow = document.createElement('span');
+            rightArrow.textContent = '▶';
+            rightArrow.classList.add('page');
+            rightArrow.classList.add('arrow');
+            rightArrow.addEventListener('click', function() {
+                currentPage += 1;
+                renderData(getCurrentDataArray(), currentPage);
+                createPagination(totalItems);
+            });
+            paginationContainer.appendChild(rightArrow);
         }
     }
 

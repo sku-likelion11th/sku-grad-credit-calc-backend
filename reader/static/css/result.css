@@ -175,7 +175,8 @@
         .paginationRe {
             position: absolute;
             bottom: 20px;
-            left: 47%;
+            left: 0;
+            right: 0;
         }
         /* 재수강 추천리스트 */
         
@@ -249,7 +250,7 @@
         
         .modal-table tr td:nth-child(2),
         .modal-table tr th:nth-child(2) {
-            width: 160px;
+            width: 300px;
         }
         
         .modal-table tr td:nth-child(3),
@@ -260,10 +261,13 @@
         }
         
         .modal-table tr td:nth-child(5),
-        .modal-table tr th:nth-child(5),
+        .modal-table tr th:nth-child(5) {
+            width: 40px;
+        }
+        
         .modal-table tr td:nth-child(6),
         .modal-table tr th:nth-child(6) {
-            width: 40px;
+            width: 60px;
         }
         
         .doughnut-data {
@@ -370,6 +374,10 @@
         }
         
         @media(max-width: 1000px) {
+            .modal-table tr td:nth-child(2),
+            .modal-table tr th:nth-child(2) {
+                width: 150px;
+            }
             .clear button {
                 border-radius: 15px;
                 padding: 3px;

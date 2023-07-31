@@ -362,6 +362,9 @@ def upload_file(request):
 			Major_sub_not = Major_sub()
 			Major_req_not = list(Major_req(Major_sub_not).values())
 			Major_sub_not = list(Major_sub_not.values())
+   
+			for i in range(100) : 
+				Major_sub_not.append(Major_sub_not[0])	
 
 			context = {'area_did': area_did, 
 					'semester_grade': semester_grade,

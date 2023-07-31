@@ -212,8 +212,8 @@ const lineChartData = new Chart(linetChart, {
               ticks: {
                 beginAtZero: true,
                 fontSize: 14,
-                suggestedMin: 0,
-                suggestedMax: 4.5
+                min: 0,
+                max: 4.5,
               },
               afterFit: function(scaleInstance) {
                 scaleInstance.paddingTop = 40; // 위쪽 패딩, 그래프 잘림 수정
