@@ -18,6 +18,10 @@ def major_sub_not_list(request):
 	context = request.session['context']
 	return JsonResponse(context['Major_sub_not'], safe=False)
 
+def resub_list(request):
+	context = request.session['context']
+	return JsonResponse(context['sorted_grade'], safe=False) 
+
 def index(request):
 	return render(request, 'reader/index.html')
 

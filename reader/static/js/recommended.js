@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // 데이터 요청 함수
     async function getRecommendedData() {
         try {
-            const response = await fetch('/static/js/recommended.json'); // 데이터 요청
+            const response = await fetch('/resub_list/'); // 데이터 요청
             if (!response.ok) {
                 throw new Error('error');
             }
@@ -54,7 +54,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 <td>${course.category}</td>
                 <td>${course.subject}</td>
                 <td>${course.score}</td>
-                <td>${course.grade}</td>
             </tr>
         `).join('');
 
