@@ -41,7 +41,6 @@ def GE_did_not():
 	global student, area_did
 	s_num = int(student['student_num'][2:4]) # 학번 필요한가? 최신(이름 바뀐) 과목 추천해주면 될듯
 	r_dict = copy.deepcopy(GE)
-	print(r_dict)
 	
 	if s_num >= 21:
 		r_dict['other_cnt'] = [0, 1]
@@ -104,7 +103,7 @@ def GE_did_not():
 
 
 def upload_file(request):
-	global student, area, short_area, short_area, score_need_list, score_for_grade, score_for_grade, info_category, info_category, year, score_need, score_did, subject_did, area_did, semester_grade, semester_subject
+	global student, area, short_area, score_need_list, score_for_grade, info_category, year, score_need, score_did, subject_did, area_did, semester_grade, semester_subject
 	file = request.FILES['uploaded_file']
 	if file:
 		if file.name.endswith('xlsx'):

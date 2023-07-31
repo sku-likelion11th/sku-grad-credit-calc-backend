@@ -1,3 +1,4 @@
+#검사데이터
 GE = {'English': ['Lab(1)', 'Lab(2)', '영어커뮤니케이션(1)', '영어커뮤니케이션(2)'],
         'English_cnt': [0, 2], # count ,max
         '기초글쓰기': [0, 1], # 1
@@ -10,6 +11,7 @@ GE = {'English': ['Lab(1)', 'Lab(2)', '영어커뮤니케이션(1)', '영어커�
         'for_loop': {'English_cnt': 0, '기초글쓰기': 0, '사회봉사': 0, '현대인과성경': 0, '현대인과기독교': 0, 'other_cnt': 0}
         }
 
+#최신화데이터
 GE_list = {'기초글쓰기': {'subject': '기초글쓰기', 'score': 2, 'category': '교필'},
            '사회봉사': {'subject': '사회봉사', 'score':2, 'category':'교필'},
            '영어커뮤니케이션(1)': {'subject': '영어커뮤니케이션(1)', 'score':2, 'category':'교필'},
@@ -18,3 +20,4 @@ GE_list = {'기초글쓰기': {'subject': '기초글쓰기', 'score': 2, 'catego
            '현대인과기독교': {'subject':'현대인과기독교', 'score':3, 'category':'교필'},
            '대학생활과진로': {'subject':'대학생활과진로', 'score':1, 'category':'교필'},
            '파이데이아포럼': {'subject':'파이데이아포럼', 'score':1, 'category':'교필'},}
+
