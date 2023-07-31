@@ -40,7 +40,6 @@ def sort_by_grade():
         if key[-4:] == '(재수)':
             continue
         if key[1:] in no_sub.keys():
-            did[key] = [subject_did[key][0], subject_did[key][1], score_for_grade[subject_did[key][2]], subject_did[key][2], key]
             continue
         if key in subject_data.GE['all']:
             # F아닌데 재수강x 교양 검사
