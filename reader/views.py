@@ -40,6 +40,7 @@ def sort_by_grade():
         if key[-4:] == '(재수)':
             continue
         if key[1:] in no_sub.keys():
+            did[key] = [subject_did[key][0], subject_did[key][1], score_for_grade[subject_did[key][2]], subject_did[key][2], key]
             continue
         if key in subject_data.GE['all']:
             # F아닌데 재수강x 교양 검사
@@ -354,6 +355,8 @@ def upload_file(request):
 							ex_semester = (semester_dict[(sheet[str('X'+str(j))].value, sheet[str('Z'+str(j))].value[0])])
 						except:
 							ex_semester = (str(sheet[str('X'+str(j))].value)+'_'+sheet[str('Z'+str(j))].value)
+						if sheet[str('U'+str(j))].value != 'P' == 'W':
+							continue
 						if sheet[str('U'+str(j))].value != 'P' and sheet[str('U'+str(j))].value != 'F': # F맞으면 학점이 하이폰(-)으로 나오나요?
 							try:
 								semester_grade[ex_semester]['S'] += int(sheet[str('S'+str(j))].value) # 해당 과목 이수 학점
@@ -421,15 +424,21 @@ def upload_file(request):
 				if sub[-4:] == "(재수)":
 					re_sub.add(sub)
 					re_sub.add(sub[:-4])
-					if subject_did[sub][-1] != 'P':
-						ratio['등급'][grade_key[subject_did[sub][-1]]] += 1
-						cnt += 1
+					try:
+						if subject_did[sub][-1] != 'P':
+							ratio['등급'][grade_key[subject_did[sub][-1]]] += 1
+							cnt += 1
+					except:
+						pass
 
 			for sub in subject_did:
 				if sub[1:] not in re_sub and sub not in re_sub: # 별과목, 과목 인지 몰라욤
-					if subject_did[sub][-1] != 'P':
-						ratio['등급'][grade_key[subject_did[sub][-1]]] += 1
-						cnt += 1
+					try:
+						if subject_did[sub][-1] != 'P':
+							ratio['등급'][grade_key[subject_did[sub][-1]]] += 1
+							cnt += 1
+					except:
+						pass
 					
 			for key in ratio['등급'].keys():
 				ratio['등급'][key] = round(ratio['등급'][key] / cnt * 100, 2)
