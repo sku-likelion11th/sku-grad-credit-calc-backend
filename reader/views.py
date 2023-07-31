@@ -4,11 +4,19 @@ from collections import defaultdict
 import openpyxl
 import json
 import copy
-from .data import GE, GE_list
+import reader.data as subject_data
 
 def ge_not_list(request):
 	context = request.session['context']
 	return JsonResponse(context['GE_not'], safe=False)
+
+def major_req_not_list(request):
+	context = request.session['context']
+	return JsonResponse(context['Major_req_not'], safe=False)
+
+def major_sub_not_list(request):
+	context = request.session['context']
+	return JsonResponse(context['Major_sub_not'], safe=False)
 
 def index(request):
 	return render(request, 'reader/index.html')
@@ -40,7 +48,7 @@ def GE_did_not():
     # 미이수 과목
 	global student, area_did
 	s_num = int(student['student_num'][2:4]) # 학번 필요한가? 최신(이름 바뀐) 과목 추천해주면 될듯
-	r_dict = copy.deepcopy(GE)
+	r_dict = copy.deepcopy(subject_data.GE)
 	
 	if s_num >= 21:
 		r_dict['other_cnt'] = [0, 1]
@@ -97,9 +105,51 @@ def GE_did_not():
 		recommend.append(other[i])
 	recommend_GE = []
 	for sub in recommend:
-		recommend_GE.append(GE_list[sub])
+		recommend_GE.append(subject_data.GE_list[sub])
 
 	return recommend_GE
+
+def Major_sub():
+	global student, area_did
+	Major_sub_not = copy.deepcopy(subject_data.IME_list)
+	notF = set()
+
+	for i in area_did['전필']:
+		if i[2]!='F':
+			notF.add(copy.deepcopy(i[0]))
+	for i in area_did['전선']:
+		if i[2]!='F':
+			notF.add(copy.deepcopy(i[0]))
+
+	for sub in notF:
+		while(sub in subject_data.IME_change):
+			sub = subject_data.IME_change[sub]
+		if(sub in Major_sub_not):
+			del Major_sub_not[sub]
+	
+	return Major_sub_not
+
+def Major_req(Major_sub_not):
+	global student
+	s_num = int(student['student_num'][0:4])#학번찾음
+	
+	Major_req_not = {}
+	Major_req = copy.deepcopy(subject_data.IME_REQ[s_num])
+
+	for sub in Major_req:
+		while(sub in subject_data.IME_change):
+			sub = subject_data.IME_change[sub]
+		if(sub in Major_sub_not):
+			Major_req_not[sub] = Major_sub_not[sub]
+			del Major_sub_not[sub]
+
+	return Major_req_not
+
+
+
+
+
+
 
 
 def upload_file(request):
@@ -310,7 +360,12 @@ def upload_file(request):
 		
 			GE_not = GE_did_not()
 			sorted_grade = sort_by_grade()
-			print(sorted_grade)
+			# Major_sub_not = Major_sub()
+			# Major_req_not = Major_req(Major_sub_not)
+			Major_sub_not_dict = Major_sub()
+			Major_req_not = [value for inner_dict in data for value in Major_req(Major_sub_not_dict).values()]
+			Major_sub_not = [value for inner_dict in data for value in Major_sub_not_dict.values()]
+
 			context = {'area_did': area_did, 
 					'semester_grade': semester_grade,
 					'semester_subject': semester_subject,
@@ -324,12 +379,15 @@ def upload_file(request):
 					'major_grade': major_grade,
 					'sorted_subject': sorted_subject,
 					'GE_not': GE_not,
+					'Major_sub_not' : Major_sub_not,
+					'Major_req_not' : Major_req_not,
 					'sorted_grade': sorted_grade # 이수한 과목 중 성적 낮은것부터 리스트로
 			}
 			request.session["context"] = context
-	# for i in context:
-	# 	print(i," ",context[i])
-	# 	print()
+
+	for i in context:
+		print(i," ",context[i])
+		print()
 
 	return redirect('/upload')
 
