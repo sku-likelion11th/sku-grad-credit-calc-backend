@@ -119,7 +119,11 @@ def GE_did_not():
 		recommend_GE.append({'subject': '<p class="text-danger">미수강한 교필이 없습니다.</p>', 'score': '', 'category': ''})
 	return recommend_GE
 
-
+def remove_jaesu(text):
+    if text.endswith("(재수)"):
+        return text[:-4]
+    else:
+        return text
 
 def Major_sub():
 	global student, area_did
@@ -133,9 +137,11 @@ def Major_sub():
 	notF = set()
 
 	for i in area_did['전필']:
+		i[0] = remove_jaesu(i[0])
 		if i[2]!='F':
 			notF.add(copy.deepcopy(i[0]))
 	for i in area_did['전선']:
+		i[0] = remove_jaesu(i[0])
 		if i[2]!='F':
 			notF.add(copy.deepcopy(i[0]))
 
@@ -152,7 +158,6 @@ def Major_sub():
 
 def Major_req(Major_sub_not):
 	global student
-
 	s_num = int(student['student_num'][0:4])#학번찾음
 	
 	Major_req_not = {}
@@ -414,7 +419,7 @@ def upload_file(request):
 			sorted_subject = [] # 성적순으로 정렬된것 만들어야함
 		
 			GE_not = GE_did_not()
-			sorted_grade = sort_by_grade()
+			#sorted_grade = sort_by_grade()
 			Major_sub_not = Major_sub()
 			Major_req_not = list(Major_req(Major_sub_not).values())
 			Major_sub_not = list(Major_sub_not.values())
@@ -435,7 +440,7 @@ def upload_file(request):
 					'GE_not': GE_not,
 					'Major_sub_not' : Major_sub_not,
 					'Major_req_not' : Major_req_not,
-					'sorted_grade': sorted_grade, # 이수한 과목 중 성적 낮은것부터 리스트로
+					#'sorted_grade': sorted_grade, # 이수한 과목 중 성적 낮은것부터 리스트로
 					'need_change': need_change,
 					'grad' : grad_cond(),
 			}
