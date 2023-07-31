@@ -256,7 +256,7 @@
                 <!-- 채플 카운트 -->
                 <div class="chapelCount">
                     <div class="title">채플 카운트</div>
-                    <div class="cpcount fs-1 text-center fw-bold">{{ church }} / 6</div>
+                    <div class="cpcount fs-1 text-center fw-bold">{{ church }} / {% if student.admsn == '일반편입' or student.admsn == '학사편입' %} 2 {% else %} 6 {% endif %}</div>
                 </div>
                 <!-- 졸업 요구사항 -->
                 <div class="GraduationRequirements">

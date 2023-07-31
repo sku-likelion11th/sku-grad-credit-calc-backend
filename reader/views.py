@@ -266,8 +266,8 @@ def upload_file(request):
 			score_for_grade = {'A+': 4.5, 'A0': 4.0, 'B+': 3.5, 'B0':3.0, 
 							'C+': 2.5, 'C0': 2.0, 'D+':1.5, 'D0': 1.0}
 			info_category = ['major', 'minor', 'student_num', 'grade', 
-						'name', 'score_need', 'score_did']
-			info_idx = ['A2', 'F2', 'J2', 'M2', 'O2', 'Y2', 'AB2']
+						'name', 'score_need', 'score_did', 'admsn']
+			info_idx = ['A2', 'F2', 'J2', 'M2', 'O2', 'Y2', 'AB2', 'Q2']
 			year = ['2015', '2016', '2017', '2018', '2019', '2020', '2021', 
 				'2022', '2023', '2024', '2025', '2026']
 			semester = {'1학기', '2학기'}
@@ -292,8 +292,9 @@ def upload_file(request):
 					semester_subject[str(i)+'_'+str(j)] = list()
 
 			student = dict()
-			for i in range(7):
+			for i in range(8):
 				student[info_category[i]] = sheet[info_idx[i]].value
+			
 
 			ex = set()
 			season_ex = set()
