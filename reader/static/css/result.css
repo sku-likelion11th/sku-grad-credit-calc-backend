@@ -150,9 +150,20 @@
         }
         /* 페이지네이션 */
         
-        .pagination {
+        .arrow {
+            line-height: 24px;
+            height: 24px;
+        }
+        
+        .arrow i {
+            font-size: 13px;
+        }
+        
+        .pagination,
+        .paginationRe {
             display: flex;
             justify-content: center;
+            align-items: center;
             margin-top: 25px;
         }
         

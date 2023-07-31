@@ -254,7 +254,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // 왼쪽 화살표 생성 및 이벤트 핸들러 설정
         if (showArrows) {
             const leftArrow = document.createElement('span');
-            leftArrow.textContent = '◀';
+            leftArrow.innerHTML = '<i class="bi bi-chevron-left"></i>';
             leftArrow.classList.add('page');
             leftArrow.classList.add('arrow');
             leftArrow.addEventListener('click', function() {
@@ -307,7 +307,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             }
             const rightArrow = document.createElement('span');
-            rightArrow.textContent = '▶';
+            rightArrow.innerHTML = '<i class="bi bi-chevron-right"></i>';
             rightArrow.classList.add('page');
             rightArrow.classList.add('arrow');
             rightArrow.addEventListener('click', function() {
