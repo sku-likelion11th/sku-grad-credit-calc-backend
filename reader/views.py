@@ -137,13 +137,13 @@ def Major_sub():
 	notF = set()
 
 	for i in area_did['전필']:
-		i[0] = remove_jaesu(i[0])
+		tmp = remove_jaesu(i[0])
 		if i[2]!='F':
-			notF.add(copy.deepcopy(i[0]))
+			notF.add(copy.deepcopy(tmp))
 	for i in area_did['전선']:
-		i[0] = remove_jaesu(i[0])
+		tmp = remove_jaesu(i[0])
 		if i[2]!='F':
-			notF.add(copy.deepcopy(i[0]))
+			notF.add(copy.deepcopy(tmp))
 
 	for sub in notF:
 		while(sub in subject_data.IME_change):
