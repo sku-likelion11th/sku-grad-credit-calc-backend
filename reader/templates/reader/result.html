@@ -266,8 +266,12 @@
                         {% if student.major != '산업경영공학과' %}
                             <li class="text-danger">* 산업경영공학과만 지원합니다.</li>
                         {% else %}
-                            {% for data in grad %}
+                            {% for data in grad.선택조건 %}
                                 <li>{{data}}</li>
+                            {% endfor %}
+                            <li>-----</li>
+                            {% for data in grad.필수조건 %}
+                            <li>{{data}}</li>
                             {% endfor %}
                         {% endif %}
                     </ul>
