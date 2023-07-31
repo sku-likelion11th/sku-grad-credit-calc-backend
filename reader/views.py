@@ -126,7 +126,6 @@ def Major_sub():
 			sub = subject_data.IME_change[sub]
 		if(sub in Major_sub_not):
 			del Major_sub_not[sub]
-	
 	return Major_sub_not
 
 def Major_req(Major_sub_not):
@@ -360,11 +359,9 @@ def upload_file(request):
 		
 			GE_not = GE_did_not()
 			sorted_grade = sort_by_grade()
-			# Major_sub_not = Major_sub()
-			# Major_req_not = Major_req(Major_sub_not)
-			Major_sub_not_dict = Major_sub()
-			Major_req_not = [value for inner_dict in data for value in Major_req(Major_sub_not_dict).values()]
-			Major_sub_not = [value for inner_dict in data for value in Major_sub_not_dict.values()]
+			Major_sub_not = Major_sub()
+			Major_req_not = list(Major_req(Major_sub_not).values())
+			Major_sub_not = list(Major_sub_not.values())
 
 			context = {'area_did': area_did, 
 					'semester_grade': semester_grade,
