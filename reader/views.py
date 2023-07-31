@@ -31,7 +31,7 @@ def delete_file(request):
 	return redirect('/upload')
 
 def sort_by_grade():
-    global subject_did, GE_not, no_sub
+    global subject_did, GE_not, no_sub, re_sub
     score_for_grade = {'A+': 4.5, 'A0': 4.0, 'B+': 3.5, 'B0':3.0, 
                     'C+': 2.5, 'C0': 2.0, 'D+':1.5, 'D0': 1.0, 'P': 5, 'F': 0}
 
@@ -40,6 +40,8 @@ def sort_by_grade():
         if key[-4:] == '(재수)':
             continue
         if key[1:] in no_sub.keys():
+            if key[1:] in re_sub:
+                did[key] = [subject_did[key][0], subject_did[key][1], score_for_grade[subject_did[key][2]], subject_did[key][2], key]
             continue
         if key in subject_data.GE['all']:
             # F아닌데 재수강x 교양 검사
@@ -240,7 +242,7 @@ def grad_cond():
 
 
 def upload_file(request):
-	global student, area, short_area, score_need_list, score_for_grade, info_category, year, score_need, score_did, subject_did, area_did, semester_grade, semester_subject, GE_not, no_sub
+	global student, area, short_area, score_need_list, score_for_grade, info_category, year, score_need, score_did, subject_did, area_did, semester_grade, semester_subject, GE_not, no_sub, re_sub
 	file = request.FILES['uploaded_file']
 	if file:
 		if file.name.endswith('xlsx'):
@@ -367,7 +369,7 @@ def upload_file(request):
 							semester_grade[ex_semester]['P'] += int(sheet[str('S'+str(j))].value)
 
 						# [영역, 학점, 등급]
-
+						
 						subject_did[sheet[str('I'+str(j))].value] = [sheet[str('G'+str(j))].value, sheet[str('S'+str(j))].value, sheet[str('U'+str(j))].value]
 						if sheet[str('U'+str(j))].value[-4:] == 'F' or sheet[str('S'+str(j))].value == '-':
 							no_sub[sheet[str('I'+str(j))].value[1:]] = [sheet[str('G'+str(j))].value, sheet[str('S'+str(j))].value, sheet[str('U'+str(j))].value]
