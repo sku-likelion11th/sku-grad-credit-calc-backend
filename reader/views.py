@@ -35,47 +35,66 @@ def delete_file(request):
 	return redirect('/upload')
 
 def sort_by_grade():
-    global subject_did, GE_not, no_sub, re_sub
-    score_for_grade = {'A+': 4.5, 'A0': 4.0, 'B+': 3.5, 'B0':3.0, 
-                    'C+': 2.5, 'C0': 2.0, 'D+':1.5, 'D0': 1.0, 'P': 5, 'F': 0}
+	global subject_did, GE_not, no_sub, re_sub
+	score_for_grade = {'A+': 4.5, 'A0': 4.0, 'B+': 3.5, 'B0':3.0, 
+					'C+': 2.5, 'C0': 2.0, 'D+':1.5, 'D0': 1.0, 'P': 5, 'F': 0}
+	# new logic
+	# 아침에 20분정도 짠거라 뭐 없음 민지야 부탁한다!!!
+	# 1. 먼저 F, D0, D+, C0, C+인 과목들을 전부 찾아서 리스트에 저장(낮은 점수 리스트)
+	# low_score_list = list()
+	# for sub in subject_did.keys():
+	# 	if score_for_grade[subject_did[sub][2]] <= 2.5:
+	# 		low_score_list.append(remove_jaesu(sub))
+	# 2. 재수강한 과목들을 전부 찾아서 리스트에 저장
+	# re_sub_list = list()
+	# for sub in subject_did.keys():
+	# 	if sub[-4:] == '(재수)':
+	# 		re_sub_list.append(remove_jaesu(sub))
+	# 3. 위의 리스트 두개를 대조해서, (재수)가 붙어있는 재수강 리스트는 모두 제외
+	# result_list = list()
+	# for item in low_score_list:
+	# 	if item not in re_sub_list:
+	# 		result_list.append(item)
+	# 4. 낮은 점수 리스트의 과목 중 재수강을 했을 당시에 과목명이 바뀌었다면, 해당 과목도 제외 
+	# 5. 낮은 점수 리스트를 리턴
+	# new logic end
+	did = dict()
+	for key in subject_did.keys():
+		if key[-4:] == '(재수)':
+			continue
+		if key[1:] in no_sub.keys():
+			if key[1:] in re_sub:
+				did[key] = [subject_did[key][0], subject_did[key][1], score_for_grade[subject_did[key][2]], subject_did[key][2], key]
+			continue
+		if key in subject_data.GE['all']:
+			# F아닌데 재수강x 교양 검사
+			try:
+				new = subject_data.GE_change[key[1:]]
+				try:
+					new2 = subject_data.GE_change[new]
+					did[key] = [subject_did[key][0], subject_did[key][1], score_for_grade[subject_did[key][2]], subject_did[key][2], key]
+					continue
+				except:
+					did[key] = [subject_did[key][0], subject_did[key][1], score_for_grade[subject_did[key][2]], subject_did[key][2], key]
+					continue
+			except:
+				did[key] = [subject_did[key][0], subject_did[key][1], score_for_grade[subject_did[key][2]], subject_did[key][2], key]
+				continue
+		else:
+			did[key] = [subject_did[key][0], subject_did[key][1], score_for_grade[subject_did[key][2]], subject_did[key][2], key]
 
-    did = dict()
-    for key in subject_did.keys():
-        if key[-4:] == '(재수)':
-            continue
-        if key[1:] in no_sub.keys():
-            if key[1:] in re_sub:
-                did[key] = [subject_did[key][0], subject_did[key][1], score_for_grade[subject_did[key][2]], subject_did[key][2], key]
-            continue
-        if key in subject_data.GE['all']:
-            # F아닌데 재수강x 교양 검사
-            try:
-                new = subject_data.GE_change[key[1:]]
-                try:
-                    new2 = subject_data.GE_change[new]
-                    did[key] = [subject_did[key][0], subject_did[key][1], score_for_grade[subject_did[key][2]], subject_did[key][2], key]
-                    continue
-                except:
-                    did[key] = [subject_did[key][0], subject_did[key][1], score_for_grade[subject_did[key][2]], subject_did[key][2], key]
-                    continue
-            except:
-                did[key] = [subject_did[key][0], subject_did[key][1], score_for_grade[subject_did[key][2]], subject_did[key][2], key]
-                continue
-        else:
-            did[key] = [subject_did[key][0], subject_did[key][1], score_for_grade[subject_did[key][2]], subject_did[key][2], key]
+	value = list(did.values())
+	value = sorted(value, key=lambda x: x[2])
 
-    value = list(did.values())
-    value = sorted(value, key=lambda x: x[2])
+	json_parse = dict()
+	for key in value:
+		# key[-1] => 과목명
+		if key[-3] >= 3:
+			break
+		json_parse[key[-1]] = {'subject': key[-1], 'score': key[-2], 'category': subject_did[key[-1]][0]}
 
-    json_parse = dict()
-    for key in value:
-        # key[-1] => 과목명
-        if key[-3] >= 3:
-            break
-        json_parse[key[-1]] = {'subject': key[-1], 'score': key[-2], 'category': subject_did[key[-1]][0]}
-
-    json_list = list(json_parse.values())
-    return json_list
+	json_list = list(json_parse.values())
+	return json_list
 
 def GE_did_not():
     # 미이수 과목
