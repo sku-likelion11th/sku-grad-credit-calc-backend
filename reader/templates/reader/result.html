@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{% static 'css/chart.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/result.css' %}">
+    <link rel="stylesheet" href="{% static 'css/resultMedia.css' %}">
     <title>졸업학점계산기 분석결과</title>
 </head>
 
@@ -90,8 +91,8 @@
 
                         <!-- 교필+교선 -->
                         <div class="generalsub d-flex justify-content-center align-items-center credits">
-                            <i class="bi bi-arrow-return-right"></i>
-                            <span style="font-size: 13px"> 교필({{score_did.교필|floatformat:0}}) + 교선({{score_did.교선|floatformat:0}}) = {{ score_did.교필|add:score_did.교선 }}</span>
+                            <i class="bi bi-check2-circle"></i>
+                            <span style="font-size: 13px; margin-left: 3px;">  교필({{score_did.교필|floatformat:0}}) + 교선({{score_did.교선|floatformat:0}}) = {{ score_did.교필|add:score_did.교선 }}</span>
                         </div>
                         {% if score_need.부전공요구학점 != 0 %}
                         <!-- 부전 -->
@@ -166,12 +167,7 @@
                 <div class="RequiredChangeList">
                     <div class="title">이수구분변경 필요 리스트</div>
                     <ul>
-                        {% for change in need_change %}
-                        <li>{{change.before}} <i class="bi bi-caret-right-fill"></i> {{change.after}}</li>
-                        {% endfor %}
-                        {% if student.major != '산업경영공학과' %}
-                            <li class="text-danger">* 산업경영공학과만 지원합니다.</li>
-                        {% endif%}
+                        <li>제품기획및개발(전선) <i class="bi bi-caret-right-fill"></i> 제품기획및개발(전필)</li>
                     </ul>
                 </div>
             </section>
@@ -227,6 +223,7 @@
                             <tr>
                                 <th>구분</th>
                                 <th>과목명</th>
+                                <th>학점</th>
                                 <th>성적</th>
                             </tr>
                         </thead>
@@ -242,11 +239,17 @@
             <section class="sec3 col-md-2">
                 <!-- 정보 -->
                 <div class="intro">
-                    <span class="fw-bold">{{ student.name }}</span>님<br/>
-                    <span class="id">{{ student.student_num }}</span>
+                    <!-- 이름 -->
+                    <span class="intro_name">
+                        <span class="fw-bold">{{ student.name }}</span><span>님</span><br/>
+                    </span>
+                    <!-- 학번 / 학년 -->
+                    <span class="intro_sub">
+                        <span class="id">{{ student.student_num }}</span>
                     <span class="grade  text-break"> / {{ student.grade }}학년</span>
-                    <div class="my-3">
-                        <span class="text-break major">{{ student.major }}</span><br/> {% if minor %}
+                    </span>
+                    <div class="my-3 intro_major">
+                        <span class="text-break major">{{ student.major }}</span> {% if minor %}
                         <span class="majorDeep">{{ student.minor }}</span> {% endif %}
                     </div>
                     <div class="clear">
@@ -256,19 +259,17 @@
                 <!-- 채플 카운트 -->
                 <div class="chapelCount">
                     <div class="title">채플 카운트</div>
-                    <div class="cpcount fs-1 text-center fw-bold">{{ church }} / {% if student.admsn == '일반편입' or student.admsn == '학사편입' %} 2 {% else %} 6 {% endif %}</div>
+                    <div class="cpcount fs-1 text-center fw-bold">{{ church }} / 6</div>
                 </div>
                 <!-- 졸업 요구사항 -->
                 <div class="GraduationRequirements">
-                    <div class="title">졸업 요구사항</div>
+                    <div class="title graduRe">졸업 요구사항</div>
                     <ul>
-                        {% if student.major != '산업경영공학과' %}
-                            <li class="text-danger">* 산업경영공학과만 지원합니다.</li>
-                        {% else %}
-                            {% for data in grad.선택조건 %}
-                                <li>{{data}}</li>
-                            {% endfor %}
-                        {% endif %}
+                        <li>졸업작품</li>
+                        <li>졸업논문</li>
+                        <li>품질경영기사</li>
+                        <li>토익 800점 이상</li>
+                        <li>S-point 12포인트</li>
                     </ul>
                 </div>
             </section>
@@ -338,7 +339,8 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="modal-score text-end fs-5 pt-2 px-3 fw-bold">{{ score_did.교필|add:score_did.교선 }} / {{ score_need.교양요구학점 }} 학점</div>
+                        이부분 한번 말 나왔던 것 같아서 살짝 바꿔봤는데 맘에 안들면 다시 밑에꺼 가져다쓰기 ㄱㄱ! 확인 후 삭제 바람- 승희
+                        <div class="modal-score text-end fs-5 pt-2 px-3 fw-bold">총 {{ score_need.교양요구학점 }} 학점 中 <span class="fs-4" style="color:blue;">{{ score_did.교필|add:score_did.교선 }}점</span> 이수</div>
                     </div>
 
                     <!-- 전공 필수 -->
@@ -505,7 +507,7 @@
     <script src="{% static 'js/unCourse.js' %}"></script>
     <script src="{% static 'js/recommended.js' %}"></script>
     <script src="{% static 'js/result.js' %}"></script>
-    <!-- <script type='module' src="./js/creditList.js"></script> -->
+    <script type='module' src="./js/creditList.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{% static 'js/chart.js' %}"></script>
 </body>

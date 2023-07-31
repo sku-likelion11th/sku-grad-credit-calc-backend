@@ -189,8 +189,6 @@ new Chart(doughnutChart, {
 // const maxVal = Math.max(4.5);
 // console.log(maxVal);
 
-
-
 const linetChart = document.querySelector("#line-chart");
 const lineChartData = new Chart(linetChart, {
     type: "line",
@@ -206,10 +204,8 @@ const lineChartData = new Chart(linetChart, {
             "4-2",
         ],
         datasets: [{
-                data: [linetChart.getAttribute('1_1'), linetChart.getAttribute('1_2'), linetChart.getAttribute('2_1'), linetChart.getAttribute('2_2'), linetChart.getAttribute('3_1'), linetChart.getAttribute('3_2'), linetChart.getAttribute('4_1'), linetChart.getAttribute('4_2')],
-            },
-
-        ],
+            data: [linetChart.getAttribute('1_1'), linetChart.getAttribute('1_2'), linetChart.getAttribute('2_1'), linetChart.getAttribute('2_2'), linetChart.getAttribute('3_1'), linetChart.getAttribute('3_2'), linetChart.getAttribute('4_1'), linetChart.getAttribute('4_2')],
+        }, ],
     },
 
     options: {
@@ -218,18 +214,31 @@ const lineChartData = new Chart(linetChart, {
                 display: false,
             },
         },
-        Responsive: false,
-        maintainAspectRatio: false,
+        Responsive: true,
+        maintainAspectRatio: true,
+        // 4.5 고정된다, 최댓값이 상대적으로 변할뿐 ....
         scales: {
             y: {
                 beginAtZero: true,
-                min: 0,
-                max: 4.5,
-                stepSize: 0.5,
-                ticks: {
-                    fontSize: 14,
-                },
+                max: 4.5, // max 값 조정
+                ticks: { // y축 줄당 표시 값
+                    stepSize: 0.5
+                }
             },
-        },
-    }
+            // 최대 아잘림, 4.5 고정안됨 ㅠㅠ
+            // yAxes: [{
+            //ticks: {
+            //      beginAtZero: true,
+            //        fontSize: 14,
+            //          min: 0,
+            //            max: 4.5
+            //          },
+            //            afterFit: function(scaleInstance) {
+            //                  scaleInstance.paddingTop = 40; // 위쪽 패딩, 그래프 잘림 수정 
+            //                }
+            //              },
+            //
+            //]
+        }
+    },
 })
