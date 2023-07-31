@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
     grBtn.addEventListener('click', handleButtonClick);
 
 //    fetch('/static/js/uncompletedCourses.json')
-    fetch('/test/')
+    fetch('/ge_not_list/')
         .then(function(response) {
             if (!response.ok) {
                 throw new Error('error');
