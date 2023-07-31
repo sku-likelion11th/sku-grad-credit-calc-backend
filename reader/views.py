@@ -31,7 +31,7 @@ def delete_file(request):
 	return redirect('/upload')
 
 def sort_by_grade():
-    global subject_did, GE_not, re_list_key, no_sub
+    global subject_did, GE_not, no_sub
     score_for_grade = {'A+': 4.5, 'A0': 4.0, 'B+': 3.5, 'B0':3.0, 
                     'C+': 2.5, 'C0': 2.0, 'D+':1.5, 'D0': 1.0, 'P': 5, 'F': 0}
 
@@ -240,7 +240,7 @@ def grad_cond():
 
 
 def upload_file(request):
-	global student, area, short_area, score_need_list, score_for_grade, info_category, year, score_need, score_did, subject_did, area_did, semester_grade, semester_subject, GE_not, re_list_key, no_sub
+	global student, area, short_area, score_need_list, score_for_grade, info_category, year, score_need, score_did, subject_did, area_did, semester_grade, semester_subject, GE_not, no_sub
 	file = request.FILES['uploaded_file']
 	if file:
 		if file.name.endswith('xlsx'):
@@ -462,7 +462,6 @@ def upload_file(request):
 			Major_req_not = list(Major_req(Major_sub_not).values())
 			Major_sub_not = list(Major_sub_not.values())
 			need_change = area_change(area_did['전필'], area_did['전선'])
-			re_list_key = re_list()
 			sorted_grade = sort_by_grade() # 재수강 추천
 
 			context = {'area_did': area_did, 
@@ -484,7 +483,6 @@ def upload_file(request):
 					'sorted_grade': sorted_grade, # 이수한 과목 중 성적 낮은것부터 리스트로
 					'need_change': need_change,
 					'no_sub': no_sub,
-					're_list_key': re_list_key,
 			}
 			request.session["context"] = context
 
