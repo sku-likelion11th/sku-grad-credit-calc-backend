@@ -31,18 +31,24 @@ def delete_file(request):
 	return redirect('/upload')
 
 def sort_by_grade():
-	global subject_did
-	score_for_grade = {'A+': 4.5, 'A0': 4.0, 'B+': 3.5, 'B0':3.0, 
-					'C+': 2.5, 'C0': 2.0, 'D+':1.5, 'D0': 1.0, 'P': 5, 'F': 0}
+    global subject_did
+    score_for_grade = {'A+': 4.5, 'A0': 4.0, 'B+': 3.5, 'B0':3.0, 
+                    'C+': 2.5, 'C0': 2.0, 'D+':1.5, 'D0': 1.0, 'P': 5, 'F': 0}
  
-	for key in subject_did.keys():
-		subject_did[key] = [subject_did[key][0], subject_did[key][1], score_for_grade[subject_did[key][2]], key]
+    for key in subject_did.keys():
+        subject_did[key] = [subject_did[key][0], subject_did[key][1], score_for_grade[subject_did[key][2]], key]
 
-	value = list(subject_did.values())
-	value = sorted(value, key=lambda x: x[2])
+    value = list(subject_did.values())
+    value = sorted(value, key=lambda x: x[2])
 
-	return value
-	
+    json_parse = dict()
+    for key in value:
+        # key[-1] => 과목명
+        json_parse[key[-1]] = {'subject': key[-1], 'score': int(subject_did[key[-1]][1]), 'category': subject_did[key[-1]][0]}
+
+    json_list = [json_parse]
+
+    return json_list
 
 def GE_did_not():
     # 미이수 과목
