@@ -142,9 +142,11 @@ def GE_did_not():
 
 def remove_jaesu(text):
     if text.endswith("(재수)"):
-        return text[:-4]
-    else:
-        return text
+        text = text[:-4]
+    if text.startswith("★"):
+        text = text[1:]
+    return text
+
 def re_list():
 	global subject_did
 	list_key = []
@@ -167,12 +169,10 @@ def Major_sub():
 
 	for i in area_did['전필']:
 		tmp = remove_jaesu(i[0])
-		if i[2]!='F':
-			notF.add(copy.deepcopy(tmp))
+		notF.add(copy.deepcopy(tmp))
 	for i in area_did['전선']:
 		tmp = remove_jaesu(i[0])
-		if i[2]!='F':
-			notF.add(copy.deepcopy(tmp))
+		notF.add(copy.deepcopy(tmp))
 
 	for sub in notF:
 		while(sub in subject_data.IME_change):
