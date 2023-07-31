@@ -31,25 +31,44 @@ def delete_file(request):
 	return redirect('/upload')
 
 def sort_by_grade():
-    global subject_did
+    global subject_did, GE_not, re_list_key, no_sub
     score_for_grade = {'A+': 4.5, 'A0': 4.0, 'B+': 3.5, 'B0':3.0, 
                     'C+': 2.5, 'C0': 2.0, 'D+':1.5, 'D0': 1.0, 'P': 5, 'F': 0}
- 
-    for key in subject_did.keys():
-        subject_did[key] = [subject_did[key][0], subject_did[key][1], score_for_grade[subject_did[key][2]], key]
 
-    value = list(subject_did.values())
+    did = dict()
+    for key in subject_did.keys():
+        if key[-4:] == '(재수)':
+            continue
+        if key[1:] in no_sub.keys():
+            continue
+        if key in subject_data.GE['all']:
+            # F아닌데 재수강x 교양 검사
+            try:
+                new = subject_data.GE_change[key[1:]]
+                try:
+                    new2 = subject_data.GE_change[new]
+                    did[key] = [subject_did[key][0], subject_did[key][1], score_for_grade[subject_did[key][2]], subject_did[key][2], key]
+                    continue
+                except:
+                    did[key] = [subject_did[key][0], subject_did[key][1], score_for_grade[subject_did[key][2]], subject_did[key][2], key]
+                    continue
+            except:
+                did[key] = [subject_did[key][0], subject_did[key][1], score_for_grade[subject_did[key][2]], subject_did[key][2], key]
+                continue
+        else:
+            did[key] = [subject_did[key][0], subject_did[key][1], score_for_grade[subject_did[key][2]], subject_did[key][2], key]
+
+    value = list(did.values())
     value = sorted(value, key=lambda x: x[2])
 
     json_parse = dict()
     for key in value:
         # key[-1] => 과목명
-        if key[-2] > 3:
+        if key[-3] >= 3:
             break
-        json_parse[key[-1]] = {'subject': key[-1], 'score': int(subject_did[key[-1]][1]), 'category': subject_did[key[-1]][0]}
+        json_parse[key[-1]] = {'subject': key[-1], 'score': key[-2], 'category': subject_did[key[-1]][0]}
 
     json_list = list(json_parse.values())
-    
     return json_list
 
 def GE_did_not():
@@ -117,7 +136,14 @@ def GE_did_not():
 
 	return recommend_GE
 
+def re_list():
+	global subject_did
+	list_key = []
+	for key in subject_did.keys():
+		if key[-4:] == '(재수)':
+			list_key.append(key[:-4])
 
+	return list_key
 
 def Major_sub():
 	global student, area_did
@@ -183,7 +209,7 @@ def area_change(Major_req_did, Major_sub_did):
 
 
 def upload_file(request):
-	global student, area, short_area, score_need_list, score_for_grade, info_category, year, score_need, score_did, subject_did, area_did, semester_grade, semester_subject
+	global student, area, short_area, score_need_list, score_for_grade, info_category, year, score_need, score_did, subject_did, area_did, semester_grade, semester_subject, GE_not, re_list_key, no_sub
 	file = request.FILES['uploaded_file']
 	if file:
 		if file.name.endswith('xlsx'):
@@ -213,6 +239,7 @@ def upload_file(request):
 			score_need = defaultdict(int)	# 영역별 요구 학점
 			score_did = defaultdict(float)	# 영역별 이수 학점
 			subject_did = defaultdict(list)	# 수강한 과목 모두 (이건 하지 말까 고민중 semester_subject를 모아둔 느낌) => 필요하다!! # [영역, 학점, 등급]
+			no_sub = defaultdict(list)
 			subject_didnot = defaultdict(dict) # 수강하지 않은 필수 과목 => set(필수 과목) 해서 discard 하는방식
 			area_did = defaultdict(list) # 영역별 [과목명, 이수학점, 등급, 년도, 학기]
 
@@ -297,14 +324,21 @@ def upload_file(request):
 						except:
 							ex_semester = (str(sheet[str('X'+str(j))].value)+'_'+sheet[str('Z'+str(j))].value)
 						if sheet[str('U'+str(j))].value != 'P' and sheet[str('U'+str(j))].value != 'F': # F맞으면 학점이 하이폰(-)으로 나오나요?
-							semester_grade[ex_semester]['S'] += int(sheet[str('S'+str(j))].value) # 해당 과목 이수 학점
-							semester_grade[ex_semester]['G'] += int(sheet[str('S'+str(j))].value)*score_for_grade[sheet[str('U'+str(j))].value]
+							try:
+								semester_grade[ex_semester]['S'] += int(sheet[str('S'+str(j))].value) # 해당 과목 이수 학점
+								semester_grade[ex_semester]['G'] += int(sheet[str('S'+str(j))].value)*score_for_grade[sheet[str('U'+str(j))].value]
+							except:
+								pass
 
 						if sheet[str('U'+str(j))].value == 'P':
 							semester_grade[ex_semester]['P'] += int(sheet[str('S'+str(j))].value)
 
 						# [영역, 학점, 등급]
-						subject_did[sheet[str('I'+str(j))].value] = [sheet[str('G'+str(j))].value, sheet[str('S'+str(j))].value, sheet[str('U'+str(j))].value]	
+
+						subject_did[sheet[str('I'+str(j))].value] = [sheet[str('G'+str(j))].value, sheet[str('S'+str(j))].value, sheet[str('U'+str(j))].value]
+						if sheet[str('U'+str(j))].value[-4:] == 'F' or sheet[str('S'+str(j))].value == '-':
+							no_sub[sheet[str('I'+str(j))].value[1:]] = [sheet[str('G'+str(j))].value, sheet[str('S'+str(j))].value, sheet[str('U'+str(j))].value]
+						
 						semester_subject[ex_semester].append(sheet[str('I'+str(j))].value)
 						# [과목명, 이수학점, 등급, 년도, 학기]
 						area_did[sheet[str('G'+str(j))].value].append([sheet[str('I'+str(j))].value, sheet[str('S'+str(j))].value, sheet[str('U'+str(j))].value, sheet[str('X'+str(j))].value, sheet[str('Z'+str(j))].value])
@@ -380,8 +414,11 @@ def upload_file(request):
 			
 			for data in area_did['전선']:
 				if data[2] != 'P' and data[2] != 'F':
-					major_grade['전선'] += float(score_for_grade[data[2]])*float(data[1])
-					major_grade['전공'] += float(score_for_grade[data[2]])*float(data[1])
+					try:
+						major_grade['전선'] += float(score_for_grade[data[2]])*float(data[1])
+						major_grade['전공'] += float(score_for_grade[data[2]])*float(data[1])
+					except:
+						pass
 			
 			major_grade['전선'] = round(major_grade['전선'] / score_did['전선'], 2)
 			major_grade['전공']	= round(major_grade['전공'] / (score_did['전선']+score_did['전필']), 2)
@@ -389,11 +426,12 @@ def upload_file(request):
 			sorted_subject = [] # 성적순으로 정렬된것 만들어야함
 		
 			GE_not = GE_did_not()
-			sorted_grade = sort_by_grade()
 			Major_sub_not = Major_sub()
 			Major_req_not = list(Major_req(Major_sub_not).values())
 			Major_sub_not = list(Major_sub_not.values())
 			need_change = area_change(area_did['전필'], area_did['전선'])
+			re_list_key = re_list()
+			sorted_grade = sort_by_grade() # 재수강 추천
 
 			context = {'area_did': area_did, 
 					'semester_grade': semester_grade,
@@ -411,10 +449,11 @@ def upload_file(request):
 					'Major_sub_not' : Major_sub_not,
 					'Major_req_not' : Major_req_not,
 					'sorted_grade': sorted_grade, # 이수한 과목 중 성적 낮은것부터 리스트로
-					'need_change': need_change
+					'need_change': need_change,
+					'no_sub': no_sub,
+					're_list_key': re_list_key,
 			}
 			request.session["context"] = context
-
 	# for i in context:
 	# 	print(i," ",context[i])
 	# 	print()
