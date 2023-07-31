@@ -18,6 +18,10 @@ def major_sub_not_list(request):
 	context = request.session['context']
 	return JsonResponse(context['Major_sub_not'], safe=False)
 
+def resub_list(request):
+	context = request.session['context']
+	return JsonResponse(context['sorted_grade'], safe=False) 
+
 def index(request):
 	return render(request, 'reader/index.html')
 
@@ -31,18 +35,47 @@ def delete_file(request):
 	return redirect('/upload')
 
 def sort_by_grade():
-	global subject_did
-	score_for_grade = {'A+': 4.5, 'A0': 4.0, 'B+': 3.5, 'B0':3.0, 
-					'C+': 2.5, 'C0': 2.0, 'D+':1.5, 'D0': 1.0, 'P': 5, 'F': 0}
- 
-	for key in subject_did.keys():
-		subject_did[key] = [subject_did[key][0], subject_did[key][1], score_for_grade[subject_did[key][2]], key]
+    global subject_did, GE_not, no_sub, re_sub
+    score_for_grade = {'A+': 4.5, 'A0': 4.0, 'B+': 3.5, 'B0':3.0, 
+                    'C+': 2.5, 'C0': 2.0, 'D+':1.5, 'D0': 1.0, 'P': 5, 'F': 0}
 
-	value = list(subject_did.values())
-	value = sorted(value, key=lambda x: x[2])
+    did = dict()
+    for key in subject_did.keys():
+        if key[-4:] == '(재수)':
+            continue
+        if key[1:] in no_sub.keys():
+            if key[1:] in re_sub:
+                did[key] = [subject_did[key][0], subject_did[key][1], score_for_grade[subject_did[key][2]], subject_did[key][2], key]
+            continue
+        if key in subject_data.GE['all']:
+            # F아닌데 재수강x 교양 검사
+            try:
+                new = subject_data.GE_change[key[1:]]
+                try:
+                    new2 = subject_data.GE_change[new]
+                    did[key] = [subject_did[key][0], subject_did[key][1], score_for_grade[subject_did[key][2]], subject_did[key][2], key]
+                    continue
+                except:
+                    did[key] = [subject_did[key][0], subject_did[key][1], score_for_grade[subject_did[key][2]], subject_did[key][2], key]
+                    continue
+            except:
+                did[key] = [subject_did[key][0], subject_did[key][1], score_for_grade[subject_did[key][2]], subject_did[key][2], key]
+                continue
+        else:
+            did[key] = [subject_did[key][0], subject_did[key][1], score_for_grade[subject_did[key][2]], subject_did[key][2], key]
 
-	return value
-	
+    value = list(did.values())
+    value = sorted(value, key=lambda x: x[2])
+
+    json_parse = dict()
+    for key in value:
+        # key[-1] => 과목명
+        if key[-3] >= 3:
+            break
+        json_parse[key[-1]] = {'subject': key[-1], 'score': key[-2], 'category': subject_did[key[-1]][0]}
+
+    json_list = list(json_parse.values())
+    return json_list
 
 def GE_did_not():
     # 미이수 과목
@@ -107,25 +140,53 @@ def GE_did_not():
 	for sub in recommend:
 		recommend_GE.append(subject_data.GE_list[sub])
 
+	if(len(recommend_GE)==0):
+		recommend_GE.append({'subject': '<p class="text-danger">미수강한 교필이 없습니다.</p>', 'score': '', 'category': ''})
 	return recommend_GE
+
+def remove_jaesu(text):
+    if text.endswith("(재수)"):
+        text = text[:-4]
+    if text.startswith("★"):
+        text = text[1:]
+    return text
+
+def re_list():
+	global subject_did
+	list_key = []
+	for key in subject_did.keys():
+		if key[-4:] == '(재수)':
+			list_key.append(key[:-4])
+
+	return list_key
 
 def Major_sub():
 	global student, area_did
+
+	if(student['major']!='산업경영공학과'):
+		Major_sub_not = {}
+		Major_sub_not["none"] = {'subject': '<p class="text-danger">산업경영공학과만 지원합니다.</p>', 'score': '', 'category': ''}
+		return Major_sub_not
+	
 	Major_sub_not = copy.deepcopy(subject_data.IME_list)
 	notF = set()
 
 	for i in area_did['전필']:
-		if i[2]!='F':
-			notF.add(copy.deepcopy(i[0]))
+		tmp = remove_jaesu(i[0])
+		notF.add(copy.deepcopy(tmp))
 	for i in area_did['전선']:
-		if i[2]!='F':
-			notF.add(copy.deepcopy(i[0]))
+		tmp = remove_jaesu(i[0])
+		notF.add(copy.deepcopy(tmp))
 
 	for sub in notF:
 		while(sub in subject_data.IME_change):
 			sub = subject_data.IME_change[sub]
 		if(sub in Major_sub_not):
 			del Major_sub_not[sub]
+
+	if(len(Major_sub_not)==0):
+		Major_sub_not["none"] = {'subject': '<p class="text-danger">미수강한 전선이 없습니다.</p>', 'score': '', 'category': ''}
+	
 	return Major_sub_not
 
 def Major_req(Major_sub_not):
@@ -134,7 +195,10 @@ def Major_req(Major_sub_not):
 	
 	Major_req_not = {}
 	Major_req = copy.deepcopy(subject_data.IME_REQ[s_num])
-
+	if(student['major']!='산업경영공학과'):
+		Major_req_not["none"] = {'subject': '<p class="text-danger">산업경영공학과만 지원합니다.</p>', 'score': '', 'category': ''}
+		return Major_req_not
+	
 	for sub in Major_req:
 		while(sub in subject_data.IME_change):
 			sub = subject_data.IME_change[sub]
@@ -142,9 +206,40 @@ def Major_req(Major_sub_not):
 			Major_req_not[sub] = Major_sub_not[sub]
 			del Major_sub_not[sub]
 
+	if(len(Major_req_not)==0):
+		Major_req_not["none"] = {'subject': '<p class="text-danger">미수강한 전필이 없습니다.</p>', 'score': '', 'category': ''}
+
 	return Major_req_not
 
+def area_change(Major_req_did, Major_sub_did):
+	global student
+	s_num = int(student['student_num'][0:4])#학번찾음
+	Major_req = copy.deepcopy(subject_data.IME_REQ[s_num])
+	need_change = []
+	sub_did = set(remove_jaesu(item[0]) for item in Major_sub_did)
+	req_did = set(remove_jaesu(item[0]) for item in Major_req_did)
+	
 
+	if(student['major']!='산업경영공학과'):
+		return need_change
+	
+	for did in Major_req:
+		if(did in sub_did):
+			need_change.append({"before":did+"(전선)", "after":did+"(전필)"})
+		if(did in req_did):
+			req_did.remove(did)
+
+	for did in req_did:
+		need_change.append({"before":did+"(전필)", "after":did+"(전선)"})
+
+	return need_change
+
+def grad_cond():
+	global student
+	s_num = int(student['student_num'][0:4])
+	major = student['major']
+	
+	return subject_data.IME_grad[s_num]
 
 
 
@@ -152,7 +247,7 @@ def Major_req(Major_sub_not):
 
 
 def upload_file(request):
-	global student, area, short_area, score_need_list, score_for_grade, info_category, year, score_need, score_did, subject_did, area_did, semester_grade, semester_subject
+	global student, area, short_area, score_need_list, score_for_grade, info_category, year, score_need, score_did, subject_did, area_did, semester_grade, semester_subject, GE_not, no_sub, re_sub
 	file = request.FILES['uploaded_file']
 	if file:
 		if file.name.endswith('xlsx'):
@@ -171,8 +266,8 @@ def upload_file(request):
 			score_for_grade = {'A+': 4.5, 'A0': 4.0, 'B+': 3.5, 'B0':3.0, 
 							'C+': 2.5, 'C0': 2.0, 'D+':1.5, 'D0': 1.0}
 			info_category = ['major', 'minor', 'student_num', 'grade', 
-						'name', 'score_need', 'score_did']
-			info_idx = ['A2', 'F2', 'J2', 'M2', 'O2', 'Y2', 'AB2']
+						'name', 'score_need', 'score_did', 'admsn']
+			info_idx = ['A2', 'F2', 'J2', 'M2', 'O2', 'Y2', 'AB2', 'Q2']
 			year = ['2015', '2016', '2017', '2018', '2019', '2020', '2021', 
 				'2022', '2023', '2024', '2025', '2026']
 			semester = {'1학기', '2학기'}
@@ -182,6 +277,7 @@ def upload_file(request):
 			score_need = defaultdict(int)	# 영역별 요구 학점
 			score_did = defaultdict(float)	# 영역별 이수 학점
 			subject_did = defaultdict(list)	# 수강한 과목 모두 (이건 하지 말까 고민중 semester_subject를 모아둔 느낌) => 필요하다!! # [영역, 학점, 등급]
+			no_sub = defaultdict(list)
 			subject_didnot = defaultdict(dict) # 수강하지 않은 필수 과목 => set(필수 과목) 해서 discard 하는방식
 			area_did = defaultdict(list) # 영역별 [과목명, 이수학점, 등급, 년도, 학기]
 
@@ -196,8 +292,9 @@ def upload_file(request):
 					semester_subject[str(i)+'_'+str(j)] = list()
 
 			student = dict()
-			for i in range(7):
+			for i in range(8):
 				student[info_category[i]] = sheet[info_idx[i]].value
+			
 
 			ex = set()
 			season_ex = set()
@@ -265,15 +362,24 @@ def upload_file(request):
 							ex_semester = (semester_dict[(sheet[str('X'+str(j))].value, sheet[str('Z'+str(j))].value[0])])
 						except:
 							ex_semester = (str(sheet[str('X'+str(j))].value)+'_'+sheet[str('Z'+str(j))].value)
+						if sheet[str('U'+str(j))].value != 'P' == 'W':
+							continue
 						if sheet[str('U'+str(j))].value != 'P' and sheet[str('U'+str(j))].value != 'F': # F맞으면 학점이 하이폰(-)으로 나오나요?
-							semester_grade[ex_semester]['S'] += int(sheet[str('S'+str(j))].value) # 해당 과목 이수 학점
-							semester_grade[ex_semester]['G'] += int(sheet[str('S'+str(j))].value)*score_for_grade[sheet[str('U'+str(j))].value]
+							try:
+								semester_grade[ex_semester]['S'] += int(sheet[str('S'+str(j))].value) # 해당 과목 이수 학점
+								semester_grade[ex_semester]['G'] += int(sheet[str('S'+str(j))].value)*score_for_grade[sheet[str('U'+str(j))].value]
+							except:
+								pass
 
 						if sheet[str('U'+str(j))].value == 'P':
 							semester_grade[ex_semester]['P'] += int(sheet[str('S'+str(j))].value)
 
 						# [영역, 학점, 등급]
-						subject_did[sheet[str('I'+str(j))].value] = [sheet[str('G'+str(j))].value, sheet[str('S'+str(j))].value, sheet[str('U'+str(j))].value]	
+						
+						subject_did[sheet[str('I'+str(j))].value] = [sheet[str('G'+str(j))].value, sheet[str('S'+str(j))].value, sheet[str('U'+str(j))].value]
+						if sheet[str('U'+str(j))].value[-4:] == 'F' or sheet[str('S'+str(j))].value == '-':
+							no_sub[sheet[str('I'+str(j))].value[1:]] = [sheet[str('G'+str(j))].value, sheet[str('S'+str(j))].value, sheet[str('U'+str(j))].value]
+						
 						semester_subject[ex_semester].append(sheet[str('I'+str(j))].value)
 						# [과목명, 이수학점, 등급, 년도, 학기]
 						area_did[sheet[str('G'+str(j))].value].append([sheet[str('I'+str(j))].value, sheet[str('S'+str(j))].value, sheet[str('U'+str(j))].value, sheet[str('X'+str(j))].value, sheet[str('Z'+str(j))].value])
@@ -325,15 +431,21 @@ def upload_file(request):
 				if sub[-4:] == "(재수)":
 					re_sub.add(sub)
 					re_sub.add(sub[:-4])
-					if subject_did[sub][-1] != 'P':
-						ratio['등급'][grade_key[subject_did[sub][-1]]] += 1
-						cnt += 1
+					try:
+						if subject_did[sub][-1] != 'P':
+							ratio['등급'][grade_key[subject_did[sub][-1]]] += 1
+							cnt += 1
+					except:
+						pass
 
 			for sub in subject_did:
 				if sub[1:] not in re_sub and sub not in re_sub: # 별과목, 과목 인지 몰라욤
-					if subject_did[sub][-1] != 'P':
-						ratio['등급'][grade_key[subject_did[sub][-1]]] += 1
-						cnt += 1
+					try:
+						if subject_did[sub][-1] != 'P':
+							ratio['등급'][grade_key[subject_did[sub][-1]]] += 1
+							cnt += 1
+					except:
+						pass
 					
 			for key in ratio['등급'].keys():
 				ratio['등급'][key] = round(ratio['등급'][key] / cnt * 100, 2)
@@ -349,8 +461,11 @@ def upload_file(request):
 			
 			for data in area_did['전선']:
 				if data[2] != 'P' and data[2] != 'F':
-					major_grade['전선'] += float(score_for_grade[data[2]])*float(data[1])
-					major_grade['전공'] += float(score_for_grade[data[2]])*float(data[1])
+					try:
+						major_grade['전선'] += float(score_for_grade[data[2]])*float(data[1])
+						major_grade['전공'] += float(score_for_grade[data[2]])*float(data[1])
+					except:
+						pass
 			
 			major_grade['전선'] = round(major_grade['전선'] / score_did['전선'], 2)
 			major_grade['전공']	= round(major_grade['전공'] / (score_did['전선']+score_did['전필']), 2)
@@ -358,13 +473,12 @@ def upload_file(request):
 			sorted_subject = [] # 성적순으로 정렬된것 만들어야함
 		
 			GE_not = GE_did_not()
-			sorted_grade = sort_by_grade()
+			#sorted_grade = sort_by_grade()
 			Major_sub_not = Major_sub()
 			Major_req_not = list(Major_req(Major_sub_not).values())
 			Major_sub_not = list(Major_sub_not.values())
-   
-			for i in range(100) : 
-				Major_sub_not.append(Major_sub_not[0])	
+			need_change = area_change(area_did['전필'], area_did['전선'])
+			sorted_grade = sort_by_grade() # 재수강 추천
 
 			context = {'area_did': area_did, 
 					'semester_grade': semester_grade,
@@ -381,7 +495,10 @@ def upload_file(request):
 					'GE_not': GE_not,
 					'Major_sub_not' : Major_sub_not,
 					'Major_req_not' : Major_req_not,
-					'sorted_grade': sorted_grade # 이수한 과목 중 성적 낮은것부터 리스트로
+					'grad' : grad_cond(),
+					'sorted_grade': sorted_grade, # 이수한 과목 중 성적 낮은것부터 리스트로
+					'need_change': need_change,
+					'no_sub': no_sub,
 			}
 			request.session["context"] = context
 

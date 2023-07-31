@@ -2,40 +2,41 @@ var i1 = 0;
 var width1 = 0;
 var id1;
 var elem1 = document.getElementById("progress-bar1");
-var max1 = elem1.getAttribute('score_did')/parseFloat(elem1.getAttribute('score_need'))*100;
-if(max1 > 100) max1 = 100
+var max1 = elem1.getAttribute('score_did') / parseFloat(elem1.getAttribute('score_need')) * 100;
+if (max1 > 100) max1 = 100
 
 var i2 = 0;
 var width2 = 0;
 var id2;
 var elem2 = document.getElementById("progress-bar2");
-var max2 = elem2.getAttribute('score_did')/parseFloat(elem2.getAttribute('score_need'))*100;
-if(max2 > 100) max2 = 100
+var max2 = elem2.getAttribute('score_did') / parseFloat(elem2.getAttribute('score_need')) * 100;
+if (max2 > 100) max2 = 100
 
 var i3 = 0;
 var width3 = 0;
 var id3;
 var elem3 = document.getElementById("progress-bar3");
-var max3 = elem3.getAttribute('score_did')/parseFloat(elem3.getAttribute('score_need'))*100;
-if(max3 > 100) max3 = 100
+var max3 = elem3.getAttribute('score_did') / parseFloat(elem3.getAttribute('score_need')) * 100;
+if (max3 > 100) max3 = 100
 
 var i4 = 0;
 var width4 = 0;
 var id4;
 var elem4 = document.getElementById("progress-bar4");
-if(elem4 != null){
-    max4 = elem4.getAttribute('score_did')/parseFloat(elem4.getAttribute('score_need'))*100;
-    if(max4 > 100) max4 = 100
+if (elem4 != null) {
+    max4 = elem4.getAttribute('score_did') / parseFloat(elem4.getAttribute('score_need')) * 100;
+    if (max4 > 100) max4 = 100
 }
 
 var i5 = 0;
 var width5 = 0;
 var id5;
 var elem5 = document.getElementById("progress-bar5");
-if(elem5 != null){
-    max5 = elem5.getAttribute('score_did')/parseFloat(elem5.getAttribute('score_need'))*100;
-    if(max5 > 100) max5 = 100
+if (elem5 != null) {
+    max5 = elem5.getAttribute('score_did') / parseFloat(elem5.getAttribute('score_need')) * 100;
+    if (max5 > 100) max5 = 100
 }
+
 
 function frame1() {
     if (width1 >= max1) {
@@ -94,7 +95,7 @@ function frame5() {
 }
 
 function start1() {
-    elem1.style.width= "0%";
+    elem1.style.width = "0%";
     if (i1 == 0) {
         i1 = 1;
         id1 = setInterval(frame1, 10);
@@ -102,7 +103,7 @@ function start1() {
 }
 
 function start2() {
-    elem2.style.width= "0%";
+    elem2.style.width = "0%";
     if (i2 == 0) {
         i2 = 1;
         id2 = setInterval(frame2, 10);
@@ -110,7 +111,7 @@ function start2() {
 }
 
 function start3() {
-    elem3.style.width= "0%";
+    elem3.style.width = "0%";
     if (i3 == 0) {
         i3 = 1;
         id3 = setInterval(frame3, 10);
@@ -118,7 +119,7 @@ function start3() {
 }
 
 function start4() {
-    elem4.style.width= "0%";
+    elem4.style.width = "0%";
     if (i4 == 0) {
         i4 = 1;
         id4 = setInterval(frame4, 10);
@@ -126,7 +127,7 @@ function start4() {
 }
 
 function start5() {
-    elem5.style.width= "0%";
+    elem5.style.width = "0%";
     if (i5 == 0) {
         i5 = 1;
         id5 = setInterval(frame5, 10);
@@ -136,10 +137,10 @@ function start5() {
 start1(); // 자동 실행
 start2(); // 자동 실행
 start3(); // 자동 실행
-if(elem4 != null){
+if (elem4 != null) {
     start4();
 }
-if(elem5 != null){
+if (elem5 != null) {
     start5();
 }
 
@@ -181,6 +182,15 @@ new Chart(doughnutChart, {
 });
 
 /*line chart*/
+// const dataArr = [linetChart.getAttribute('1_1'), linetChart.getAttribute('1_2'), linetChart.getAttribute('2_1'), linetChart.getAttribute('2_2'), linetChart.getAttribute('3_1'), linetChart.getAttribute('3_2'), linetChart.getAttribute('4_1'), linetChart.getAttribute('4_2')];
+// console.log(dataArr);
+// const dataMax = Math.max(...dataArr);
+// console.log(dataMax);
+// const maxVal = Math.max(4.5);
+// console.log(maxVal);
+
+
+
 const linetChart = document.querySelector("#line-chart");
 const lineChartData = new Chart(linetChart, {
     type: "line",
@@ -196,9 +206,12 @@ const lineChartData = new Chart(linetChart, {
             "4-2",
         ],
         datasets: [{
-            data: [linetChart.getAttribute('1_1'), linetChart.getAttribute('1_2'), linetChart.getAttribute('2_1'), linetChart.getAttribute('2_2'), linetChart.getAttribute('3_1'), linetChart.getAttribute('3_2'), linetChart.getAttribute('4_1'), linetChart.getAttribute('4_2')],
-        }, ],
+                data: [linetChart.getAttribute('1_1'), linetChart.getAttribute('1_2'), linetChart.getAttribute('2_1'), linetChart.getAttribute('2_2'), linetChart.getAttribute('3_1'), linetChart.getAttribute('3_2'), linetChart.getAttribute('4_1'), linetChart.getAttribute('4_2')],
+            },
+
+        ],
     },
+
     options: {
         plugins: {
             legend: {
@@ -208,17 +221,15 @@ const lineChartData = new Chart(linetChart, {
         Responsive: false,
         maintainAspectRatio: false,
         scales: {
-            yAxes: [{
-              ticks: {
+            y: {
                 beginAtZero: true,
-                fontSize: 14,
                 min: 0,
                 max: 4.5,
-              },
-              afterFit: function(scaleInstance) {
-                scaleInstance.paddingTop = 40; // 위쪽 패딩, 그래프 잘림 수정
-              }
-            }]
-          }
-    },
-});
+                stepSize: 0.5,
+                ticks: {
+                    fontSize: 14,
+                },
+            },
+        },
+    }
+})

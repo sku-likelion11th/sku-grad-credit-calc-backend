@@ -284,7 +284,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             paginationContainer.appendChild(page);
-            console.log(totalPages)
 
             if (showArrows) {
                 // 현재 페이지가 4 이하일 때는 항상 1, 2, 3, 4만 표시

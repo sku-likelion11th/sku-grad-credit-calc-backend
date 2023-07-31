@@ -191,6 +191,10 @@
         }
         /* 재수강 추천리스트 */
         
+        table tr {
+            word-break: keep-all;
+        }
+        
         .RecommendedList table tr {
             padding: 0 10px;
         }
