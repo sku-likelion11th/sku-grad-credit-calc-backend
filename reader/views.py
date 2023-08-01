@@ -167,15 +167,6 @@ def remove_jaesu(text):
         text = text[1:]
     return text
 
-def re_list():
-	global subject_did
-	list_key = []
-	for key in subject_did.keys():
-		if key[-4:] == '(재수)':
-			list_key.append(key[:-4])
-
-	return list_key
-
 def Major_sub():
 	global student, area_did
 
@@ -210,10 +201,10 @@ def Major_req(Major_sub_not):
 	s_num = int(student['student_num'][0:4])#학번찾음
 	
 	Major_req_not = {}
-	Major_req = copy.deepcopy(subject_data.IME_REQ[s_num])
 	if(student['major']!='산업경영공학과'):
 		Major_req_not["none"] = {'subject': '<p class="text-danger">산업경영공학과만 지원합니다.</p>', 'score': '', 'category': ''}
 		return Major_req_not
+	Major_req = copy.deepcopy(subject_data.IME_REQ[s_num])
 	
 	for sub in Major_req:
 		while(sub in subject_data.IME_change):
