@@ -20,9 +20,7 @@ GE_list = {'기초글쓰기': {'subject': '기초글쓰기', 'score': 2, 'catego
            '현대인과성경': {'subject':'현대인과성경', 'score':3, 'category':'교필'},
            '현대인과기독교': {'subject':'현대인과기독교', 'score':3, 'category':'교필'},
            '대학생활과진로': {'subject':'대학생활과진로', 'score':1, 'category':'교필'},
-           '파이데이아포럼': {'subject':'파이데이아포럼', 'score':1, 'category':'교필'},}
-
-com_co = {'컴퓨팅사고와 코딩기초': {'subject': '컴퓨팅사고와 코딩기초', 'score': 2, 'category': '교필'}}
+           '컴퓨팅사고와 코딩기초': {'subject': '컴퓨팅사고와 코딩기초', 'score': 2, 'category': '교필'},}
 
 GE_change = {
 	'Lab(1)': '영어커뮤니케이션(1)',

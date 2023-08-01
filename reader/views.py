@@ -34,27 +34,13 @@ def delete_file(request):
 	del request.session['context']
 	return redirect('/upload')
 
+# def retake_list():
+
+
 def sort_by_grade():
 	global subject_did, GE_not, no_sub, re_sub
 	score_for_grade = {'A+': 4.5, 'A0': 4.0, 'B+': 3.5, 'B0':3.0, 
 					'C+': 2.5, 'C0': 2.0, 'D+':1.5, 'D0': 1.0, 'P': 5, 'F': 0, 'W': 10}
-	# new logic
-	# 아침에 20분정도 짠거라 뭐 없음 민지야 부탁한다!!!
-	# 1. 먼저 F, D0, D+, C0, C+인 과목들을 전부 찾아서 리스트에 저장(낮은 점수 리스트)
-	# low_score_list = list()
-	# for sub in subject_did.keys():
-	# 	if score_for_grade[subject_did[sub][2]] <= 2.5:
-	# 		low_score_list.append(remove_jaesu(sub))
-	# 2. 재수강한 과목들을 전부 찾아서 리스트에 저장
-	
-	# 3. 위의 리스트 두개를 대조해서, (재수)가 붙어있는 재수강 리스트는 모두 제외
-	# result_list = list()
-	# for item in low_score_list:
-	# 	if item not in re_sub_list:
-	# 		result_list.append(item)
-	# 4. 낮은 점수 리스트의 과목 중 재수강을 했을 당시에 과목명이 바뀌었다면, 해당 과목도 제외 
-	# 5. 낮은 점수 리스트를 리턴
-	# new logic end
  
 	low_score_list = list()
 	for sub in subject_did.keys():
@@ -112,88 +98,70 @@ def sort_by_grade():
 	#print(json_list)
 	return json_list
 
-def GE_did_not():
-    # 미이수 과목
+# def sort_by_grade():
+#    global subject_did, GE_not, no_sub, re_sub
+#    score_for_grade = {'A+': 4.5, 'A0': 4.0, 'B+': 3.5, 'B0':3.0, 
+#                'C+': 2.5, 'C0': 2.0, 'D+':1.5, 'D0': 1.0, 'P': 5, 'F': 0}
+# 	# 영민's logic
+# 	# 1. 먼저 F, D0, D+, C0, C+인 과목들을 전부 찾아서 리스트에 저장(낮은 점수 리스트)
+#    low_score_list = list()
+#    for sub in subject_did.keys():
+#       if score_for_grade[subject_did[sub][2]] <= 2.5:
+#          low_score_list.append(sub)
+#    # 2. 재수강한 과목들을 전부 찾아서 리스트에 저장
+#    re_sub_list = list()
+#    for sub in subject_did.keys():
+#       if sub[-4:] == '(재수)':
+#          re_sub_list.append(remove_jaesu(sub))
+#    # 3. 위의 리스트 두개를 대조해서, (재수)가 붙어있는 재수강 리스트는 모두 제외
+#    result_list = list()
+#    for item in low_score_list:
+#       if remove_jaesu(item) not in re_sub_list:
+#          result_list.append(item)
+#    # 4. 낮은 점수 리스트의 과목 중 재수강을 했을 당시에 과목명이 바뀌었다면, 해당 과목도 제외
+
+#    for i in range(2):
+#       for i, item in enumerate(result_list):
+#          if remove_jaesu(item) in subject_data.GE_change.keys():
+#             result_list[i] = subject_data.GE_change[remove_jaesu(item)]
+#          elif remove_jaesu(item) in subject_data.IME_change.keys():
+#             result_list[i] = subject_data.IME_change[remove_jaesu(item)]
+#    print(low_score_list)
+#    print('-------------------------------------')
+#    print(re_sub_list)
+#    print('-------------------------------------')
+#    print(result_list)
+#    print('-------------------------------------')
+#    #5. 낮은 점수 리스트를 가지고 json화 시켜서 돌리기하면 끗
+#    #6. "해줘"
+#    #영민's logic end
+
+def GE_not_list():
 	global student, area_did
-	s_num = int(student['student_num'][2:4]) # 학번 필요한가? 최신(이름 바뀐) 과목 추천해주면 될듯
-	r_dict = copy.deepcopy(subject_data.GE)
-	com_co = {'산업경영공학과', '컴퓨터공학과', '미디어소프트웨어학과'}	
- 
-	if s_num >= 21:
-		r_dict['other_cnt'] = [0, 1]
+	GE_not = copy.deepcopy(subject_data.GE_list)
+	GE_did = set()
+	no_com_co = {'산업경영공학과', '컴퓨터공학과', '미디어소프트웨어학과'}	
+
+	for i in area_did['교필']:
+		tmp = remove_jaesu(i[0])
+		GE_did.add(copy.deepcopy(tmp))
+	print(GE_did)
+
+	for sub in GE_did:
+		while(sub in subject_data.GE_change):
+			sub = subject_data.GE_change[sub]
+		print(sub)
+		if(sub in GE_not):
+			print('del')
+			del GE_not[sub]
+
+	if int(student['student_num'][2:4]) < 21 or student['major'] in no_com_co:
+		del GE_not['컴퓨팅사고와 코딩기초']
 	
-	recommend = []
- 
-	for sub in area_did['교필']:
-		if sub[2] != 'F':
-			if sub[0] in r_dict['English']:
-				r_dict['English'].remove(sub[0])
-				r_dict['English_cnt'][0] += 1
-
-			elif sub[0][:-4] in r_dict['English']:
-				r_dict['English'].remove(sub[0][:-4])
-				r_dict['English_cnt'][0] += 1
-
-			elif sub[0] in r_dict['other']:
-				r_dict['other'].remove(sub[0])
-				r_dict['other_cnt'][0] += 1
-			elif sub[0][:-4] in r_dict['other']:
-				r_dict['other'].remove(sub[0][:-4])
-				r_dict['other_cnt'][0] += 1
-			else:
-				try:
-					if r_dict[sub[0]]:
-						r_dict[sub[0]][0] += 1
-				except:
-					pass
-	for key in r_dict['for_loop'].keys():
-		r_dict['for_loop'][key]	= max(r_dict[key][1] - r_dict[key][0], 0) # 이수해야하는 만큼 만족하지 못하면 양수 들어감
-
-	for key in r_dict['one_point']:
-		for i in range(r_dict['for_loop'][key]):
-			recommend.append(key) # 1점짜리 추천
-   
-	English = []
-	for sub in r_dict['English']:
-		English.append(sub) # set 자료형은 인덱싱 불가
-	English = English[::-1] # 거꾸로 돌림
-  
-	other = []
-	if '대학생활과진로' in r_dict['other']:
-		r_dict['for_loop']['other_cnt'] = 1
-	else:
-		r_dict['for_loop']['other_cnt'] = 0
-	for sub in r_dict['other']:
-		other.append(sub) # 상동
-
-	other = other[::-1] # 상동
-
-	for i in range(r_dict['for_loop']['English_cnt']):
-		recommend.append(English[i])
-	for i in range(r_dict['for_loop']['other_cnt']):
-		recommend.append(other[i])
+	if(len(GE_not)==0):
+			GE_not["none"] = {'subject': '<p class="text-danger">미수강한 교필이 없습니다.</p>', 'score': '', 'category': ''}
 	
-	flag = 0 # 미수강
-	if s_num < 21:
-		flag = 1  
-	if student['major'] in com_co:
-		flag = 1
-	for sub in area_did['교필']:
-		if remove_jaesu(sub[0]) == '컴퓨팅사고와 코딩기초' and subject_did[sub[0]][1] != '-': # 수강 했음
-			flag = 1
-   
-   
-	recommend_GE = []
-	if not flag:
-		#컴코 안들었을때 코드를 여기다가 짜세요
-		recommend_GE.append({'subject': '컴퓨팅사고와 코딩기초', 'score': 2, 'category': '교필'})
-     
-	# for sub in recommend:
-	# 	recommend_GE.append(subject_data.com_co[sub])
-
-	if(len(recommend_GE)==0):
-		recommend_GE.append({'subject': '<p class="text-danger">미수강한 교필이 없습니다.</p>', 'score': '', 'category': ''})
-	return recommend_GE
+	return GE_not
 
 def remove_jaesu(text):
     if text.endswith("(재수)"):
@@ -220,16 +188,16 @@ def Major_sub():
 		return Major_sub_not
 	
 	Major_sub_not = copy.deepcopy(subject_data.IME_list)
-	notF = set()
+	Ms_did = set()
 
 	for i in area_did['전필']:
 		tmp = remove_jaesu(i[0])
-		notF.add(copy.deepcopy(tmp))
+		Ms_did.add(copy.deepcopy(tmp))
 	for i in area_did['전선']:
 		tmp = remove_jaesu(i[0])
-		notF.add(copy.deepcopy(tmp))
+		Ms_did.add(copy.deepcopy(tmp))
 
-	for sub in notF:
+	for sub in Ms_did:
 		while(sub in subject_data.IME_change):
 			sub = subject_data.IME_change[sub]
 		if(sub in Major_sub_not):
@@ -530,7 +498,7 @@ def upload_file(request):
     
 			sorted_subject = [] # 성적순으로 정렬된것 만들어야함
 		
-			GE_not = GE_did_not()
+			GE_not = list(GE_not_list().values())
 			#sorted_grade = sort_by_grade()
 			Major_sub_not = Major_sub()
 			Major_req_not = list(Major_req(Major_sub_not).values())
