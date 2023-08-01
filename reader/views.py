@@ -46,10 +46,7 @@ def sort_by_grade():
 	# 	if score_for_grade[subject_did[sub][2]] <= 2.5:
 	# 		low_score_list.append(remove_jaesu(sub))
 	# 2. 재수강한 과목들을 전부 찾아서 리스트에 저장
-	# re_sub_list = list()
-	# for sub in subject_did.keys():
-	# 	if sub[-4:] == '(재수)':
-	# 		re_sub_list.append(remove_jaesu(sub))
+	
 	# 3. 위의 리스트 두개를 대조해서, (재수)가 붙어있는 재수강 리스트는 모두 제외
 	# result_list = list()
 	# for item in low_score_list:
@@ -58,31 +55,48 @@ def sort_by_grade():
 	# 4. 낮은 점수 리스트의 과목 중 재수강을 했을 당시에 과목명이 바뀌었다면, 해당 과목도 제외 
 	# 5. 낮은 점수 리스트를 리턴
 	# new logic end
+ 
+	low_score_list = list()
+	for sub in subject_did.keys():
+		if score_for_grade[subject_did[sub][2]] <= 2.5:
+			low_score_list.append(remove_jaesu(sub))
+   
 	did = dict()
 	for key in subject_did.keys():
 		if key[-4:] == '(재수)':
 			continue
-		if key[1:] in no_sub.keys():
-			if key[1:] in re_sub:
-				did[key] = [subject_did[key][0], subject_did[key][1], score_for_grade[subject_did[key][2]], subject_did[key][2], key]
+		elif key[1:] in re_sub or key in re_sub: # F인데 재수강 했음 or 그냥 재수강 했음
 			continue
-		if key in subject_data.GE['all']:
-			# F아닌데 재수강x 교양 검사
-			try:
-				new = subject_data.GE_change[key[1:]]
-				try:
-					new2 = subject_data.GE_change[new]
-					did[key] = [subject_did[key][0], subject_did[key][1], score_for_grade[subject_did[key][2]], subject_did[key][2], key]
-					continue
-				except:
-					did[key] = [subject_did[key][0], subject_did[key][1], score_for_grade[subject_did[key][2]], subject_did[key][2], key]
-					continue
-			except:
-				did[key] = [subject_did[key][0], subject_did[key][1], score_for_grade[subject_did[key][2]], subject_did[key][2], key]
-				continue
 		else:
-			did[key] = [subject_did[key][0], subject_did[key][1], score_for_grade[subject_did[key][2]], subject_did[key][2], key]
-
+			if key[1:] in subject_data.GE_change.keys():
+				new = key[1:]
+				try:
+					while subject_data.GE_change[new]:
+						new = subject_data.GE_change[new]
+				except:
+					for key2 in subject_did.keys():
+						if new == key2:
+							new = 0
+							break
+					if new:
+						did[key] = [subject_did[key][0], subject_did[key][1], score_for_grade[subject_did[key][2]], subject_did[key][2], key]
+			elif key in subject_data.GE_change.keys():
+				new = key
+				try:
+					while subject_data.GE_change[new]:
+						new = subject_data.GE_change[new]
+				except:
+					for key2 in subject_did.keys():
+						if new == key2:
+							new = 0
+							break
+					if new:
+						did[key] = [subject_did[key][0], subject_did[key][1], score_for_grade[subject_did[key][2]], subject_did[key][2], key]
+       
+			else:
+				did[key] = [subject_did[key][0], subject_did[key][1], score_for_grade[subject_did[key][2]], subject_did[key][2], key]
+		
+   
 	value = list(did.values())
 	value = sorted(value, key=lambda x: x[2])
 
@@ -448,8 +462,8 @@ def upload_file(request):
 			cnt = 0
 			for sub in subject_did:
 				if sub[-4:] == "(재수)":
-					re_sub.add(sub)
-					re_sub.add(sub[:-4])
+					re_sub.add(sub) # 과목명(재수)
+					re_sub.add(sub[:-4]) # 과목명
 					try:
 						if subject_did[sub][-1] != 'P':
 							ratio['등급'][grade_key[subject_did[sub][-1]]] += 1
