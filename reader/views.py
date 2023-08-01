@@ -109,7 +109,7 @@ def sort_by_grade():
 		json_parse[key[-1]] = {'subject': key[-1], 'score': key[-2], 'category': subject_did[key[-1]][0]}
 
 	json_list = list(json_parse.values())
-	print(json_list)
+	#print(json_list)
 	return json_list
 
 def GE_did_not():

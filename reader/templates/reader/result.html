@@ -167,8 +167,13 @@
                 <div class="RequiredChangeList">
                     <div class="title">이수구분변경 필요 리스트</div>
                     <ul>
-                        <li>제품기획및개발(전선) <i class="bi bi-caret-right-fill"></i> 제품기획및개발(전필)</li>
-                    </ul>
+                        {% for change in need_change %}
+                        <li>{{change.before}} <i class="bi bi-caret-right-fill"></i> {{change.after}}</li>
+                        {% endfor %}
+                        {% if student.major != '산업경영공학과' %}
+                            <li class="text-danger">* 산업경영공학과만 지원합니다.</li>
+                        {% endif%}
+                        </ul>
                 </div>
             </section>
             <!-- Section2 -->
@@ -264,13 +269,13 @@
                 <!-- 졸업 요구사항 -->
                 <div class="GraduationRequirements">
                     <div class="title graduRe">졸업 요구사항</div>
-                    <ul>
-                        <li>졸업작품</li>
-                        <li>졸업논문</li>
-                        <li>품질경영기사</li>
-                        <li>토익 800점 이상</li>
-                        <li>S-point 12포인트</li>
-                    </ul>
+                    {% if student.major != '산업경영공학과' %}
+                        <li class="text-danger">* 산업경영공학과만 지원합니다.</li>
+                    {% else %}
+                        {% for data in grad.선택조건 %}
+                            <li>{{data}}</li>
+                        {% endfor %}
+                    {% endif %}
                 </div>
             </section>
         </div>
