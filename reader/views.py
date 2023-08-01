@@ -175,16 +175,12 @@ def GE_did_not():
 	
 	flag = 0 # 미수강
 	if s_num < 21:
-		flag = 1
-  
-	print("21미만?",flag)
+		flag = 1  
 	if student['major'] in com_co:
 		flag = 1
-	print("미소산경컴공?",flag)
 	for sub in area_did['교필']:
-		if remove_jaesu(sub[1]) == '컴퓨팅사고와 코딩기초' and subject_did[sub[1]][1] != '-': # 수강 했음
+		if remove_jaesu(sub[0]) == '컴퓨팅사고와 코딩기초' and subject_did[sub[0]][1] != '-': # 수강 했음
 			flag = 1
-	print("컴코들음?",flag)
    
    
 	recommend_GE = []
