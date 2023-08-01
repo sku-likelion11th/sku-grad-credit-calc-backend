@@ -64,6 +64,20 @@
                                 <button type="button" class="modalBtn btn text-break" data-bs-toggle="modal" data-bs-target="#exampleModal">이수과목 리스트 보기</button>
                             </span>
                         </div>
+                        <!-- 교양 -->
+                        <div class="general d-flex justify-content-between align-items-center credits">
+                            <span class="fs-6 generaltext" style="width:55px">교양</span>
+                            <span class="score">{{ score_did.교필|add:score_did.교선 }} / {{ score_need.교양요구학점 }}점</span>
+                            <div id="progress-container3" class="progress-container">
+                                <div id="progress-bar3" class="progress-bar" score_did="{{score_did.교필|add:score_did.교선}}" score_need="{{score_need.교양요구학점}}"></div>
+                            </div>
+                        </div>
+
+                        <!-- 교필+교선 -->
+                        <div class="generalsub d-flex justify-content-center align-items-center credits">
+                            <i class="bi bi-check2-circle"></i>
+                            <span style="font-size: 13px; margin-left: 3px;">  교필({{score_did.교필|floatformat:0}}) + 교선({{score_did.교선|floatformat:0}}) = {{ score_did.교필|add:score_did.교선 }}</span>
+                        </div>
                         <!-- 전공필수 -->
                         <div class="d-flex justify-content-between align-items-center credits">
                             <span class="fs-6">전공필수</span>
@@ -79,20 +93,6 @@
                             <div id="progress-container2" class="progress-container">
                                 <div id="progress-bar2" class="progress-bar" score_did="{{score_did.전선}}" score_need="{{score_need.전선요구학점}}"></div>
                             </div>
-                        </div>
-                        <!-- 교양 -->
-                        <div class="general d-flex justify-content-between align-items-center credits">
-                            <span class="fs-6 generaltext" style="width:55px">교양</span>
-                            <span class="score">{{ score_did.교필|add:score_did.교선 }} / {{ score_need.교양요구학점 }}점</span>
-                            <div id="progress-container3" class="progress-container">
-                                <div id="progress-bar3" class="progress-bar" score_did="{{score_did.교필|add:score_did.교선}}" score_need="{{score_need.교양요구학점}}"></div>
-                            </div>
-                        </div>
-
-                        <!-- 교필+교선 -->
-                        <div class="generalsub d-flex justify-content-center align-items-center credits">
-                            <i class="bi bi-check2-circle"></i>
-                            <span style="font-size: 13px; margin-left: 3px;">  교필({{score_did.교필|floatformat:0}}) + 교선({{score_did.교선|floatformat:0}}) = {{ score_did.교필|add:score_did.교선 }}</span>
                         </div>
                         {% if score_need.부전공요구학점 != 0 %}
                         <!-- 부전 -->
@@ -439,39 +439,9 @@
                         </div>
                         <div class="modal-score text-end fs-5 pt-2 px-3 fw-bold">{{ score_did.부전|floatformat:0}} / {{ score_need.부전공요구학점 }} 학점</div>
                     </div>
-                    {% endif %} {% if score_need.복수전공필수요구학점 != 0 %}
-                    <!-- 복수전공필수 -->
-                    <div class="modal-section">
-                        <div class="modal-title fs-5 mb-2 fw-bold">복수전공필수</div>
-                        <div>
-                            <table class="modal-table">
-                                <tbody class="modal-mrTable">
-                                    <tr class='modal-thead fw-bold fs-6 mb-2'>
-                                        <th>이수구분</th>
-                                        <th>강좌명</th>
-                                        <th>학점</th>
-                                        <th>등급</th>
-                                        <th>년도</th>
-                                        <th>학기</th>
-                                    </tr>
-                                    <!-- 복필 -->
-                                    {% for course in area_did.복필 %}
-                                    <tr>
-                                        <td>복필</td>
-                                        <td>{{ course.0 }}</td>
-                                        <td>{{ course.1 }}</td>
-                                        <td>{{ course.2 }}</td>
-                                        <td>{{ course.3 }}</td>
-                                        <td>{{ course.4 }}</td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="modal-score text-end fs-5 pt-2 px-3 fw-bold">{{ score_did.복필|floatformat:0}} / {{ score_need.복수전공필수요구학점 }}점</div>
-                    </div>
-                    {% endif %} {% if score_need.복수전공요구학점 != 0 %}
-                    <!-- 복수전공필수 -->
+                    {% endif %}
+                    {% if score_need.복수전공요구학점 != 0 %}
+                    <!-- 복수전공선택 -->
                     <div class="modal-section">
                         <div class="modal-title fs-5 mb-2 fw-bold">복수필수</div>
                         <div>
@@ -500,6 +470,38 @@
                             </table>
                         </div>
                         <div class="modal-score text-end fs-5 pt-2 px-3 fw-bold">{{ score_did.복전|floatformat:0}} / {{ score_need.복수전공요구학점 }}점</div>
+                    </div>
+                    {% endif %}
+                    {% if score_did.일선 != 0 %}
+                    <!-- 일반선택 -->
+                    <div class="modal-section">
+                        <div class="modal-title fs-5 mb-2 fw-bold">일반선택</div>
+                        <div>
+                            <table class="modal-table">
+                                <tbody class="modal-mrTable">
+                                    <tr class='modal-thead fw-bold fs-6 mb-2'>
+                                        <th>이수구분</th>
+                                        <th>강좌명</th>
+                                        <th>학점</th>
+                                        <th>등급</th>
+                                        <th>년도</th>
+                                        <th>학기</th>
+                                    </tr>
+                                    <!-- 일선 -->
+                                    {% for course in area_did.일선 %}
+                                    <tr>
+                                        <td>일선</td>
+                                        <td>{{ course.0 }}</td>
+                                        <td>{{ course.1 }}</td>
+                                        <td>{{ course.2 }}</td>
+                                        <td>{{ course.3 }}</td>
+                                        <td>{{ course.4 }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-score text-end fs-5 pt-2 px-3 fw-bold">{{ score_did.일선|floatformat:0}} 학점</div>
                     </div>
                     {% endif %}
                 </div>
