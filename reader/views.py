@@ -34,9 +34,6 @@ def delete_file(request):
 	del request.session['context']
 	return redirect('/upload')
 
-# def retake_list():
-
-
 def sort_by_grade():
 	global subject_did, GE_not, no_sub, re_sub
 	score_for_grade = {'A+': 4.5, 'A0': 4.0, 'B+': 3.5, 'B0':3.0, 
@@ -93,6 +90,9 @@ def sort_by_grade():
 		if key[-3] >= 3:
 			break
 		json_parse[key[-1]] = {'subject': key[-1], 'score': key[-2], 'category': subject_did[key[-1]][0]}
+	
+	if(len(json_parse)==0):
+			json_parse["none"] = {'subject': '<p class="text-danger">재수강할 과목이 없습니다.</p>', 'score': '', 'category': ''}
 
 	json_list = list(json_parse.values())
 	#print(json_list)
@@ -145,17 +145,14 @@ def GE_not_list():
 	for i in area_did['교필']:
 		tmp = remove_jaesu(i[0])
 		GE_did.add(copy.deepcopy(tmp))
-	print(GE_did)
 
 	for sub in GE_did:
 		while(sub in subject_data.GE_change):
 			sub = subject_data.GE_change[sub]
-		print(sub)
 		if(sub in GE_not):
-			print('del')
 			del GE_not[sub]
 
-	if int(student['student_num'][2:4]) < 21 or student['major'] in no_com_co:
+	if (int(student['student_num'][2:4]) < 21 or student['major'] in no_com_co) and ('컴퓨팅사고와 코딩기초' in GE_not):
 		del GE_not['컴퓨팅사고와 코딩기초']
 	
 	if(len(GE_not)==0):
@@ -528,9 +525,9 @@ def upload_file(request):
 			}
 			request.session["context"] = context
 
-	# for i in context:
-	# 	print(i," ",context[i])
-	# 	print()
+	for i in context:
+		print(i," ",context[i])
+		print()
 
 	return redirect('/upload')
 
