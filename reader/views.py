@@ -63,6 +63,8 @@ def sort_by_grade():
    
 	did = dict()
 	for key in subject_did.keys():
+		if key[1:] == '채플':
+			continue
 		if key[-4:] == '(재수)':
 			continue
 		elif key[1:] in re_sub or key in re_sub: # F인데 재수강 했음 or 그냥 재수강 했음
@@ -95,7 +97,6 @@ def sort_by_grade():
        
 			else:
 				did[key] = [subject_did[key][0], subject_did[key][1], score_for_grade[subject_did[key][2]], subject_did[key][2], key]
-		
    
 	value = list(did.values())
 	value = sorted(value, key=lambda x: x[2])
@@ -108,6 +109,7 @@ def sort_by_grade():
 		json_parse[key[-1]] = {'subject': key[-1], 'score': key[-2], 'category': subject_did[key[-1]][0]}
 
 	json_list = list(json_parse.values())
+	print(json_list)
 	return json_list
 
 def GE_did_not():
@@ -535,9 +537,9 @@ def upload_file(request):
 			}
 			request.session["context"] = context
 
-	for i in context:
-		print(i," ",context[i])
-		print()
+	# for i in context:
+	# 	print(i," ",context[i])
+	# 	print()
 
 	return redirect('/upload')
 
