@@ -121,9 +121,6 @@ def GE_did_not():
  
 	if s_num >= 21:
 		r_dict['other_cnt'] = [0, 1]
-		# if student['major'] not in com_co:
-		# 	for sub in area_did['교필']:
-		# 		if sub == '컴퓨팅사고와 코딩기초':
 	
 	recommend = []
  
@@ -176,12 +173,12 @@ def GE_did_not():
 	for i in range(r_dict['for_loop']['other_cnt']):
 		recommend.append(other[i])
 	
-	if s_num >= 21:
-		if student['major'] not in com_co:
-			for sub in area_did['교필']:
-				if sub == '컴퓨팅사고와 코딩기초':
+	# if s_num >= 21:
+	# 	if student['major'] not in com_co:
+	# 		for sub in area_did['교필']:
+	# 			if sub == '컴퓨팅사고와 코딩기초':
 
-	if '컴퓨팅사고와 코딩' in recommend:
+	# if '컴퓨팅사고와 코딩' in recommend:
      
      
 	recommend_GE = []
