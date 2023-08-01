@@ -37,7 +37,7 @@ def delete_file(request):
 def sort_by_grade():
 	global subject_did, GE_not, no_sub, re_sub
 	score_for_grade = {'A+': 4.5, 'A0': 4.0, 'B+': 3.5, 'B0':3.0, 
-					'C+': 2.5, 'C0': 2.0, 'D+':1.5, 'D0': 1.0, 'P': 5, 'F': 0}
+					'C+': 2.5, 'C0': 2.0, 'D+':1.5, 'D0': 1.0, 'P': 5, 'F': 0, 'W': 10}
 	# new logic
 	# 아침에 20분정도 짠거라 뭐 없음 민지야 부탁한다!!!
 	# 1. 먼저 F, D0, D+, C0, C+인 과목들을 전부 찾아서 리스트에 저장(낮은 점수 리스트)
