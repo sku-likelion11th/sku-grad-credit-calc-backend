@@ -176,18 +176,21 @@ def GE_did_not():
 	flag = 0 # 미수강
 	if s_num < 21:
 		flag = 1
-	if student['major'] not in com_co:
-		flag = 1
   
+	print("21미만?",flag)
+	if student['major'] in com_co:
+		flag = 1
+	print("미소산경컴공?",flag)
 	for sub in area_did['교필']:
-		if remove_jaesu(sub) == '컴퓨팅사고와 코딩기초' and subject_did[sub][1] != '-': # 수강 했음
+		if remove_jaesu(sub[1]) == '컴퓨팅사고와 코딩기초' and subject_did[sub[1]][1] != '-': # 수강 했음
 			flag = 1
+	print("컴코들음?",flag)
    
    
 	recommend_GE = []
 	if not flag:
 		#컴코 안들었을때 코드를 여기다가 짜세요
-		recommend_GE.append('컴퓨팅사고와 코딩기초': {'subject': '컴퓨팅사고와 코딩기초', 'score': 2, 'category': '교필'})
+		recommend_GE.append({'subject': '컴퓨팅사고와 코딩기초', 'score': 2, 'category': '교필'})
      
 	# for sub in recommend:
 	# 	recommend_GE.append(subject_data.com_co[sub])
