@@ -173,17 +173,24 @@ def GE_did_not():
 	for i in range(r_dict['for_loop']['other_cnt']):
 		recommend.append(other[i])
 	
-	# if s_num >= 21:
-	# 	if student['major'] not in com_co:
-	# 		for sub in area_did['교필']:
-	# 			if sub == '컴퓨팅사고와 코딩기초':
-
-	# if '컴퓨팅사고와 코딩' in recommend:
-     
-     
+	flag = 0 # 미수강
+	if s_num < 21:
+		flag = 1
+	if student['major'] not in com_co:
+		flag = 1
+  
+	for sub in area_did['교필']:
+		if remove_jaesu(sub) == '컴퓨팅사고와 코딩기초' and subject_did[sub][1] != '-': # 수강 했음
+			flag = 1
+   
+   
 	recommend_GE = []
-	for sub in recommend:
-		recommend_GE.append(subject_data.GE_list[sub])
+	if not flag:
+		#컴코 안들었을때 코드를 여기다가 짜세요
+		recommend_GE.append('컴퓨팅사고와 코딩기초': {'subject': '컴퓨팅사고와 코딩기초', 'score': 2, 'category': '교필'})
+     
+	# for sub in recommend:
+	# 	recommend_GE.append(subject_data.com_co[sub])
 
 	if(len(recommend_GE)==0):
 		recommend_GE.append({'subject': '<p class="text-danger">미수강한 교필이 없습니다.</p>', 'score': '', 'category': ''})
