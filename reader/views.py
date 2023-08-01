@@ -117,9 +117,13 @@ def GE_did_not():
 	global student, area_did
 	s_num = int(student['student_num'][2:4]) # 학번 필요한가? 최신(이름 바뀐) 과목 추천해주면 될듯
 	r_dict = copy.deepcopy(subject_data.GE)
-	
+	com_co = {'산업경영공학과', '컴퓨터공학과', '미디어소프트웨어학과'}	
+ 
 	if s_num >= 21:
 		r_dict['other_cnt'] = [0, 1]
+		# if student['major'] not in com_co:
+		# 	for sub in area_did['교필']:
+		# 		if sub == '컴퓨팅사고와 코딩기초':
 	
 	recommend = []
  
@@ -171,6 +175,15 @@ def GE_did_not():
 		recommend.append(English[i])
 	for i in range(r_dict['for_loop']['other_cnt']):
 		recommend.append(other[i])
+	
+	if s_num >= 21:
+		if student['major'] not in com_co:
+			for sub in area_did['교필']:
+				if sub == '컴퓨팅사고와 코딩기초':
+
+	if '컴퓨팅사고와 코딩' in recommend:
+     
+     
 	recommend_GE = []
 	for sub in recommend:
 		recommend_GE.append(subject_data.GE_list[sub])
@@ -491,8 +504,10 @@ def upload_file(request):
 				if data[2] != 'P' and data[2] != 'F':
 					major_grade['전필'] += float(score_for_grade[data[2]])*float(data[1])
 					major_grade['전공'] += float(score_for_grade[data[2]])*float(data[1])
-			
-			major_grade['전필'] = round(major_grade['전필'] / score_did['전필'], 2)
+			try:
+				major_grade['전필'] = round(major_grade['전필'] / score_did['전필'], 2)
+			except:
+				major_grade['전필'] = 0
 			
 			for data in area_did['전선']:
 				if data[2] != 'P' and data[2] != 'F':
@@ -501,10 +516,15 @@ def upload_file(request):
 						major_grade['전공'] += float(score_for_grade[data[2]])*float(data[1])
 					except:
 						pass
-			
-			major_grade['전선'] = round(major_grade['전선'] / score_did['전선'], 2)
-			major_grade['전공']	= round(major_grade['전공'] / (score_did['전선']+score_did['전필']), 2)
-		
+			try:
+				major_grade['전선'] = round(major_grade['전선'] / score_did['전선'], 2)
+			except:
+				major_grade['전선'] = 0
+			try:
+				major_grade['전공']	= round(major_grade['전공'] / (score_did['전선']+score_did['전필']), 2)
+			except:
+				major_grade['전공'] = 0
+    
 			sorted_subject = [] # 성적순으로 정렬된것 만들어야함
 		
 			GE_not = GE_did_not()
