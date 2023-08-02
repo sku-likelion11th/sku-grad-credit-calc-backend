@@ -272,8 +272,9 @@
                     {% if student.major != '산업경영공학과' %}
                         <li class="text-danger">* 산업경영공학과만 지원합니다.</li>
                     {% else %}
-                        {% for data in grad.선택조건 %}
-                            <li>{{data}}</li>
+                        <li class="fw-bold text-secondary">아래 항목 중 하나</li>
+                        {% for data in grad.선택조건 %}        
+                            <li>- {{data}}</li>
                         {% endfor %}
                     {% endif %}
                 </div>
@@ -344,7 +345,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="modal-score text-end fs-5 pt-2 px-3 fw-bold">필수 {{ score_need.교양요구학점 }} 학점 中 <span class="fs-4" style="color:blue;">{{ score_did.교필|add:score_did.교선 }}점</span> 이수</div>
+                        <div class="modal-score text-end fs-5 pt-2 px-3 fw-bold">{{ score_did.교필|add:score_did.교선 }} <span class="fs-6 text-secondary">/ {{ score_need.교양요구학점 }} 학점</span></div>
                     </div>
 
                     <!-- 전공 필수 -->
@@ -375,7 +376,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="modal-score text-end fs-5 pt-2 px-3 fw-bold">{{ score_did.전필|floatformat:0}} / {{ score_need.전필요구학점 }} 학점</div>
+                        <div class="modal-score text-end fs-5 pt-2 px-3 fw-bold">{{ score_did.전필|floatformat:0}} <span class="fs-6 text-secondary">/ {{ score_need.전필요구학점 }} 학점</span></div>
                     </div>
 
                     <!-- 전공선택 -->
@@ -406,7 +407,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="modal-score text-end fs-5 pt-2 px-3 fw-bold">{{ score_did.전선|floatformat:0}} / {{ score_need.전선요구학점 }} 학점</div>
+                        <div class="modal-score text-end fs-5 pt-2 px-3 fw-bold">{{ score_did.전선|floatformat:0}} <span class="fs-6 text-secondary">/ {{ score_need.전선요구학점 }} 학점</span></div>
                     </div>
                     {% if score_need.부전공요구학점 != 0 %}
                     <!-- 부전공 -->
@@ -437,7 +438,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="modal-score text-end fs-5 pt-2 px-3 fw-bold">{{ score_did.부전|floatformat:0}} / {{ score_need.부전공요구학점 }} 학점</div>
+                        <div class="modal-score text-end fs-5 pt-2 px-3 fw-bold">{{ score_did.부전|floatformat:0}} <span class="fs-6 text-secondary">/ {{ score_need.부전공요구학점 }} 학점</span></div>
                     </div>
                     {% endif %}
                     {% if score_need.복수전공요구학점 != 0 %}
@@ -469,7 +470,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="modal-score text-end fs-5 pt-2 px-3 fw-bold">{{ score_did.복전|floatformat:0}} / {{ score_need.복수전공요구학점 }}점</div>
+                        <div class="modal-score text-end fs-5 pt-2 px-3 fw-bold">{{ score_did.복전|floatformat:0}} <span class="fs-6 text-secondary">/ {{ score_need.복수전공요구학점 }}점</span></div>
                     </div>
                     {% endif %}
                     {% if score_did.일선 != 0 %}
@@ -501,7 +502,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="modal-score text-end fs-5 pt-2 px-3 fw-bold">{{ score_did.일선|floatformat:0}} 학점</div>
+                        <div class="modal-score text-end fs-5 pt-2 px-3 fw-bold">{{ score_did.일선|floatformat:0}} 학점 이수</div>
                     </div>
                     {% endif %}
                 </div>
