@@ -160,7 +160,7 @@ hr {
     line-height: 30px;
   }
 }
-@media (max-width: 550.98px) {
+@media (max-width: 575.98px) {
   .howUse {
     height: auto;
   }
@@ -195,7 +195,7 @@ hr {
     margin-top: 10px;
   }
   .notice {
-    height: 330px;
+    height: 380px;
   }
   .notice-sub-text {
     font-size: 13px;
