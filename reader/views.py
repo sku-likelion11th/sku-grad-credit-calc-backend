@@ -349,10 +349,19 @@ def upload_file(request):
 			total_avg = sheet[str('H'+str(sheet.max_row - 1))].value # 총 평점 평균
 			church = sheet[str('L'+str(sheet.max_row - 1))].value # 채플
 			ratio = dict()
-			ratio['전필'] = min(100.0, round(score_need['전필이수학점'] / score_need['전필요구학점'], 2)*100)
-			ratio['전선'] = min(100.0, round(score_need['전선이수학점'] / score_need['전선요구학점'], 2)*100)
-			ratio['교양'] = min(100.0, round(score_need['교양이수학점'] / score_need['교양요구학점'], 2)*100)
-			# 교필은 아직임
+			try:
+				ratio['전필'] = min(100.0, round(score_need['전필이수학점'] / score_need['전필요구학점'], 2)*100)
+			except:
+				ratio['전필'] = 0
+			try:
+				ratio['전선'] = min(100.0, round(score_need['전선이수학점'] / score_need['전선요구학점'], 2)*100)
+			except:
+				ratio['전선'] = 0
+			try:
+				ratio['교양'] = min(100.0, round(score_need['교양이수학점'] / score_need['교양요구학점'], 2)*100)
+			except:
+				ratio['교양'] = 0
+   			# 교필은 아직임
 
 			grade_key = {'A+': 'AP', 'A0': 'A', 'B+': 'BP', 'B0': 'B', 
 							'C+': 'CP', 'C0': 'C', 'D+': 'DP', 'D0': 'D', 'F': 'F'}
@@ -416,8 +425,36 @@ def upload_file(request):
 				major_grade['전선'] = round(major_grade['전선'] / score_did['전선'], 2)
 			except:
 				major_grade['전선'] = 0
+    
+
+			for data in area_did['부전']:
+				if data[2] != 'P' and data[2] != 'F':
+					try:
+						major_grade['부전'] += float(score_for_grade[data[2]])*float(data[1])
+						major_grade['전공'] += float(score_for_grade[data[2]])*float(data[1])
+					except:
+						pass
 			try:
-				major_grade['전공']	= round(major_grade['전공'] / (score_did['전선']+score_did['전필']), 2)
+				major_grade['부전'] = round(major_grade['부전'] / score_did['부전'], 2)
+			except:
+				major_grade['부전'] = 0
+
+
+			for data in area_did['복전']:
+				if data[2] != 'P' and data[2] != 'F':
+					try:
+						major_grade['복전'] += float(score_for_grade[data[2]])*float(data[1])
+						major_grade['전공'] += float(score_for_grade[data[2]])*float(data[1])
+					except:
+						pass
+			try:
+				major_grade['복전'] = round(major_grade['복전'] / score_did['복전'], 2)
+			except:
+				major_grade['복전'] = 0
+    
+			# 전필, 전선, 복전, 부전
+			try:
+				major_grade['전공']	= round(major_grade['전공'] / (score_did['전선']+score_did['전필']+score_did['복전']+score_did['부전']), 2)
 			except:
 				major_grade['전공'] = 0
     
