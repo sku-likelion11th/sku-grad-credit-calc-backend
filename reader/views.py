@@ -371,7 +371,7 @@ def upload_file(request):
 						tmp = {v:k for k,v in subject_data.IME_change.items()}
 						if remove_jaesu(sub) in tmp.keys():
 							re_sub.add(tmp.get(remove_jaesu(sub)))
-						if remove_jaesu(sub) in tmp[remove_jaesu(sub)]:
+						elif remove_jaesu(sub) in tmp[remove_jaesu(sub)]:
 							re_sub.add(tmp.get(remove_jaesu(sub)))
 					except:
 						pass
