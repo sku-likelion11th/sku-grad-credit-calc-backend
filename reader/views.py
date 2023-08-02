@@ -30,7 +30,8 @@ def upload_or_result(request):
 	return render(request, 'reader/upload.html')
 
 def delete_file(request):
-	del request.session['context']
+	if 'context' in request.session:
+		del request.session['context']
 	return redirect('/upload')
 
 def sort_by_grade():
