@@ -451,5 +451,8 @@ def upload_file(request):
 					'no_sub': no_sub,
 			}
 			request.session["context"] = context
+	for i in context:
+		print(i," ",context[i])
+		print()
 
 	return redirect('/upload')

@@ -441,10 +441,42 @@
                         <div class="modal-score text-end fs-5 pt-2 px-3 fw-bold">{{ score_did.부전|floatformat:0}} <span class="fs-6 text-secondary">/ {{ score_need.부전공요구학점 }} 학점</span></div>
                     </div>
                     {% endif %}
+                    {% if score_need.복수전공필수요구학점 != 0 %}
+                    <!-- 복수전공선택 -->
+                    <div class="modal-section">
+                        <div class="modal-title fs-5 mb-2 fw-bold">복전필수</div>
+                        <div>
+                            <table class="modal-table">
+                                <tbody class="modal-mrTable">
+                                    <tr class='modal-thead fw-bold fs-6 mb-2'>
+                                        <th>이수구분</th>
+                                        <th>강좌명</th>
+                                        <th>학점</th>
+                                        <th>등급</th>
+                                        <th>년도</th>
+                                        <th>학기</th>
+                                    </tr>
+                                    <!-- 복전 -->
+                                    {% for course in area_did.복필 %}
+                                    <tr>
+                                        <td>복필</td>
+                                        <td>{{ course.0 }}</td>
+                                        <td>{{ course.1 }}</td>
+                                        <td>{{ course.2 }}</td>
+                                        <td>{{ course.3 }}</td>
+                                        <td>{{ course.4 }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-score text-end fs-5 pt-2 px-3 fw-bold">{{ score_did.복전|floatformat:0}} <span class="fs-6 text-secondary">/ {{ score_need.복수전공요구학점 }}점</span></div>
+                    </div>
+                    {% endif %}
                     {% if score_need.복수전공요구학점 != 0 %}
                     <!-- 복수전공선택 -->
                     <div class="modal-section">
-                        <div class="modal-title fs-5 mb-2 fw-bold">복수필수</div>
+                        <div class="modal-title fs-5 mb-2 fw-bold">복전선택</div>
                         <div>
                             <table class="modal-table">
                                 <tbody class="modal-mrTable">
@@ -472,7 +504,7 @@
                         </div>
                         <div class="modal-score text-end fs-5 pt-2 px-3 fw-bold">{{ score_did.복전|floatformat:0}} <span class="fs-6 text-secondary">/ {{ score_need.복수전공요구학점 }}점</span></div>
                     </div>
-                    {% endif %}
+                    {% endif %}                    
                     {% if score_did.일선 != 0 %}
                     <!-- 일반선택 -->
                     <div class="modal-section">
