@@ -4,6 +4,10 @@ from collections import defaultdict
 import openpyxl
 import copy
 import reader.data as subject_data
+from .models import Counter
+from django.utils import timezone
+from django.http import HttpResponse
+from datetime import datetime, timedelta
 
 def ge_not_list(request):
 	context = request.session['context']
@@ -22,7 +26,27 @@ def resub_list(request):
 	return JsonResponse(context['sorted_grade'], safe=False) 
 
 def index(request):
-	return render(request, 'reader/index.html')
+	try:
+		counter = Counter.objects.get(date=timezone.now())
+	except Counter.DoesNotExist:
+		counter = Counter.objects.create(count=0, date=timezone.now())
+
+	if request.COOKIES.get('count') == 'visited':
+		return render(request, 'reader/index.html')
+	else:
+		key = 'count'
+		value = 'visited'
+		now = datetime.now()
+		end_of_day = (now + timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
+		expire = end_of_day.strftime('%a, %d %b %Y %H:%M:%S GMT')
+
+		res = HttpResponse(render(request, 'reader/index.html'))
+		res.set_cookie(key, value=value, expires=expire)
+		counter.count += 1
+  
+	counter.save()
+
+	return res
 
 def upload_or_result(request):
 	if 'context' in request.session:
