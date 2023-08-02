@@ -94,7 +94,7 @@ hr {
 }
 /* notice */
 .notice {
-  height: 411px;
+  height: 380px;
   background-color: #ffffff;
 }
 .notice-text {
@@ -122,7 +122,7 @@ hr {
     margin: 0px 0px 40px 0;
   }
   .notice {
-    height: 411px;
+    height: 450px;
   }
   .notice-sub-text {
     font-size: 18px;
@@ -140,7 +140,7 @@ hr {
     margin: 10px 0px 50px 0;
   }
   .notice {
-    height: 411px;
+    height: 450px;
   }
   .img_step1 img {
     width: 43%;
@@ -153,7 +153,8 @@ hr {
   }
 
   .notice-sub-text {
-    font-size: 16px;
+    font-size: 15px;
+    word-break: keep-all;
   }
   .notice-sub-text li {
     line-height: 30px;
@@ -197,8 +198,8 @@ hr {
     height: 330px;
   }
   .notice-sub-text {
-    font-size: 11px;
-    margin-bottom: 58px;
+    font-size: 13px;
+    /* margin-bottom: 58px; */
   }
   .notice-text {
     font-size: 30px;
