@@ -37,7 +37,7 @@ def sort_by_grade():
 	global subject_did, GE_not, no_sub, re_sub
 	score_for_grade = {'A+': 4.5, 'A0': 4.0, 'B+': 3.5, 'B0':3.0, 
 					'C+': 2.5, 'C0': 2.0, 'D+':1.5, 'D0': 1.0, 'P': 5, 'F': 0, 'W': 10}
- 
+	print(re_sub)
 	low_score_list = list()
 	for sub in subject_did.keys():
 		if score_for_grade[subject_did[sub][2]] <= 2.5:
@@ -371,6 +371,9 @@ def upload_file(request):
 				if sub[-4:] == "(재수)":
 					re_sub.add(sub) # 과목명(재수)
 					re_sub.add(sub[:-4]) # 과목명
+					tmp = {v:k for k,v in subject_data.IME_change.items()}
+					if remove_jaesu(sub) in tmp[remove_jaesu(sub)]:
+						re_sub.add(tmp.get(remove_jaesu(sub)))
 					try:
 						if subject_did[sub][-1] != 'P':
 							ratio['등급'][grade_key[subject_did[sub][-1]]] += 1
@@ -449,5 +452,3 @@ def upload_file(request):
 			request.session["context"] = context
 
 	return redirect('/upload')
-
-
