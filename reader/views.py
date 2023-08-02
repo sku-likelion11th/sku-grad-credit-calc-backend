@@ -385,7 +385,7 @@ def upload_file(request):
 					except:
 						pass
 					try:
-						if subject_did[sub][-1] != 'P':
+						if subject_did[sub][-1] != 'P' and subject_did[sub][1] != '-':
 							ratio['등급'][grade_key[subject_did[sub][-1]]] += 1
 							cnt += 1
 					except:
@@ -394,7 +394,7 @@ def upload_file(request):
 			for sub in subject_did:
 				if sub[1:] not in re_sub and sub not in re_sub: # 별과목, 과목 인지 몰라욤
 					try:
-						if subject_did[sub][-1] != 'P':
+						if subject_did[sub][-1] != 'P' and subject_did[sub][1] != '-':
 							ratio['등급'][grade_key[subject_did[sub][-1]]] += 1
 							cnt += 1
 					except:
@@ -488,6 +488,8 @@ def upload_file(request):
 					'no_sub': no_sub,
 			}
 			request.session["context"] = context
+		else:
+			return redirect('/upload')
 	for i in context:
 		print(i," ",context[i])
 		print()
