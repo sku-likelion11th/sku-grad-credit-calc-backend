@@ -217,8 +217,10 @@
         /* 학기별 성적 평점 */
         
         .totalGPA {
-            display: flex;
-            justify-content: space-evenly;
+            /* 전공평점 구현하면 살리기 */
+            /* display: flex;
+            justify-content: space-evenly; */
+            
         }
         
         .totalGPA span {
