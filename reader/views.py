@@ -406,7 +406,7 @@ def upload_file(request):
 			major_grade = defaultdict(float)
 
 			for data in area_did['전필']:
-				if data[2] != 'P' and data[2] != 'F':
+				if data[2] != 'P' and data[2] != 'F' and data[1] != '-':
 					major_grade['전필'] += float(score_for_grade[data[2]])*float(data[1])
 					major_grade['전공'] += float(score_for_grade[data[2]])*float(data[1])
 			try:
@@ -415,7 +415,7 @@ def upload_file(request):
 				major_grade['전필'] = 0
 			
 			for data in area_did['전선']:
-				if data[2] != 'P' and data[2] != 'F':
+				if data[2] != 'P' and data[2] != 'F' and data[1] != '-':
 					try:
 						major_grade['전선'] += float(score_for_grade[data[2]])*float(data[1])
 						major_grade['전공'] += float(score_for_grade[data[2]])*float(data[1])
@@ -428,7 +428,7 @@ def upload_file(request):
     
 
 			for data in area_did['부전']:
-				if data[2] != 'P' and data[2] != 'F':
+				if data[2] != 'P' and data[2] != 'F' and data[1] != '-':
 					try:
 						major_grade['부전'] += float(score_for_grade[data[2]])*float(data[1])
 						major_grade['전공'] += float(score_for_grade[data[2]])*float(data[1])
@@ -441,7 +441,7 @@ def upload_file(request):
 
 
 			for data in area_did['복전']:
-				if data[2] != 'P' and data[2] != 'F':
+				if data[2] != 'P' and data[2] != 'F' and data[1] != '-':
 					try:
 						major_grade['복전'] += float(score_for_grade[data[2]])*float(data[1])
 						major_grade['전공'] += float(score_for_grade[data[2]])*float(data[1])
