@@ -2,7 +2,6 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from collections import defaultdict
 import openpyxl
-import json
 import copy
 import reader.data as subject_data
 
@@ -95,46 +94,7 @@ def sort_by_grade():
 			json_parse["none"] = {'subject': '<p class="text-danger">재수강할 과목이 없습니다.</p>', 'score': '', 'category': ''}
 
 	json_list = list(json_parse.values())
-	#print(json_list)
 	return json_list
-
-# def sort_by_grade():
-#    global subject_did, GE_not, no_sub, re_sub
-#    score_for_grade = {'A+': 4.5, 'A0': 4.0, 'B+': 3.5, 'B0':3.0, 
-#                'C+': 2.5, 'C0': 2.0, 'D+':1.5, 'D0': 1.0, 'P': 5, 'F': 0}
-# 	# 영민's logic
-# 	# 1. 먼저 F, D0, D+, C0, C+인 과목들을 전부 찾아서 리스트에 저장(낮은 점수 리스트)
-#    low_score_list = list()
-#    for sub in subject_did.keys():
-#       if score_for_grade[subject_did[sub][2]] <= 2.5:
-#          low_score_list.append(sub)
-#    # 2. 재수강한 과목들을 전부 찾아서 리스트에 저장
-#    re_sub_list = list()
-#    for sub in subject_did.keys():
-#       if sub[-4:] == '(재수)':
-#          re_sub_list.append(remove_jaesu(sub))
-#    # 3. 위의 리스트 두개를 대조해서, (재수)가 붙어있는 재수강 리스트는 모두 제외
-#    result_list = list()
-#    for item in low_score_list:
-#       if remove_jaesu(item) not in re_sub_list:
-#          result_list.append(item)
-#    # 4. 낮은 점수 리스트의 과목 중 재수강을 했을 당시에 과목명이 바뀌었다면, 해당 과목도 제외
-
-#    for i in range(2):
-#       for i, item in enumerate(result_list):
-#          if remove_jaesu(item) in subject_data.GE_change.keys():
-#             result_list[i] = subject_data.GE_change[remove_jaesu(item)]
-#          elif remove_jaesu(item) in subject_data.IME_change.keys():
-#             result_list[i] = subject_data.IME_change[remove_jaesu(item)]
-#    print(low_score_list)
-#    print('-------------------------------------')
-#    print(re_sub_list)
-#    print('-------------------------------------')
-#    print(result_list)
-#    print('-------------------------------------')
-#    #5. 낮은 점수 리스트를 가지고 json화 시켜서 돌리기하면 끗
-#    #6. "해줘"
-#    #영민's logic end
 
 def GE_not_list():
 	global student, area_did
@@ -248,11 +208,6 @@ def grad_cond():
 	
 	return subject_data.IME_grad[s_num]
 
-
-
-
-
-
 def upload_file(request):
 	global student, area, short_area, score_need_list, score_for_grade, info_category, year, score_need, score_did, subject_did, area_did, semester_grade, semester_subject, GE_not, no_sub, re_sub
 	file = request.FILES['uploaded_file']
@@ -317,10 +272,6 @@ def upload_file(request):
 					score_need[str(sheet[str('P'+str(j))].value[:-3])] = int(str(sheet[str('W'+str(j))].value))
 				j += 1
 
-		#   if sheet[str('Z'+str(j))].value in semester:
-		# 				ex.add((str(sheet[str('X'+str(j))].value), str(sheet[str('Z'+str(j))].value)[0]))	# ex) (2019,1)
-		# 			elif sheet[str('Z'+str(j))].value in season_semester:
-		# 		j += 1
 			student_semester = []
 			for i in ex:
 				student_semester.append(i)
@@ -343,10 +294,6 @@ def upload_file(request):
 				semester_subject[year[i]+'_'+season_semester[j%2]] = list()
 				semester_dict[(year[i], season_semester[j%2])] = year[i]+'_'+season_semester[j%2] # ex) [('2019', '여름학기')] = (2019, '여름학기')
 				j += 1
-
-			# semester_season_dict = dict()
-			# for i in range(len(student_season_semester)):
-			# 	semester_season_dict[student_season_semester[i]] = ((i//2)+1, student_season_semester[i][-1]) # ex) [('2019', '여름학기')] = (2019, '여름학기')
 
 			j = 1
 			while j < sheet.max_row + 1: # just for the example
@@ -392,29 +339,16 @@ def upload_file(request):
 						area_did[sheet[str('G'+str(j))].value].append([sheet[str('I'+str(j))].value, sheet[str('S'+str(j))].value, sheet[str('U'+str(j))].value, sheet[str('X'+str(j))].value, sheet[str('Z'+str(j))].value])
 
 						j += 1	# excel 다음 행으로
-						# if sheet[str('A'+str(j+2))].value and sheet[str('A'+str(j+2))].value[:-3] in score_need_list: 
-						# 	score_need[str(sheet[str('A'+str(j+2))].value[:-3])] = int(str(sheet[str('N'+str(j+2))].value))
-						# 	score_need[str(sheet[str('P'+str(j+2))].value[:-3])] = int(str(sheet[str('W'+str(j+2))].value))
 						# 	break	# 요구학점 나오면 해당 영역 종료
 
 				else:
 					j += 1
-
-			# print(f'score_need \n{score_need}\n')
-			# print(f'score_did \n{score_did}\n')	
-			# print(f'subject_did \n{subject_did}\n')
-			# print(f'student \n{student}\n')
-			# print(f'semester_subject \n{semester_subject}\n')
-			# print(f'semester_dict \n{semester_dict}\n')
 
 			for i in range(1, 6):
 				for j in range(1, 3):
 					if semester_grade[str(i)+'_'+str(j)]['S']:
 						semester_grade[str(i)+'_'+str(j)]['G'] = round(semester_grade[str(i)+'_'+str(j)]['G'] / semester_grade[str(i)+'_'+str(j)]['S'], 2)
 						semester_grade[str(i)+'_'+str(j)]['S'] += semester_grade[(str(i)+'_'+str(j))]['P']  # 계산할때는 패논패 계산 없이 함
-
-			# print(f'semester_grade \n{semester_grade}\n')
-			# print(f'area_did \n{area_did}\n')
 		
 			total_avg = sheet[str('H'+str(sheet.max_row - 1))].value # 총 평점 평균
 			church = sheet[str('L'+str(sheet.max_row - 1))].value # 채플
@@ -423,7 +357,6 @@ def upload_file(request):
 			ratio['전선'] = min(100.0, round(score_need['전선이수학점'] / score_need['전선요구학점'], 2)*100)
 			ratio['교양'] = min(100.0, round(score_need['교양이수학점'] / score_need['교양요구학점'], 2)*100)
 			# 교필은 아직임
-			# print(f'ratio: \n{ratio}')
 
 			grade_key = {'A+': 'AP', 'A0': 'A', 'B+': 'BP', 'B0': 'B', 
 							'C+': 'CP', 'C0': 'C', 'D+': 'DP', 'D0': 'D', 'F': 'F'}
@@ -487,7 +420,6 @@ def upload_file(request):
 			sorted_subject = [] # 성적순으로 정렬된것 만들어야함
 		
 			GE_not = list(GE_not_list().values())
-			#sorted_grade = sort_by_grade()
 			Major_sub_not = Major_sub()
 			Major_req_not = list(Major_req(Major_sub_not).values())
 			Major_sub_not = list(Major_sub_not.values())
@@ -515,10 +447,6 @@ def upload_file(request):
 					'no_sub': no_sub,
 			}
 			request.session["context"] = context
-
-	for i in context:
-		print(i," ",context[i])
-		print()
 
 	return redirect('/upload')
 
