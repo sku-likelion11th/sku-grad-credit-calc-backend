@@ -197,7 +197,7 @@
                     <div class="totalGPA">
                         <p class="totalscore">전체 평점 <span>{{total_avg}}</span> / 4.5</p>
                         <!-- 전공평점 부정확으로 인해 숨김처리 -->
-                        <!-- <p class="totalscore">전공 평점 <span>{{major_grade.전공}}</span> / 4.5</p> -->
+                        <p class="totalscore">전공 평점 <span>{{major_grade.전공}}</span> / 4.5</p>
                     </div>
                     <div class="line-container">
                         <div class="line-chart-box">
@@ -560,7 +560,7 @@
     <script src="{% static 'js/unCourse.js' %}"></script>
     <script src="{% static 'js/recommended.js' %}"></script>
     <script src="{% static 'js/result.js' %}"></script>
-    <script type='module' src="{% static 'js/creditList.js' %}"></script>
+    <!-- <script type='module' src="{% static 'js/creditList.js' %}"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{% static 'js/chart.js' %}"></script>
 </body>
