@@ -7,3 +7,10 @@ class Counter(models.Model):
     
     def __str__(self):
         return f'{self.date} : {self.count}'
+    
+class Upload_user(models.Model):
+    count = models.PositiveIntegerField(default=0)
+    date = models.DateField(auto_now_add=True, null=True, blank=True)
+    
+    def __str__(self):
+        return f'{self.date} : {self.count}'

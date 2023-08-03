@@ -4,7 +4,7 @@ from collections import defaultdict
 import openpyxl
 import copy
 import reader.data as subject_data
-from .models import Counter
+from .models import Counter, Upload_user
 from django.utils import timezone
 from django.http import HttpResponse
 from datetime import datetime, timedelta
@@ -233,6 +233,16 @@ def upload_file(request):
 	file = request.FILES['uploaded_file']
 	if file:
 		if file.name.endswith('xlsx'):
+			
+			# 실 사용자 체크
+			try:
+				user = Upload_user.objects.get(date=timezone.now())
+			except Upload_user.DoesNotExist:
+				user = Upload_user.objects.create(count=0, date=timezone.now())
+
+			user.count += 1
+			user.save()
+     
 			wb = openpyxl.load_workbook(file)
 			sheet = wb.active
 		#----------------------------------------------------------------------------------------------
