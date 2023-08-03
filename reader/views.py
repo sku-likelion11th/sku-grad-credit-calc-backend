@@ -6,7 +6,7 @@ import copy
 import reader.data as subject_data
 from .models import Counter, Upload_user
 from django.utils import timezone
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from datetime import datetime, timedelta
 
 def ge_not_list(request):
@@ -234,15 +234,6 @@ def upload_file(request):
 	if file:
 		if file.name.endswith('xlsx'):
 			
-			# 실 사용자 체크
-			try:
-				user = Upload_user.objects.get(date=timezone.now())
-			except Upload_user.DoesNotExist:
-				user = Upload_user.objects.create(count=0, date=timezone.now())
-
-			user.count += 1
-			user.save()
-     
 			wb = openpyxl.load_workbook(file)
 			sheet = wb.active
 		#----------------------------------------------------------------------------------------------
@@ -536,5 +527,24 @@ def upload_file(request):
 	for i in context:
 		print(i," ",context[i])
 		print()
+	
+	try:
+		user = Upload_user.objects.get(date=timezone.now())
+	except Upload_user.DoesNotExist:
+		user = Upload_user.objects.create(count=0, date=timezone.now())
 
-	return redirect('/upload')
+	if request.COOKIES.get('upload') == 'thankyou':
+		return redirect('/upload')
+	else:
+		key = 'upload'
+		value = 'thankyou'
+		now = datetime.now()
+		end_of_day = (now + timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
+		expire = end_of_day.strftime('%a, %d %b %Y %H:%M:%S GMT')
+
+		res = HttpResponseRedirect('/upload')
+		res.set_cookie(key, value=value, expires=expire)
+		user.count += 1
+		user.save()
+  
+		return res
