@@ -258,6 +258,7 @@ def upload_file(request):
 			# set during runtime
 			score_need = defaultdict(int)	# 영역별 요구 학점
 			score_did = defaultdict(float)	# 영역별 이수 학점
+			score_did_np = defaultdict(float)	# no_p
 			subject_did = defaultdict(list)	# 수강한 과목 모두 (이건 하지 말까 고민중 semester_subject를 모아둔 느낌) => 필요하다!! # [영역, 학점, 등급]
 			no_sub = defaultdict(list)
 			subject_didnot = defaultdict(dict) # 수강하지 않은 필수 과목 => set(필수 과목) 해서 discard 하는방식
@@ -430,15 +431,19 @@ def upload_file(request):
 			major_grade = defaultdict(float)
 
 			for data in area_did['전필']:
+				if data[2] == 'P' and data[2] != 'F' and data[1] != '-':
+					score_did_np['전필'] += int(data[1])
 				if data[2] != 'P' and data[2] != 'F' and data[1] != '-':
 					major_grade['전필'] += float(score_for_grade[data[2]])*float(data[1])
 					major_grade['전공'] += float(score_for_grade[data[2]])*float(data[1])
 			try:
-				major_grade['전필'] = round(major_grade['전필'] / score_did['전필'], 2)
+				major_grade['전필'] = round(major_grade['전필'] / (score_did['전필'] - score_did_np['전필']), 2)
 			except:
 				major_grade['전필'] = 0
 			
 			for data in area_did['전선']:
+				if data[2] == 'P' and data[2] != 'F' and data[1] != '-':
+					score_did_np['전선'] += int(data[1])
 				if data[2] != 'P' and data[2] != 'F' and data[1] != '-':
 					try:
 						major_grade['전선'] += float(score_for_grade[data[2]])*float(data[1])
@@ -446,12 +451,14 @@ def upload_file(request):
 					except:
 						pass
 			try:
-				major_grade['전선'] = round(major_grade['전선'] / score_did['전선'], 2)
+				major_grade['전선'] = round(major_grade['전선'] / (score_did['전선'] - score_did_np['전선']), 2)
 			except:
 				major_grade['전선'] = 0
     
 
 			for data in area_did['부전']:
+				if data[2] == 'P' and data[2] != 'F' and data[1] != '-':
+					score_did_np['부전'] += int(data[1])
 				if data[2] != 'P' and data[2] != 'F' and data[1] != '-':
 					try:
 						major_grade['부전'] += float(score_for_grade[data[2]])*float(data[1])
@@ -459,12 +466,14 @@ def upload_file(request):
 					except:
 						pass
 			try:
-				major_grade['부전'] = round(major_grade['부전'] / score_did['부전'], 2)
+				major_grade['부전'] = round(major_grade['부전'] / (score_did['부전'] - score_did_np['부전']), 2)
 			except:
 				major_grade['부전'] = 0
 
 
 			for data in area_did['복전']:
+				if data[2] == 'P' and data[2] != 'F' and data[1] != '-':
+					score_did_np['복전'] += int(data[1])
 				if data[2] != 'P' and data[2] != 'F' and data[1] != '-':
 					try:
 						major_grade['복전'] += float(score_for_grade[data[2]])*float(data[1])
@@ -472,13 +481,13 @@ def upload_file(request):
 					except:
 						pass
 			try:
-				major_grade['복전'] = round(major_grade['복전'] / score_did['복전'], 2)
+				major_grade['복전'] = round(major_grade['복전'] / (score_did['복전'] - score_did_np['복전']), 2)
 			except:
 				major_grade['복전'] = 0
     
 			# 전필, 전선, 복전, 부전
 			try:
-				major_grade['전공']	= round(major_grade['전공'] / (score_did['전선']+score_did['전필']+score_did['복전']+score_did['부전']), 2)
+				major_grade['전공']	= round(major_grade['전공'] / (score_did['전선']+score_did['전필']+score_did['복전']+score_did['부전']-score_did_np['전선']-score_did_np['전필']-score_did_np['복전']-score_did_np['부전']), 2)
 			except:
 				major_grade['전공'] = 0
     
