@@ -283,14 +283,12 @@
                 <!-- 졸업 요구사항 -->
                 <div class="GraduationRequirements">
                     <div class="title graduRe">졸업 요구사항</div>
-                    {% if student.major != '산업경영공학과' %}
-                        <li class="text-danger">* 산업경영공학과만 지원합니다.</li>
-                    {% else %}
-                        <li class="fw-bold text-secondary">아래 항목 중 하나</li>
-                        {% for data in grad.선택조건 %}        
-                            <li>- {{data}}</li>
-                        {% endfor %}
-                    {% endif %}
+
+                    <li class="fw-bold text-secondary">아래 항목 중 하나</li>
+                    {% for data in grad %}        
+                        <li>- {{data}}</li>
+                    {% endfor %}
+
                 </div>
             </section>
         </div>

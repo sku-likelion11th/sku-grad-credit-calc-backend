@@ -150,12 +150,12 @@ def remove_jaesu(text):
 def Major_sub():
 	global student, area_did
 
-	if(student['major']!='산업경영공학과'):
+	if(not student['major'] in subject_data.CM_list):
 		Major_sub_not = {}
-		Major_sub_not["none"] = {'subject': '<p class="text-danger">산업경영공학과만 지원합니다.</p>', 'score': '', 'category': ''}
+		Major_sub_not["none"] = {'subject': '<p class="text-danger">지원하지 않는 학과입니다.</p>', 'score': '', 'category': ''}
 		return Major_sub_not
 	
-	Major_sub_not = copy.deepcopy(subject_data.IME_list)
+	Major_sub_not = copy.deepcopy(subject_data.CM_list[student["major"]]["list"])
 	Ms_did = set()
 
 	for i in area_did['전필']:
@@ -166,8 +166,8 @@ def Major_sub():
 		Ms_did.add(copy.deepcopy(tmp))
 
 	for sub in Ms_did:
-		while(sub in subject_data.IME_change):
-			sub = subject_data.IME_change[sub]
+		while(sub in subject_data.CM_list[student["major"]]["change"]):
+			sub = subject_data.CM_list[student["major"]]["change"][sub]
 		if(sub in Major_sub_not):
 			del Major_sub_not[sub]
 
@@ -181,14 +181,14 @@ def Major_req(Major_sub_not):
 	s_num = int(student['student_num'][0:4])#학번찾음
 	
 	Major_req_not = {}
-	if(student['major']!='산업경영공학과'):
-		Major_req_not["none"] = {'subject': '<p class="text-danger">산업경영공학과만 지원합니다.</p>', 'score': '', 'category': ''}
+	if(not student['major'] in subject_data.CM_list):
+		Major_req_not["none"] = {'subject': '<p class="text-danger">지원하지 않는 학과입니다.</p>', 'score': '', 'category': ''}
 		return Major_req_not
-	Major_req = copy.deepcopy(subject_data.IME_REQ[s_num])
+	Major_req = copy.deepcopy(subject_data.CM_list[student["major"]]["REQ"][s_num])
 	
 	for sub in Major_req:
-		while(sub in subject_data.IME_change):
-			sub = subject_data.IME_change[sub]
+		while(sub in subject_data.CM_list[student["major"]]["change"]):
+			sub = subject_data.CM_list[student["major"]]["change"][sub]
 		if(sub in Major_sub_not):
 			Major_req_not[sub] = Major_sub_not[sub]
 			del Major_sub_not[sub]
@@ -201,15 +201,15 @@ def Major_req(Major_sub_not):
 def area_change(Major_req_did, Major_sub_did):
 	global student
 	s_num = int(student['student_num'][0:4])#학번찾음
-	Major_req = copy.deepcopy(subject_data.IME_REQ[s_num])
 	need_change = []
 	sub_did = set(remove_jaesu(item[0]) for item in Major_sub_did)
 	req_did = set(remove_jaesu(item[0]) for item in Major_req_did)
 	
-
-	if(student['major']!='산업경영공학과'):
+	if(not student['major'] in subject_data.CM_list):
 		return need_change
-	
+
+	Major_req = copy.deepcopy(subject_data.CM_list[student["major"]]["REQ"][s_num])
+
 	for did in Major_req:
 		if(did in sub_did):
 			need_change.append({"before":did+"(전선)", "after":did+"(전필)"})
@@ -225,8 +225,10 @@ def grad_cond():
 	global student
 	s_num = int(student['student_num'][0:4])
 	major = student['major']
-	
-	return subject_data.IME_grad[s_num]
+	if(major in subject_data.CM_list) :
+		return subject_data.CM_list[major]["grad"][s_num]
+
+	return [major]
 
 def upload_file(request):
 	global student, area, short_area, score_need_list, score_for_grade, info_category, year, score_need, score_did, subject_did, area_did, semester_grade, semester_subject, GE_not, no_sub, re_sub
