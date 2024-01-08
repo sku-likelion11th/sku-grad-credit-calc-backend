@@ -283,10 +283,8 @@
                 <!-- 졸업 요구사항 -->
                 <div class="GraduationRequirements">
                     <div class="title graduRe">졸업 요구사항</div>
-
-                    <li class="fw-bold text-secondary">아래 항목 중 하나</li>
                     {% for data in grad %}        
-                        <li>- {{data}}</li>
+                        {{data}}
                     {% endfor %}
 
                 </div>
