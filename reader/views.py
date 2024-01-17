@@ -206,7 +206,7 @@ def area_change(Major_req_did, Major_sub_did):
 	req_did = set(remove_jaesu(item[0]) for item in Major_req_did)
 	
 	if(not student['major'] in subject_data.CM_list):
-		return need_change
+		return ["지원하지 않는 학과입니다."]
 
 	Major_req = copy.deepcopy(subject_data.CM_list[student["major"]]["REQ"][s_num])
 
