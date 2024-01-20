@@ -11,7 +11,7 @@
     <meta property="og:locale" content="ko_KR" />
     <meta property="og:url" content="https://gcc.sku-sku.com/" />
     <meta property="og:title" content="성결대학교 졸업학점 계산기" />
-    <meta property="og:description" content="5학년은 안돼요! 성결대학교 졸업학점 계산기로 미리 확인하고 준비하세요."/>
+    <meta property="og:description" content="5학년은 안돼요! 성결대학교 졸업학점 계산기로 미리 확인하고 준비하세요." />
     <meta property="og:image" content="{% static 'source/img/og_tag.png' %}" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -182,8 +182,10 @@
                     <ul>
                         {% for change in need_change %}
                         <li>{{change.before}} <i class="bi bi-caret-right-fill"></i> {{change.after}}</li>
-                        {% endfor %}
-                        </ul>
+                        {% endfor %} {% if student.major != '산업경영공학과' %}
+                        <li class="text-danger">* 산업경영공학과만 지원합니다.</li>
+                        {% endif%}
+                    </ul>
                 </div>
             </section>
             <!-- Section2 -->
@@ -280,11 +282,66 @@
                 <!-- 졸업 요구사항 -->
                 <div class="GraduationRequirements">
                     <div class="title graduRe">졸업 요구사항</div>
-                    {% for data in grad %}        
-                        {{data}}<br>
-                    {% endfor %}
-
+                    {% if student.major != '산업경영공학과' %}
+                    <li class="text-danger">* 산업경영공학과만 지원합니다.</li>
+                    {% else %}
+                    <li class="fw-bold text-secondary">아래 항목 중 하나</li>
+                    {% for data in grad.선택조건 %}
+                    <li>- {{data}}</li>
+                    {% endfor %} {% endif %}
                 </div>
+
+                <!-- 모달 추가작업 -->
+                <!-- 졸업요구사항 Button -->
+                <button type="button" class="GraduationRequirementsBtn btn fw-bold" data-bs-toggle="modal" data-bs-target="#exampleModal1">
+                    졸업요구사항
+                </button>
+
+                <!-- 졸업요구사항 Modal -->
+                <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog  modal-xl modal-dialog-centered">
+                        <div class="modal-content">
+                            <!-- 모달 title 
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5 title graduRe" id="exampleModalLabel">졸업 요구사항</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div> -->
+                            <div class="modal-body">
+                                <!-- carousel 슬라이드 -->
+                                <div id="carouselExampleIndicators" class="carousel slide">
+                                    <div class="carousel-indicators">
+                                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                                    </div>
+
+                                    <!-- 졸업요건 IMG -->
+                                    <div class="carousel-inner">
+                                        <div class="carousel-item active">
+                                            <img src="{% static 'source/img/graduationRequirements/grRe17.png' %}" class="d-block w-100" alt="...">
+                                        </div>
+                                        <div class="carousel-item">
+                                            <img src="{% static 'source/img/graduationRequirements/grRe18.png' %}" class="d-block w-100" alt="...">
+                                        </div>
+                                    </div>
+
+
+                                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                      <span class="visually-hidden">Previous</span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                      <span class="visually-hidden">Next</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
             </section>
         </div>
     </div>
@@ -447,8 +504,7 @@
                         </div>
                         <div class="modal-score text-end fs-5 pt-2 px-3 fw-bold">{{ score_did.부전|floatformat:0}} <span class="fs-6 text-secondary">/ {{ score_need.부전공요구학점 }} 학점</span></div>
                     </div>
-                    {% endif %}
-                    {% if score_need.복수전공필수요구학점 != 0 %}
+                    {% endif %} {% if score_need.복수전공필수요구학점 != 0 %}
                     <!-- 복수전공선택 -->
                     <div class="modal-section">
                         <div class="modal-title fs-5 mb-2 fw-bold">복전필수</div>
@@ -479,8 +535,7 @@
                         </div>
                         <div class="modal-score text-end fs-5 pt-2 px-3 fw-bold">{{ score_did.복전|floatformat:0}} <span class="fs-6 text-secondary">/ {{ score_need.복수전공요구학점 }}점</span></div>
                     </div>
-                    {% endif %}
-                    {% if score_need.복수전공요구학점 != 0 %}
+                    {% endif %} {% if score_need.복수전공요구학점 != 0 %}
                     <!-- 복수전공선택 -->
                     <div class="modal-section">
                         <div class="modal-title fs-5 mb-2 fw-bold">복전선택</div>
@@ -511,8 +566,7 @@
                         </div>
                         <div class="modal-score text-end fs-5 pt-2 px-3 fw-bold">{{ score_did.복전|floatformat:0}} <span class="fs-6 text-secondary">/ {{ score_need.복수전공요구학점 }}점</span></div>
                     </div>
-                    {% endif %}                    
-                    {% if score_did.일선 != 0 %}
+                    {% endif %} {% if score_did.일선 != 0 %}
                     <!-- 일반선택 -->
                     <div class="modal-section">
                         <div class="modal-title fs-5 mb-2 fw-bold">일반선택</div>
@@ -557,5 +611,9 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{% static 'js/chart.js' %}"></script>
 </body>
+
+</html>
+
+</html>
 
 </html>
