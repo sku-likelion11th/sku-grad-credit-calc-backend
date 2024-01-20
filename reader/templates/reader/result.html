@@ -293,9 +293,9 @@
 
                 <!-- 모달 추가작업 -->
                 <!-- 졸업요구사항 Button -->
-                <button type="button" class="GraduationRequirementsBtn btn fw-bold" data-bs-toggle="modal" data-bs-target="#exampleModal1">
-                    졸업요구사항
-                </button>
+                {% if student.major != '산업경영공학과' and student.major != '경영학과' and student.major != '미디어소프트웨어학과' %}
+                <button type="button" class="GraduationRequirementsBtn btn fw-bold" disabled>졸업 요구사항 미지원 학과</button> {% else %}
+                <button type="button" class="GraduationRequirementsBtn btn fw-bold" data-bs-toggle="modal" data-bs-target="#exampleModal1">졸업 요구사항</button> {% endif %}
 
                 <!-- 졸업요구사항 Modal -->
                 <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -306,6 +306,7 @@
                                 <h1 class="modal-title fs-5 title graduRe" id="exampleModalLabel">졸업 요구사항</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div> -->
+
                             <div class="modal-body">
                                 <!-- carousel 슬라이드 -->
                                 <div id="carouselExampleIndicators" class="carousel slide">
@@ -318,6 +319,7 @@
                                     <!-- 졸업요건 IMG -->
                                     <div class="carousel-inner">
                                         <div class="carousel-item active">
+                                            <!-- 임시로 일단 경영 졸업요건 넣어놨어용 -->
                                             <img src="{% static 'source/img/graduationRequirements/grRe17.png' %}" class="d-block w-100" alt="...">
                                         </div>
                                         <div class="carousel-item">
