@@ -57,7 +57,7 @@
             </nav>
             <div class="main-content">
                 <div class="pretendard-font text-white main-text">
-                    성결대학교<br/>졸업학점 계산기 Ver.2
+                    성결대학교<br/>졸업학점 계산기 
                 </div>
                 <div class="pretendard-font text-white main-sub-text">
                     📢 2024 협력학과인 산업경영공학과, 경영학과, 미디어소프트웨어학과의 전공심화만 더 정확한 정보를 제공합니다.
@@ -91,10 +91,10 @@
         <div class="container">
             <div class="section-name">콜라보</div>
             <div class="section-text">정확한 정보를<br />제공하기 위한 협력</div>
-            <div class="d-flex justify-content-center align-items-center py-5">
-                <img class="collabo-team mx-3 mx-sm-5" src="{% static 'source/img/collaboration/likelion_sku.png' %}" alt="성결대 멋쟁이사자처럼 로고">
-                <img class="collabo-team-hand mx-3 mx-sm-5" src="{% static 'source/img/collaboration/handshake.png' %}" alt="성결대 멋쟁이사자처럼 로고">
-                <img class="collabo-team-collabo mx-3 mx-sm-5" src="{% static 'source/img/collaboration/collabo.png' %}" alt="성결대 멋쟁이사자처럼 로고">
+            <div class="d-flex justify-content-center align-items-center py-5 flex-column flex-xl-row">
+              <img class="collabo-team mx-3 mx-sm-3 img-fluid" src="{% static 'source/img/collaboration/likelion_sku.png' %}" alt="성결대 멋쟁이사자처럼 로고">
+              <img class="collabo-team-hand my-4 my-md-5 mx-3 mx-sm-3 img-fluid" src="{% static 'source/img/collaboration/handshake.png' %}" alt="콜라보 핸드쉐이크">
+              <img class="collabo-team-collabo mx-3 mx-sm-3 img-fluid" src="{% static 'source/img/collaboration/collabo.png' %}" alt="타학과 로고">
             </div>
         </div>
     </section>
@@ -102,16 +102,47 @@
     <section id="maker">
         <div class="container">
             <div class="section-name">만든이들</div>
-            <div class="section-text">LIKELION<br />SUNGKYUL<br />UNIV 12th.</div>
-            <div class="row profile my-5"></div>
-        </div>
+            <div class="section-text">LIKELION<br />SUNGKYUL<br />UNIV</div>
+            <ul class="nav nav-underline mt-3" id="myTab" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button class="nav-link active fs-4 text-dark" 
+                        id="profile-tab" 
+                        data-bs-toggle="tab" 
+                        data-bs-target="#profile-tab-pane" 
+                        type="button" 
+                        role="tab" 
+                        aria-controls="profile-tab-pane "
+                        aria-selected="false">12기
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link fs-4 text-dark"
+                        id="home-tab" 
+                        data-bs-toggle="tab" 
+                        data-bs-target="#home-tab-pane" 
+                        type="button" 
+                        role="tab" 
+                        aria-controls="home-tab-pane" 
+                        aria-selected="true">11기
+                </button>
+              </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+              <div class="tab-pane fade show active" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+                <div class="row profile_12th my-5"></div>  
+              </div>
+              <div class="tab-pane fade" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+                <div class="row profile my-5"></div>  
+              </div>
+            </div>
     </section>
     <!-- 문의하기 Footer -->
     <footer class="contact pb-5" id="contact">
         <div class="container">
             <div class="contact-title pretendard-font py-4 text-white">문의하기</div>
             <div class="contact-sub-text text-center text-white pretendard-font">
-                성결대학교 졸업학점 계산기 Ver.2 는 성결대 멋쟁이사자처럼 12기가 제작하였습니다.<br /> 서비스 및 동아리 관련 문의는 아래 채널들을 통해 해주시길 바랍니다.
+                성결대학교 졸업학점 계산기는 성결대 멋쟁이사자처럼에서 제작하였습니다.
+                <br /> 서비스 및 동아리 관련 문의는 아래 채널들을 통해 해주시길 바랍니다.
             </div>
             <div class="d-flex justify-content-center py-5">
                 <a href="mailto:sku@likelion.org"><img class="mx-2 contact-icon img-fluid" src="{% static 'source/img/email.png' %}" alt="Email"></a>
@@ -120,12 +151,15 @@
             </div>
             <div class="text-white text-center pretendard-font fs-6 fw-medium">sku@likelion.org</div>
             <div class="text-center pretendard-font copyright">sku-sku.com © 2024</div>
+            <div class="currentVersion text-center prentendard-font mt-2">최종 업데이트 : 2024.02</div>
         </div>
     </footer>
     <script src="{% static 'source/boot-5.3.0/bootstrap.bundle.min.js' %}"></script>
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
     <script src="{% static 'js/show-person.js' %}"></script>
+    <script src="{% static 'js/show-person_12th.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
 </body>
 
 </html>
