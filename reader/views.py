@@ -116,6 +116,7 @@ def sort_by_grade():
 	json_list = list(json_parse.values())
 	return json_list
 
+#미이수 교필
 def GE_not_list():
 	global student, area_did
 	GE_not = copy.deepcopy(subject_data.GE_list)
@@ -147,6 +148,7 @@ def remove_jaesu(text):
         text = text[1:]
     return text
 
+#미이수 전선
 def Major_sub():
 	global student, area_did
 
@@ -176,6 +178,7 @@ def Major_sub():
 	
 	return Major_sub_not
 
+#미이수 전필
 def Major_req(Major_sub_not):
 	global student
 	s_num = int(student['student_num'][0:4])#학번찾음
@@ -198,15 +201,16 @@ def Major_req(Major_sub_not):
 
 	return Major_req_not
 
+#이수구분변경
 def area_change(Major_req_did, Major_sub_did):
 	global student
 	s_num = int(student['student_num'][0:4])#학번찾음
 	need_change = []
 	sub_did = set(remove_jaesu(item[0]) for item in Major_sub_did)
 	req_did = set(remove_jaesu(item[0]) for item in Major_req_did)
-	
-	if(not student['major'] in subject_data.CM_list):
-		return ["지원하지 않는 학과입니다."]
+
+	if(not (student['major'] in subject_data.CM_list)):
+		return [{"after":"지원하지 않는 학과입니다."}]
 
 	Major_req = copy.deepcopy(subject_data.CM_list[student["major"]]["REQ"][s_num])
 
@@ -221,6 +225,7 @@ def area_change(Major_req_did, Major_sub_did):
 
 	return need_change
 
+#졸업요건
 def grad_cond():
 	global student
 	s_num = int(student['student_num'][0:4])
