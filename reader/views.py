@@ -228,7 +228,7 @@ def grad_cond():
 	if(major in subject_data.CM_list) :
 		return subject_data.CM_list[major]["grad"][s_num]
 
-	return ['지원하지 않는 학과입니다.']
+	return
 
 def upload_file(request):
 	global student, area, short_area, score_need_list, score_for_grade, info_category, year, score_need, score_did, subject_did, area_did, semester_grade, semester_subject, GE_not, no_sub, re_sub
@@ -526,9 +526,9 @@ def upload_file(request):
 			request.session["context"] = context
 		else:
 			return redirect('/upload')
-	# for i in context:
-		# print(i," ",context[i])
-		# print()
+	for i in context:
+		print(i," ",context[i])
+		print()
 	
 	try:
 		user = Upload_user.objects.get(date=timezone.now())
