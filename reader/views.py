@@ -526,9 +526,9 @@ def upload_file(request):
 			request.session["context"] = context
 		else:
 			return redirect('/upload')
-	for i in context:
-		print(i," ",context[i])
-		print()
+	# for i in context:
+		# print(i," ",context[i])
+		# print()
 	
 	try:
 		user = Upload_user.objects.get(date=timezone.now())
