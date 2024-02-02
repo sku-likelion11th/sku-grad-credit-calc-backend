@@ -230,13 +230,16 @@ def grad_cond():
 	global student
 	s_num = int(student['student_num'][0:4])
 	major = student['major']
+	if major == "경영학과(2부)":
+		major = "경영학과"
 	if(major in subject_data.CM_list) :
 		return subject_data.CM_list[major]["grad"][s_num]
 
 	return
 
+flag = 0
 def upload_file(request):
-	global student, area, short_area, score_need_list, score_for_grade, info_category, year, score_need, score_did, subject_did, area_did, semester_grade, semester_subject, GE_not, no_sub, re_sub
+	global student, area, short_area, score_need_list, score_for_grade, info_category, year, score_need, score_did, subject_did, area_did, semester_grade, semester_subject, GE_not, no_sub, re_sub, flag
 	file = request.FILES['uploaded_file']
 	if file:
 		if file.name.endswith('xlsx') or file.name.endswith('xls'):
@@ -500,13 +503,20 @@ def upload_file(request):
 				major_grade['전공'] = 0
     
 			sorted_subject = [] # 성적순으로 정렬된것 만들어야함
-		
+   
+			if student['major'] in ["경영학과(2부)"]:
+				flag = "경영학과(2부)"
+				student['major'] = "경영학과"
+  
 			GE_not = list(GE_not_list().values())
 			Major_sub_not = Major_sub()
 			Major_req_not = list(Major_req(Major_sub_not).values())
 			Major_sub_not = list(Major_sub_not.values())
 			need_change = area_change(area_did['전필'], area_did['전선'])
 			sorted_grade = sort_by_grade() # 재수강 추천
+
+			if flag:
+				student['major'] = flag
 
 			context = {'area_did': area_did, 
 					'semester_grade': semester_grade,
@@ -531,9 +541,9 @@ def upload_file(request):
 			request.session["context"] = context
 		else:
 			return redirect('/upload')
-	for i in context:
-		print(i," ",context[i])
-		print()
+	# for i in context:
+	# 	print(i," ",context[i])
+	# 	print()
 	
 	try:
 		user = Upload_user.objects.get(date=timezone.now())
