@@ -217,8 +217,20 @@ def area_change(Major_req_did, Major_sub_did):
 	for did in Major_req:
 		if(did in sub_did):
 			need_change.append({"before":did+"(전선)", "after":did+"(전필)"})
+			continue
 		if(did in req_did):
 			req_did.remove(did)
+			continue
+
+		change_did = did
+		while(change_did in subject_data.CM_list[student["major"]]["change"]):
+			change_did = subject_data.CM_list[student["major"]]["change"][change_did]
+			if(change_did in sub_did):
+				need_change.append({"before":change_did+"(전선)", "after":change_did+"(전필)"})
+				break
+			if(change_did in req_did):
+				req_did.remove(change_did)
+				break
 
 	for did in req_did:
 		need_change.append({"before":did+"(전필)", "after":did+"(전선)"})
