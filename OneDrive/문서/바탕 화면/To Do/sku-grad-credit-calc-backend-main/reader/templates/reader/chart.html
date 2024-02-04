@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous" />
+    <link rel="stylesheet" href="./css/chart.css" />
+    <title>졸업학점계산기 차트 구현</title>
+</head>
+<body>
+    <!--progress bar-->
+    <div class="bar-container">
+        <div class="bar-chart">
+            <div id="progress-container1" class="progress-container">
+                <div id="progress-bar1" class="progress-bar"></div>
+            </div>
+
+            <div id="progress-container2" class="progress-container">
+                <div id="progress-bar2" class="progress-bar"></div>
+            </div>
+
+            <div id="progress-container3" class="progress-container">
+                <div id="progress-bar3" class="progress-bar"></div>
+            </div>
+
+            <div id="progress-container4" class="progress-container">
+                <div id="progress-bar4" class="progress-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!--doughnut chart-->
+    <div class="doughnut-container">
+        <div class="doughnut-chart-title font-Pretendard-R">성적비율</div>
+        <div class="mt-4 d-flex align-items-center justify-content-center text-center flex-column">
+            <div class="doughnut-chart-box">
+                <canvas id="doughnut-chart"></canvas>
+                <div class="doughnut-data mt-4">
+                    <ul>
+                        <li>
+                            <div class="dot dot-blue"></div>
+                            A+ ~ A0<span class="percentage">32%</span>
+                        </li>
+                        <li>
+                            <div class="dot dot-red"></div>
+                            B+ ~ B0<span class="percentage">35%</span>
+                        </li>
+                        <li>
+                            <div class="dot dot-orange"></div>
+                            C+ ~ C0<span class="percentage">28%</span>
+                        </li>
+                        <li>
+                            <div class="dot dot-yellow"></div>
+                            F<span class="percentage"> 5%</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--line chart-->
+    <div class="line-container">
+        <div class="line-chart-box">
+            <canvas id="line-chart"></canvas>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="./js/chart.js"></script>
+</body>
+</html>

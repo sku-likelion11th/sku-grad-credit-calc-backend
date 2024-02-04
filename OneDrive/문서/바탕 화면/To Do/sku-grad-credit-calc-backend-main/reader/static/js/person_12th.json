@@ -1,0 +1,55 @@
+[{
+  "id": 1,
+  "image": "source/img/makers/seunghee.png",
+  "name": "노승희",
+  "department": "미디어소프트웨어학과 20",
+  "position": "대표",
+  "role": "Front-end",
+  "class": "profile-design-1"
+},
+{
+  "id": 2,
+  "image": "source/img/makers/taekwon.png",
+  "name": "정택원",
+  "department": "컴퓨터공학과 19",
+  "position": "부대표",
+  "role": "Back-end",
+  "class": "profile-design-2"
+},
+{
+  "id": 3,
+  "image": "source/img/makers/minji.png",
+  "name": "남민지",
+  "department": "컴퓨터공학과 21",
+  "position": "백엔드 파트장",
+  "role": "Back-end",
+  "class": "profile-design-3"
+},
+{
+  "id": 4,
+  "image": "source/img/makers/wonkyung.png",
+  "name": "이원경",
+  "department": "국어국문학과 22",
+  "position": "기획/디자인 파트장",
+  "role": "검수",
+  "class": "profile-design-4"
+},
+{
+  "id": 5,
+  "image": "source/img/makers/kcj.png",
+  "name": "고창준",
+  "department": "컴퓨터공학과 19",
+  "position": "프론트엔드 파트장",
+  "role": "Front-end",
+  "class": "profile-design-5"
+},
+{
+  "id": 6,
+  "image": "source/img/makers/minjoo.png",
+  "name": "서민주",
+  "department": "관광개발학과 22",
+  "position": "기획/디자인 운영진",
+  "role": "기획/디자인",
+  "class": "profile-design-1"
+}
+]
