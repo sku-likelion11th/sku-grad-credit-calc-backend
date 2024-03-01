@@ -249,9 +249,10 @@ def grad_cond():
 
 	return
 
-flag = 0
+
 def upload_file(request):
-	global student, area, short_area, score_need_list, score_for_grade, info_category, year, score_need, score_did, subject_did, area_did, semester_grade, semester_subject, GE_not, no_sub, re_sub, flag
+	global student, area, short_area, score_need_list, score_for_grade, info_category, year, score_need, score_did, subject_did, area_did, semester_grade, semester_subject, GE_not, no_sub, re_sub
+	flag = 0
 	file = request.FILES['uploaded_file']
 	if file:
 		if file.name.endswith('xlsx') or file.name.endswith('xls'):
